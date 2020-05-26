@@ -10,7 +10,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'MovieSliders',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -85,97 +85,143 @@ class _MyHomePageState extends State<MyHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
+      body: Container(
+        margin: const EdgeInsets.only(top: 10.0, bottom: 10.0),
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              'You have pushed the button this many timeszzzzzzzz:',
+            Container(
+                margin:
+                    const EdgeInsets.only(bottom: 5.0, left: 10.0, right: 10.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    CupertinoButton(
+                      child: Text('Play'),
+                      color: Colors.blue,
+                      onPressed: _incrementCounter,
+                    ),
+                    // CupertinoButton(
+                    //   child: Text('Hi'),
+                    //   color: Colors.blue,
+                    //   onPressed: _incrementCounter,
+                    // )
+                  ],
+                )),
+            Expanded(
+              child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Column(children: <Widget>[
+                      Expanded(
+                          child: RotatedBox(
+                        quarterTurns: -1,
+                        child: CupertinoSlider(
+                            value: rating_interest,
+                            activeColor: Color(0xffc62928),
+                            min: 2,
+                            max: 100,
+                            onChanged: (new_rating) {
+                              setState(() {
+                                rating_interest = new_rating;
+                              });
+                            }),
+                      )),
+                      Text(
+                        rating_interest.round().toString(),
+                        // style: Theme.of(context).textTheme.headline4,
+                      ),
+                    ]),
+                    Column(children: <Widget>[
+                      Expanded(
+                          child: RotatedBox(
+                        quarterTurns: -1,
+                        child: CupertinoSlider(
+                            value: rating_cliche,
+                            activeColor: Color(0xff01e675),
+                            min: 2,
+                            max: 100,
+                            onChanged: (new_rating) {
+                              setState(() {
+                                rating_cliche = new_rating;
+                              });
+                            }),
+                      )),
+                      Text(
+                        rating_cliche.round().toString(),
+                        // style: Theme.of(context).textTheme.headline4,
+                      ),
+                    ]),
+                    Column(children: <Widget>[
+                      Expanded(
+                          child: RotatedBox(
+                        quarterTurns: -1,
+                        child: CupertinoSlider(
+                            value: rating_funny,
+                            activeColor: Color(0xff2ab6f6),
+                            min: 2,
+                            max: 100,
+                            onChanged: (new_rating) {
+                              setState(() {
+                                rating_funny = new_rating;
+                              });
+                            }),
+                      )),
+                      Text(
+                        rating_funny.round().toString(),
+                        // style: Theme.of(context).textTheme.headline4,
+                      ),
+                    ]),
+                    Column(children: <Widget>[
+                      Expanded(
+                          child: RotatedBox(
+                        quarterTurns: -1,
+                        child: CupertinoSlider(
+                            value: rating_dumb,
+                            activeColor: Color(0xffbd00ff),
+                            min: 2,
+                            max: 100,
+                            onChanged: (new_rating) {
+                              setState(() {
+                                rating_dumb = new_rating;
+                              });
+                            }),
+                      )),
+                      Text(
+                        rating_dumb.round().toString(),
+                        // style: Theme.of(context).textTheme.headline4,
+                      ),
+                    ]),
+                    Column(children: <Widget>[
+                      Expanded(
+                          child: RotatedBox(
+                        quarterTurns: -1,
+                        child: CupertinoSlider(
+                            value: rating_wtf,
+                            activeColor: Color(0xfffdff00),
+                            min: 2,
+                            max: 100,
+                            onChanged: (new_rating) {
+                              setState(() {
+                                rating_wtf = new_rating;
+                              });
+                            }),
+                      )),
+                      Text(
+                        rating_wtf.round().toString(),
+                        // style: Theme.of(context).textTheme.headline4,
+                      ),
+                    ]),
+                  ]),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-            RotatedBox(
-                quarterTurns: -1,
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      CupertinoSlider(
-                          value: rating_interest,
-                          activeColor: Color(0xffc62928),
-                          min: 0,
-                          max: 100,
-                          onChanged: (new_rating) {
-                            setState(() {
-                              rating_interest = new_rating;
-                            });
-                          }),
-                      CupertinoSlider(
-                          value: rating_cliche,
-                          activeColor: Color(0xff01e675),
-                          min: 0,
-                          max: 100,
-                          onChanged: (new_rating) {
-                            setState(() {
-                              rating_cliche = new_rating;
-                            });
-                          }),
-                      CupertinoSlider(
-                          value: rating_funny,
-                          activeColor: Color(0xff2ab6f6),
-                          min: 0,
-                          max: 100,
-                          onChanged: (new_rating) {
-                            setState(() {
-                              rating_funny = new_rating;
-                            });
-                          }),
-                      CupertinoSlider(
-                          value: rating_dumb,
-                          activeColor: Color(0xffbd00ff),
-                          min: 0,
-                          max: 100,
-                          onChanged: (new_rating) {
-                            setState(() {
-                              rating_dumb = new_rating;
-                            });
-                          }),
-                      CupertinoSlider(
-                          value: rating_wtf,
-                          activeColor: Color(0xfffdff00),
-                          min: 0,
-                          max: 100,
-                          onChanged: (new_rating) {
-                            setState(() {
-                              rating_wtf = new_rating;
-                            });
-                          }),
-                    ]))
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: _incrementCounter,
+      //   tooltip: 'Increment',
+      //   child: Icon(Icons.add),
+      // ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
