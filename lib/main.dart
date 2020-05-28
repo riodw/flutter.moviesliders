@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+// https://flutter.dev/docs/development/ui/interactive#managing-state
+
 final double minimumRating = 2;
 final double maximumRating = 100;
 
