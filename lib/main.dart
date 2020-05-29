@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // https://flutter.dev/docs/development/ui/interactive#managing-state
 
@@ -66,16 +67,34 @@ List getRatings() {
   return ratings;
 }
 
+ThemeData lightTheme = ThemeData(
+  brightness: Brightness.light,
+  primaryColor: Colors.blueAccent,
+  primaryColorDark: Colors.blueGrey[400],
+  accentColor: Colors.indigo,
+  buttonColor: Colors.blueAccent,
+  // scalling
+  visualDensity: VisualDensity.adaptivePlatformDensity,
+);
+
+ThemeData darkTheme = ThemeData(
+  brightness: Brightness.dark,
+  primaryColor: Colors.blueGrey[900],
+  primaryColorDark: Colors.grey[900],
+  accentColor: Colors.indigo[900],
+  buttonColor: Colors.blueGrey[900],
+  scaffoldBackgroundColor: Colors.black,
+  // scalling
+  visualDensity: VisualDensity.adaptivePlatformDensity,
+);
+
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'MovieSliders',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
+      theme: lightTheme,
       home: MyHomePage(title: 'MovieSliders'),
     );
   }
@@ -90,38 +109,61 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class RatingWidget extends State {
-  @override
-  Widget build(BuildContext context) {
-    return Column(children: <Widget>[
-      Expanded(
-          child: RotatedBox(
-        quarterTurns: -1,
-        child: CupertinoSlider(
-            value: 0.0,
-            activeColor: Colors.red,
-            min: Rating.minRating,
-            max: Rating.maxRating,
-            onChanged: (new_rating) {
-              print(new_rating);
-              setState(() {
-                // rating.rating = new_rating;
-                // rating_interest = new_rating;
-              });
-            }),
-      )),
-      // Text(
-      //   rating.rating.round().toString(),
-      // ),
-    ]);
-  }
-}
+// class RatingWidget extends State {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Column(children: <Widget>[
+//       Expanded(
+//           child: RotatedBox(
+//         quarterTurns: -1,
+//         child: CupertinoSlider(
+//             value: 0.0,
+//             activeColor: Colors.red,
+//             min: Rating.minRating,
+//             max: Rating.maxRating,
+//             onChanged: (new_rating) {
+//               print(new_rating);
+//               setState(() {
+//                 // rating.rating = new_rating;
+//                 // rating_interest = new_rating;
+//               });
+//             }),
+//       )),
+//       // Text(
+//       //   rating.rating.round().toString(),
+//       // ),
+//     ]);
+//   }
+// }
 
 class _MyHomePageState extends State<MyHomePage> {
-  bool _paused = false;
-
+  bool _darkMode = false;
+  bool _paused = true;
   // ratings
   final List ratings = getRatings();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadDarkMode();
+  }
+
+  // darkMode - Loading darkMode value on start
+  _loadDarkMode() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _darkMode = (prefs.getBool('darkMode') ?? false);
+    });
+  }
+
+  // darkMode - Incrementing counter after click
+  _flipDarkMode() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _darkMode = !(prefs.getBool('darkMode') ?? false);
+      prefs.setBool('darkMode', _darkMode);
+    });
+  }
 
   void _pause() {
     setState(() {
@@ -133,9 +175,16 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
+        actions: <Widget>[
+          // action button
+          IconButton(
+            icon: _darkMode
+                ? Icon(Icons.brightness_low)
+                : Icon(Icons.brightness_high),
+            onPressed: _flipDarkMode,
+          ),
+        ],
       ),
       body: Container(
         margin: const EdgeInsets.only(top: 10.0, bottom: 10.0),
@@ -148,8 +197,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     CupertinoButton(
-                      child: _paused ? Text('Pause') : Text('Play'),
-                      color: _paused ? Colors.blueGrey : Colors.blueAccent,
+                      child: _paused ? Text('Play') : Text('Pause'),
+                      color: _paused
+                          ? Theme.of(context).primaryColor
+                          : Theme.of(context).primaryColorDark,
                       onPressed: _pause,
                     ),
                   ],
