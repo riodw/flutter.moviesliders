@@ -3,12 +3,36 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // Firebase
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_database/ui/firebase_animated_list.dart';
+// https://github.com/FirebaseExtended/flutterfire/tree/master/packages/firebase_auth/firebase_auth/example
+import 'package:google_sign_in/google_sign_in.dart';
 
 // https://flutter.dev/docs/development/ui/interactive#managing-state
 
+// Auth
+final GoogleSignIn _googleSignIn = GoogleSignIn();
+final FirebaseAuth _auth = FirebaseAuth.instance;
+
+//
 final double minimumRating = 2;
 final double maximumRating = 100;
+
+// Auth Function
+Future<FirebaseUser> _handleSignInWithGoogle() async {
+  final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
+  final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+
+  final AuthCredential credential = GoogleAuthProvider.getCredential(
+    accessToken: googleAuth.accessToken,
+    idToken: googleAuth.idToken,
+  );
+
+  final FirebaseUser user = (await _auth.signInWithCredential(credential)).user;
+  print("signed in " + user.displayName);
+  return user;
+}
 
 void main() {
   runApp(MyApp());
@@ -385,7 +409,11 @@ class HomePage extends StatelessWidget {
                   minWidth: 320.0,
                   height: 50.0,
                   child: RaisedButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      _handleSignInWithGoogle()
+                          .then((FirebaseUser user) => print(user))
+                          .catchError((e) => print(e));
+                    },
                     textColor: Colors.white,
                     color: Colors.blueAccent,
                     shape: RoundedRectangleBorder(

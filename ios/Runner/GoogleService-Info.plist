@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>748371382660-8mb50qtr3l7r9ppvfjjb0kv9jr20p23s.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.748371382660-8mb50qtr3l7r9ppvfjjb0kv9jr20p23s</string>
+	<key>API_KEY</key>
+	<string>AIzaSyB7TrTHZ36l9OsUmIOQ66E-OFKlJfuZfNk</string>
+	<key>GCM_SENDER_ID</key>
+	<string>748371382660</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.rioweber.flutterMoviesliders</string>
+	<key>PROJECT_ID</key>
+	<string>moviesliders-e142f</string>
+	<key>STORAGE_BUCKET</key>
+	<string>moviesliders-e142f.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false/>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false/>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true/>
+	<key>IS_GCM_ENABLED</key>
+	<true/>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true/>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:748371382660:ios:c81b636b24da1b28954dd1</string>
+	<key>DATABASE_URL</key>
+	<string>https://moviesliders-e142f.firebaseio.com</string>
+</dict>
+</plist>
