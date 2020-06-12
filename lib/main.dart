@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
-// Project
-import 'package:flutter_moviesliders/views/log_in.dart';
-import 'package:flutter_moviesliders/views/sliders.dart';
 // - auth
 import 'package:flutter_moviesliders/services/auth_service.dart';
 import 'package:flutter_moviesliders/widgets/provider_widget.dart';
+// Project
+import 'package:flutter_moviesliders/views/log_in.dart';
+import 'package:flutter_moviesliders/views/my_movies.dart';
+import 'package:flutter_moviesliders/views/sliders.dart';
 
 // https://flutter.dev/docs/development/ui/interactive#managing-state
 
@@ -41,9 +42,10 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
           title: 'MovieSliders',
           theme: lightTheme,
-          initialRoute: '/sliders',
+          initialRoute: '/my_movies',
           routes: <String, WidgetBuilder>{
             '/log_in': (BuildContext context) => LogInView(),
+            '/my_movies': (BuildContext context) => MyMoviesView(),
             '/sliders': (BuildContext context) => HomeController(),
           }),
     );
