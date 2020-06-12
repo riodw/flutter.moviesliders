@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/foundation.dart';
 
 final double minimumRating = 2;
 final double maximumRating = 100;
@@ -62,8 +63,8 @@ List getRatings() {
 }
 
 class SlidersView extends StatefulWidget {
-  SlidersView({Key key, this.title}) : super(key: key);
-
+  SlidersView({Key key, @required this.title}) : super(key: key);
+  
   final String title;
 
   @override
@@ -154,9 +155,9 @@ class _SlidersViewState extends State<SlidersView> {
                               activeColor: _paused ? Colors.grey : rating.color,
                               min: Rating.minRating,
                               max: Rating.maxRating,
-                              onChanged: (new_rating) {
+                              onChanged: (newRating) {
                                 setState(() {
-                                  rating.rating = new_rating;
+                                  rating.rating = newRating;
                                 });
                               }),
                         )),

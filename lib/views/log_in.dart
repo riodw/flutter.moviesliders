@@ -3,39 +3,31 @@ import 'package:flutter/material.dart';
 // Firebase
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
-// import 'package:firebase_database/ui/firebase_animated_list.dart';
 // https://github.com/FirebaseExtended/flutterfire/tree/master/packages/firebase_auth/firebase_auth/example
+// - auth
+import 'package:flutter_moviesliders/services/auth_service.dart';
+import 'package:flutter_moviesliders/widgets/provider_widget.dart';
 
-// Auth
-// final GoogleSignIn _googleSignIn = GoogleSignIn(
-//   scopes: [
-//     'email',
-//     // https://developers.google.com/identity/protocols/oauth2/scopes
-//   ],
-// );
-// final FirebaseAuth _auth = FirebaseAuth.instance;
+//
+import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 
-// Auth Function
-// Future<FirebaseUser> _handleSignInWithGoogle() async {
-//   final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
-//   final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+class LogInView extends StatefulWidget {
+  LogInView() : super();
 
-//   final AuthCredential credential = GoogleAuthProvider.getCredential(
-//     accessToken: googleAuth.accessToken,
-//     idToken: googleAuth.idToken,
-//   );
+  @override
+  _LogInViewState createState() => _LogInViewState();
+}
 
-//   final FirebaseUser user = (await _auth.signInWithCredential(credential)).user;
-//   print("signed in " + user.displayName);
-//   return user;
-// }
-
-class LogInView extends StatelessWidget {
+class _LogInViewState extends State<LogInView> {
   Color gradientStart = Colors.transparent;
   Color gradientEnd = Colors.black;
 
+  _LogInViewState();
+
   @override
   Widget build(BuildContext context) {
+    final _auth = Provider.of(context).auth;
+
     return Material(
       child: Stack(children: <Widget>[
         ShaderMask(
@@ -166,11 +158,17 @@ class LogInView extends StatelessWidget {
                 child: ButtonTheme(
                   minWidth: 320.0,
                   height: 50.0,
-                  child: RaisedButton(
+                  child:
+                      // GoogleSignInButton(onPressed: () {})
+                      RaisedButton(
                     onPressed: () async {
-                      // _handleSignInWithGoogle()
-                      //     .then((FirebaseUser user) => print(user))
-                      //     .catchError((e) => print(e));
+                      try {
+                        await _auth.signInWithGoogle();
+                      } catch (e) {
+                        // setState(() {
+                        //   _warning = e.message;
+                        // })
+                      }
                     },
                     textColor: Colors.white,
                     color: Colors.blueAccent,

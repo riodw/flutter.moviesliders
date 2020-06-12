@@ -6,6 +6,7 @@ import 'package:flutter_moviesliders/views/log_in.dart';
 import 'package:flutter_moviesliders/views/sliders.dart';
 // - auth
 import 'package:flutter_moviesliders/services/auth_service.dart';
+import 'package:flutter_moviesliders/widgets/provider_widget.dart';
 
 // https://flutter.dev/docs/development/ui/interactive#managing-state
 
@@ -40,7 +41,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
           title: 'MovieSliders',
           theme: lightTheme,
-          initialRoute: '/log_in',
+          initialRoute: '/sliders',
           routes: <String, WidgetBuilder>{
             '/log_in': (BuildContext context) => LogInView(),
             '/sliders': (BuildContext context) => HomeController(),
@@ -59,28 +60,10 @@ class HomeController extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.active) {
           print(snapshot.hasData);
           final bool signedIn = snapshot.hasData;
-          return signedIn ? SlidersView() : LogInView();
+          return signedIn ? SlidersView(title: 'Movies') : LogInView();
         }
         return CircularProgressIndicator();
       },
     );
   }
-}
-
-class Provider extends InheritedWidget {
-  final AuthService auth;
-
-  Provider({
-    Key key,
-    Widget child,
-    this.auth,
-  }) : super(key: key, child: child);
-
-  @override
-  bool updateShouldNotify(InheritedWidget oldWidget) {
-    return true;
-  }
-
-  static Provider of(BuildContext context) =>
-      (context.inheritFromWidgetOfExactType(Provider) as Provider);
 }
