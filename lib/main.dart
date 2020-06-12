@@ -7,6 +7,7 @@ import 'package:flutter_moviesliders/widgets/provider_widget.dart';
 // Project
 import 'package:flutter_moviesliders/views/log_in.dart';
 import 'package:flutter_moviesliders/views/my_movies.dart';
+import 'package:flutter_moviesliders/views/movie_review.dart';
 import 'package:flutter_moviesliders/views/sliders.dart';
 
 // https://flutter.dev/docs/development/ui/interactive#managing-state
@@ -42,10 +43,11 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
           title: 'MovieSliders',
           theme: lightTheme,
-          initialRoute: '/my_movies',
+          initialRoute: '/movie_review',
           routes: <String, WidgetBuilder>{
             '/log_in': (BuildContext context) => LogInView(),
             '/my_movies': (BuildContext context) => MyMoviesView(),
+            '/movie_review': (BuildContext context) => MovieReviewView(),
             '/sliders': (BuildContext context) => HomeController(),
           }),
     );
