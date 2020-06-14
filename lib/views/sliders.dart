@@ -64,7 +64,7 @@ List getRatings() {
 
 class SlidersView extends StatefulWidget {
   SlidersView({Key key, @required this.title}) : super(key: key);
-  
+
   final String title;
 
   @override

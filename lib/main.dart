@@ -26,6 +26,21 @@ class MyApp extends StatelessWidget {
       accentColor: Colors.indigo,
       buttonColor: Colors.blueAccent,
       visualDensity: VisualDensity.adaptivePlatformDensity,
+      // text
+      textTheme: TextTheme(
+        headline1: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
+        headline2: TextStyle(
+            fontSize: 40.0,
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'Georgia'),
+        headline4:
+            TextStyle(fontSize: 30.0, color: Colors.black, fontFamily: 'Hind'),
+        headline5: TextStyle(
+            fontSize: 24.0, color: Colors.grey[700], fontFamily: 'Hind'),
+        headline6: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+        bodyText2: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
+      ),
     );
 
     ThemeData darkTheme = ThemeData(
@@ -36,6 +51,12 @@ class MyApp extends StatelessWidget {
       buttonColor: Colors.blueGrey[900],
       scaffoldBackgroundColor: Colors.black,
       visualDensity: VisualDensity.adaptivePlatformDensity,
+      // text
+      // textTheme: TextTheme(
+      //   headline1: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
+      //   headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
+      //   bodyText2: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
+      // ),
     );
 
     return Provider(

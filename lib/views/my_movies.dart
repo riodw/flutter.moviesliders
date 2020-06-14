@@ -6,8 +6,7 @@ import 'package:flutter/material.dart';
 
 /* Comparison from episode to episode
 https://google.github.io/charts/flutter/example/scatter_plot_charts/comparison_points
-*/ 
-
+*/
 
 class MyMoviesView extends StatefulWidget {
   MyMoviesView({Key key}) : super(key: key);
@@ -17,22 +16,16 @@ class MyMoviesView extends StatefulWidget {
 }
 
 class _MyMoviesState extends State<MyMoviesView> {
-
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Rated Movies'),
-        actions: <Widget>[
-        ],
+        actions: <Widget>[],
       ),
       body: Container(
         margin: const EdgeInsets.only(top: 10.0, bottom: 10.0),
-        child: SafeArea(
-          child: Container(
-          )
-        ),
+        child: SafeArea(child: Container()),
       ),
     );
   }
