@@ -64,7 +64,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
           title: 'MovieSliders',
           theme: lightTheme,
-          initialRoute: '/movie_review',
+          initialRoute: '/my_movies',
           routes: <String, WidgetBuilder>{
             '/log_in': (BuildContext context) => LogInView(),
             '/my_movies': (BuildContext context) => MyMoviesView(),
