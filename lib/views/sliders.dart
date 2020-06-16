@@ -112,7 +112,7 @@ class _SlidersViewState extends State<SlidersView> {
       appBar: AppBar(
         title: Text(widget.title),
         actions: <Widget>[
-          // action button
+          // action buttons
           IconButton(
             icon: _darkMode
                 ? Icon(Icons.brightness_low)

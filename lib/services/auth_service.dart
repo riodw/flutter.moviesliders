@@ -36,13 +36,13 @@ class AuthService {
   }
 
   // Email & Password Sign In
-  Future<String> signInWithEmailAndPassword(
-      String email, String password) async {
-    return (await _auth.signInWithEmailAndPassword(
-            email: email, password: password))
-        .user
-        .uid;
-  }
+  // Future<String> signInWithEmailAndPassword(
+  //     String email, String password) async {
+  //   return (await _auth.signInWithEmailAndPassword(
+  //           email: email, password: password))
+  //       .user
+  //       .uid;
+  // }
 
   // Sign Out
   signOut() {

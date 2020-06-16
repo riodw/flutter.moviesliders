@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_moviesliders/services/auth_service.dart';
 // charts
 import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:flutter/material.dart';
+// - auth
+import 'package:flutter_moviesliders/services/auth_service.dart';
+import 'package:flutter_moviesliders/widgets/provider_widget.dart';
 
 /* Comparison from episode to episode
 https://google.github.io/charts/flutter/example/scatter_plot_charts/comparison_points
@@ -21,7 +24,58 @@ class _MyMoviesState extends State<MyMoviesView> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Rated Movies'),
-        actions: <Widget>[],
+        actions: <Widget>[
+          // action buttons
+          IconButton(
+            icon: Icon(Icons.more_vert),
+            onPressed: () {
+              final actionSheet = CupertinoActionSheet(
+                  // title: Text('Select Option'),
+                  // message: Text('Which option?'),
+                  actions: <Widget>[
+                    CupertinoActionSheetAction(
+                      child: Text('About MovieSliders'),
+                      onPressed: () {
+                        print('pressed: About MovieSliders');
+                      },
+                    ),
+                    CupertinoActionSheetAction(
+                      child: Text('Terms of Service'),
+                      onPressed: () {
+                        print('pressed: Terms of Service');
+                      },
+                    ),
+                    CupertinoActionSheetAction(
+                      child: Text('Privacy'),
+                      onPressed: () {
+                        print('pressed: Privacy Policy');
+                      },
+                    ),
+                    CupertinoActionSheetAction(
+                      child: Text('Log Out'),
+                      onPressed: () async {
+                        try {
+                          AuthService auth = Provider.of(context).auth;
+                          await auth.signOut();
+                          Navigator.pop(context);
+                        } catch (e) {
+                          print(e);
+                        }
+                      },
+                    ),
+                  ],
+                  cancelButton: CupertinoActionSheetAction(
+                    child: Text('Cancel'),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ));
+              showCupertinoModalPopup(
+                  context: context,
+                  builder: (BuildContext context) => actionSheet);
+            },
+          ),
+        ],
       ),
       body: Container(
         child: SafeArea(
@@ -88,7 +142,9 @@ class _MyMoviesState extends State<MyMoviesView> {
               child:
                   // GoogleSignInButton(onPressed: () {})
                   RaisedButton(
-                onPressed: () async {},
+                onPressed: () async {
+                  Navigator.pushNamed(context, '/movie_review');
+                },
                 textColor: Colors.white,
                 color: Colors.blueAccent,
                 shape: RoundedRectangleBorder(

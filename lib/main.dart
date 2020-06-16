@@ -67,9 +67,9 @@ class MyApp extends StatelessWidget {
           initialRoute: '/my_movies',
           routes: <String, WidgetBuilder>{
             '/log_in': (BuildContext context) => LogInView(),
-            '/my_movies': (BuildContext context) => MyMoviesView(),
+            '/my_movies': (BuildContext context) => HomeController(),
             '/movie_review': (BuildContext context) => MovieReviewView(),
-            '/sliders': (BuildContext context) => HomeController(),
+            '/sliders': (BuildContext context) => SlidersView(title: 'Movies'),
           }),
     );
   }
@@ -83,9 +83,8 @@ class HomeController extends StatelessWidget {
       stream: auth.onAuthStateChanged,
       builder: (context, AsyncSnapshot<String> snapshot) {
         if (snapshot.connectionState == ConnectionState.active) {
-          print(snapshot.hasData);
           final bool signedIn = snapshot.hasData;
-          return signedIn ? SlidersView(title: 'Movies') : LogInView();
+          return signedIn ? MyMoviesView() : LogInView();
         }
         return CircularProgressIndicator();
       },
