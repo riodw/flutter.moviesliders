@@ -1,51 +1,33 @@
+import 'package:flutter/material.dart';
+//
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+// import 'package:flutter_moviesliders/models/models.dart';
 
-class AuthService {
-  // Auth
+class AuthService extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final GoogleSignIn _googleSignIn = GoogleSignIn(
-    scopes: [
-      'email',
-      // https://developers.google.com/identity/protocols/oauth2/scopes
-    ],
-  );
 
-  Stream<String> get onAuthStateChanged => _auth.onAuthStateChanged.map(
-        (FirebaseUser user) => user?.uid,
-      );
+  // Firebase user one-time fetch
+  Future<FirebaseUser> get getUser => _auth.currentUser();
 
-  // Email & Password Sign Up
-  Future<String> createUserWithEmailAndPassword(
-      String email, String password, String name) async {
-    final currentUser = await _auth.createUserWithEmailAndPassword(
-      email: email,
-      password: password,
-    );
+  // Firebase user a realtime stream
+  Stream<FirebaseUser> get user => _auth.onAuthStateChanged;
 
-    // Update username
-    await updateUserName(name, currentUser.user);
-    return currentUser.user.uid;
-  }
-
-  Future updateUserName(String name, FirebaseUser currentUser) async {
-    var userUpdateInfo = UserUpdateInfo();
-    userUpdateInfo.displayName = name;
-    await currentUser.updateProfile(userUpdateInfo);
-    await currentUser.reload();
-  }
-
-  // Email & Password Sign In
-  // Future<String> signInWithEmailAndPassword(
-  //     String email, String password) async {
-  //   return (await _auth.signInWithEmailAndPassword(
-  //           email: email, password: password))
-  //       .user
-  //       .uid;
+  // TODO
+  // Future<bool> isAdmin() async {
+  //   bool _isAdmin = false;
+  //   await _auth.currentUser().then((user) async {
+  //     DocumentSnapshot adminRef =
+  //         await _db.collection('admin').document(user?.uid).get();
+  //     if (adminRef.exists) {
+  //       _isAdmin = true;
+  //     }
+  //   });
+  //   return _isAdmin;
   // }
 
-  // Sign Out
-  signOut() {
+  // Sign out
+  Future<void> signOut() {
     return _auth.signOut();
   }
 
@@ -54,17 +36,73 @@ class AuthService {
     return _auth.signInAnonymously();
   }
 
-  // GOOGLE sign-in
-  Future<String> signInWithGoogle() async {
-    final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
-    final GoogleSignInAuthentication _googleAuth =
-        await googleUser.authentication;
+  /*
+  Google signin
+  */
 
-    final AuthCredential credential = GoogleAuthProvider.getCredential(
-      accessToken: _googleAuth.accessToken,
-      idToken: _googleAuth.idToken,
-    );
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
+      // scopes: [ // https://developers.google.com/identity/protocols/oauth2/scopes
+      //   'email',
+      // ],
+      );
 
-    return (await _auth.signInWithCredential(credential)).user.uid;
+  /// Sign in with Google
+  Future<FirebaseUser> signInWithGoogle() async {
+    try {
+      GoogleSignInAccount googleSignInAccount = await _googleSignIn.signIn();
+      GoogleSignInAuthentication googleAuth =
+          await googleSignInAccount.authentication;
+
+      final AuthCredential credential = GoogleAuthProvider.getCredential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      AuthResult result = await _auth.signInWithCredential(credential);
+      FirebaseUser user = result.user;
+
+      return user;
+    } catch (error) {
+      print(error);
+      return null;
+    }
   }
+
+  /*
+  Apple signin
+  */
+
+  // Determine if Apple Signin is available on device
+  // Future<bool> get appleSignInAvailable => AppleSignIn.isAvailable();
+  /// Sign in with Apple
+  // Future<FirebaseUser> appleSignIn() async {
+  //   try {
+  //     final AuthorizationResult appleResult =
+  //         await AppleSignIn.performRequests([
+  //       AppleIdRequest(requestedScopes: [Scope.email, Scope.fullName])
+  //     ]);
+
+  //     if (appleResult.error != null) {
+  //       // handle errors from Apple
+  //     }
+
+  //     final AuthCredential credential =
+  //         OAuthProvider(providerId: 'apple.com').getCredential(
+  //       accessToken:
+  //           String.fromCharCodes(appleResult.credential.authorizationCode),
+  //       idToken: String.fromCharCodes(appleResult.credential.identityToken),
+  //     );
+
+  //     AuthResult firebaseResult = await _auth.signInWithCredential(credential);
+  //     FirebaseUser user = firebaseResult.user;
+
+  //     // Update user data
+  //     updateUserData(user);
+
+  //     return user;
+  //   } catch (error) {
+  //     print(error);
+  //     return null;
+  //   }
+  // }
 }

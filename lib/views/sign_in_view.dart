@@ -1,30 +1,26 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-// Firebase
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_database/firebase_database.dart';
-// https://github.com/FirebaseExtended/flutterfire/tree/master/packages/firebase_auth/firebase_auth/example
 // - auth
 import 'package:flutter_moviesliders/services/auth_service.dart';
-import 'package:flutter_moviesliders/widgets/provider_widget.dart';
+// import 'package:flutter_moviesliders/widgets/provider_widget.dart';
 
-class LogInView extends StatefulWidget {
-  LogInView() : super();
-
-  @override
-  _LogInViewState createState() => _LogInViewState();
+class SignInView extends StatefulWidget {
+  _SignInViewState createState() => _SignInViewState();
 }
 
-class _LogInViewState extends State<LogInView> {
+class _SignInViewState extends State<SignInView> {
+  bool _loading = false;
+  // will delete
   Color gradientStart = Colors.transparent;
   Color gradientEnd = Colors.black;
 
-  _LogInViewState();
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final _auth = Provider.of(context).auth;
-
     return Material(
       child: Stack(children: <Widget>[
         ShaderMask(
@@ -130,9 +126,6 @@ class _LogInViewState extends State<LogInView> {
                 minWidth: 320.0,
                 height: 50.0,
                 child: RaisedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/signup');
-                  },
                   textColor: Colors.blueAccent,
                   color: Colors.white,
                   shape: RoundedRectangleBorder(
@@ -145,6 +138,9 @@ class _LogInViewState extends State<LogInView> {
                       textAlign: TextAlign.center,
                     ),
                   ),
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/signup');
+                  },
                 ),
               ),
               flex: 0,
@@ -158,15 +154,6 @@ class _LogInViewState extends State<LogInView> {
                   child:
                       // GoogleSignInButton(onPressed: () {})
                       RaisedButton(
-                    onPressed: () async {
-                      try {
-                        await _auth.signInWithGoogle();
-                      } catch (e) {
-                        // setState(() {
-                        //   _warning = e.message;
-                        // })
-                      }
-                    },
                     textColor: Colors.white,
                     color: Colors.blueAccent,
                     shape: RoundedRectangleBorder(
@@ -181,6 +168,22 @@ class _LogInViewState extends State<LogInView> {
                         textAlign: TextAlign.center,
                       ),
                     ),
+                    onPressed: () async {
+                      AuthService _auth = AuthService();
+                      bool status =
+                          await _auth.signInWithGoogle().then((status) {
+                        setState(() {
+                          _loading = false;
+                        });
+                        return status != null;
+                      });
+                      if (!status) {
+                        print('Could not log in');
+                        // _scaffoldKey.currentState.showSnackBar(SnackBar(
+                        //   content: Text(labels.auth.signInError),
+                        // ));
+                      }
+                    },
                   ),
                 ),
               ),
@@ -193,9 +196,6 @@ class _LogInViewState extends State<LogInView> {
                   minWidth: 200.0,
                   height: 50.0,
                   child: FlatButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/signup');
-                    },
                     textColor: Colors.white,
                     child: Container(
                       child: Text(
@@ -205,6 +205,9 @@ class _LogInViewState extends State<LogInView> {
                         textAlign: TextAlign.center,
                       ),
                     ),
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/signup');
+                    },
                   ),
                 ),
               ),

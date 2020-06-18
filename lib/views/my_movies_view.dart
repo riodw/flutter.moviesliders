@@ -55,8 +55,8 @@ class _MyMoviesState extends State<MyMoviesView> {
                       child: Text('Log Out'),
                       onPressed: () async {
                         try {
-                          AuthService auth = Provider.of(context).auth;
-                          await auth.signOut();
+                          AuthService _auth = AuthService();
+                          await _auth.signOut();
                           Navigator.pop(context);
                         } catch (e) {
                           print(e);

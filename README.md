@@ -6,6 +6,12 @@ https://flutter.dev/docs/development/ui/widgets/cupertino
 
 https://api.flutter.dev/flutter/cupertino/cupertino-library.html
 
+## Todo:
+
+1. Add splash/loading screen (lib/ui/components/loading_screen.dart)
+
+2. Add language support
+
 ## App Store:
 
 Category: Entertainment
