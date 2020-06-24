@@ -16,7 +16,7 @@ class AppThemes {
   // static String font1 = "ProductSans";
   static const String font2 = "Georgia";
 
-  static const Color primaryBlue = Colors.blueAccent;
+  // static const Color primaryBlue = Colors.blueAccent;
   static const Color whiteLilac = Color.fromRGBO(248, 250, 252, 1);
   static const Color blackPearl = Color.fromRGBO(30, 31, 43, 1);
   // static const Color brinkPink = Color.fromRGBO(255, 97, 136, 1);
@@ -28,7 +28,8 @@ class AppThemes {
    * LIGHT THEME
    */
   //constants color range for light theme
-  static const Color _lightPrimaryColor = primaryBlue;
+  static const Color _lightPrimaryColor = Colors.blueAccent;
+  static const Color _lightSecondaryColor = Colors.indigo;
 
   //Background Colors
   static const Color _lightBackgroundColor = whiteLilac;
@@ -81,7 +82,7 @@ class AppThemes {
         TextStyle(fontSize: 12.0, color: Colors.grey[600], fontFamily: font1),
 
     button: TextStyle(
-        fontSize: 15.0,
+        fontSize: 16.0,
         color: Colors.white,
         // fontWeight: FontWeight.w600,
         fontFamily: font1),
@@ -105,7 +106,7 @@ class AppThemes {
     colorScheme: ColorScheme.light(
       primary: _lightPrimaryColor,
       primaryVariant: _lightBackgroundColor,
-      // secondary: _lightSecondaryColor,
+      secondary: _lightSecondaryColor,
     ),
     snackBarTheme:
         SnackBarThemeData(backgroundColor: _lightBackgroundAlertColor),
@@ -120,6 +121,7 @@ class AppThemes {
         ),
         buttonColor: _lightPrimaryColor,
         textTheme: ButtonTextTheme.primary),
+    buttonColor: _lightPrimaryColor,
     unselectedWidgetColor: _lightPrimaryColor,
     inputDecorationTheme: InputDecorationTheme(
       //prefixStyle: TextStyle(color: _lightIconColor),

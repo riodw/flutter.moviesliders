@@ -141,17 +141,14 @@ class _MyMoviesState extends State<MyMoviesView> {
                   Navigator.pushNamed(context, '/sliders',
                       arguments: 'this is a test');
                 },
-                textColor: Colors.white,
+                // textColor: Colors.white,
                 color: Colors.blueAccent,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0)),
                 child: Container(
                   child: Text(
                     'New Review',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: Theme.of(context).textTheme.button,
                     textAlign: TextAlign.center,
                   ),
                 ),

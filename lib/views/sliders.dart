@@ -37,7 +37,7 @@ class Rating {
   final String rawName, rawColor;
   Text _name;
   Color _color;
-  double _rating = 40;
+  double _rating = 40; // TODO change this to 2
 
   // getters
   Text get name => Text(this.rawName);
@@ -137,8 +137,8 @@ class _SlidersViewState extends State<SlidersView> {
                     CupertinoButton(
                       child: _paused ? Text('Play') : Text('Pause'),
                       color: _paused
-                          ? Theme.of(context).primaryColor
-                          : Theme.of(context).primaryColorDark,
+                          ? Theme.of(context).colorScheme.primary
+                          : Theme.of(context).colorScheme.secondary,
                       onPressed: _pause,
                     ),
                   ],
@@ -164,9 +164,11 @@ class _SlidersViewState extends State<SlidersView> {
                                 });
                               }),
                         )),
-                        Text(
-                          rating.rating.round().toString(),
-                        ),
+                        _paused
+                            ? rating.name
+                            : Text(
+                                rating.rating.round().toString(),
+                              ),
                       ]),
                   ]),
             ),
