@@ -32,8 +32,8 @@ class AuthService extends ChangeNotifier {
   }
 
   // Create Anonymous User
-  Future signInAnonymously() {
-    return _auth.signInAnonymously();
+  Future signInAnonymously() async {
+    return await _auth.signInAnonymously();
   }
 
   /*

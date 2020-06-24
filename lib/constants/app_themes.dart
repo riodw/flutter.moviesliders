@@ -1,86 +1,92 @@
 import 'package:flutter/material.dart';
 
+// ThemeData lightTheme = ThemeData(
+
+//   primaryColor: Colors.blueAccent,
+//   primaryColorDark: Colors.blueGrey[400],
+//   accentColor: Colors.indigo,
+//   buttonColor: Colors.blueAccent,
+//   visualDensity: VisualDensity.adaptivePlatformDensity,
+// );
+
 class AppThemes {
   AppThemes._();
 
-  static const Color dodgerBlue = Color.fromRGBO(29, 161, 242, 1);
+  static const String font1 = "Hind";
+  // static String font1 = "ProductSans";
+  static const String font2 = "Georgia";
+
+  static const Color primaryBlue = Colors.blueAccent;
   static const Color whiteLilac = Color.fromRGBO(248, 250, 252, 1);
   static const Color blackPearl = Color.fromRGBO(30, 31, 43, 1);
-  static const Color brinkPink = Color.fromRGBO(255, 97, 136, 1);
-  static const Color juneBud = Color.fromRGBO(186, 215, 97, 1);
-  static const Color white = Color.fromRGBO(255, 255, 255, 1);
-  static const Color nevada = Color.fromRGBO(105, 109, 119, 1);
-  static const Color ebonyClay = Color.fromRGBO(40, 42, 58, 1);
+  // static const Color brinkPink = Color.fromRGBO(255, 97, 136, 1);
+  // static const Color juneBud = Color.fromRGBO(186, 215, 97, 1);
+  // static const Color nevada = Color.fromRGBO(105, 109, 119, 1);
+  // static const Color ebonyClay = Color.fromRGBO(40, 42, 58, 1);
 
-  static String font1 = "ProductSans";
-  static String font2 = "Roboto";
+  /*
+   * LIGHT THEME
+   */
   //constants color range for light theme
-  //main color
-  static const Color _lightPrimaryColor = dodgerBlue;
+  static const Color _lightPrimaryColor = primaryBlue;
 
   //Background Colors
   static const Color _lightBackgroundColor = whiteLilac;
   static const Color _lightBackgroundAppBarColor = _lightPrimaryColor;
-  static const Color _lightBackgroundSecondaryColor = white;
+  static const Color _lightBackgroundSecondaryColor = Colors.white;
   static const Color _lightBackgroundAlertColor = blackPearl;
-  static const Color _lightBackgroundErrorColor = brinkPink;
-  static const Color _lightBackgroundSuccessColor = juneBud;
+  // static const Color _lightBackgroundErrorColor = Colors.red;
+  // static const Color _lightBackgroundSuccessColor = Colors.green;
 
   //Text Colors
-  static const Color _lightTextColor = Colors.black;
-  static const Color _lightAlertTextColor = Colors.black;
-  static const Color _lightTextSecondaryColor = Colors.black;
+  // static const Color _lightTextColor = Colors.black;
+  // static const Color _lightAlertTextColor = Colors.black;
+  // static const Color _lightTextSecondaryColor = Colors.black;
 
   //Border Color
-  static const Color _lightBorderColor = nevada;
+  // static const Color _lightBorderColor = nevada;
 
   //Icon Color
-  static const Color _lightIconColor = nevada;
+  // static const Color _lightIconColor = Colors;
 
   //form input colors
-  static const Color _lightInputFillColor = _lightBackgroundSecondaryColor;
+  // static const Color _lightInputFillColor = _lightBackgroundSecondaryColor;
   static const Color _lightBorderActiveColor = _lightPrimaryColor;
-  static const Color _lightBorderErrorColor = brinkPink;
-
-  //constants color range for dark theme
-  static const Color _darkPrimaryColor = dodgerBlue;
-
-  //Background Colors
-  static const Color _darkBackgroundColor = ebonyClay;
-  static const Color _darkBackgroundAppBarColor = _darkPrimaryColor;
-  static const Color _darkBackgroundSecondaryColor =
-      Color.fromRGBO(0, 0, 0, .6);
-  static const Color _darkBackgroundAlertColor = Colors.black;
-  static const Color _darkBackgroundErrorColor =
-      Color.fromRGBO(255, 97, 136, 1);
-  static const Color _darkBackgroundSuccessColor =
-      Color.fromRGBO(186, 215, 97, 1);
-
-  //Text Colors
-  static const Color _darkTextColor = Colors.white;
-  static const Color _darkAlertTextColor = Colors.black;
-  static const Color _darkTextSecondaryColor = Colors.black;
-
-  //Border Color
-  static const Color _darkBorderColor = nevada;
-
-  //Icon Color
-  static const Color _darkIconColor = nevada;
-
-  static const Color _darkInputFillColor = _darkBackgroundSecondaryColor;
-  static const Color _darkBorderActiveColor = _darkPrimaryColor;
-  static const Color _darkBorderErrorColor = brinkPink;
+  // static const Color _lightBorderErrorColor = brinkPink;
 
   //text theme for light theme
   static final TextTheme _lightTextTheme = TextTheme(
-    headline1: TextStyle(fontSize: 20.0, color: _lightTextColor),
-    bodyText1: TextStyle(fontSize: 16.0, color: _lightTextColor),
-    bodyText2: TextStyle(fontSize: 14.0, color: Colors.grey),
+    headline1: TextStyle(
+        fontSize: 30.0,
+        color: Colors.black,
+        fontWeight: FontWeight.normal,
+        fontFamily: font1),
+    headline2: TextStyle(
+        fontSize: 30.0,
+        color: Colors.black,
+        fontWeight: FontWeight.bold,
+        fontFamily: font2),
+    headline3: TextStyle(
+        fontSize: 22.0,
+        color: Colors.black,
+        fontWeight: FontWeight.bold,
+        fontFamily: font1),
+    headline4:
+        TextStyle(fontSize: 18.0, color: Colors.grey[600], fontFamily: font1),
+    // headline5: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+    // headline6: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+    bodyText1:
+        TextStyle(fontSize: 14.0, color: Colors.black, fontFamily: font1),
+    bodyText2:
+        TextStyle(fontSize: 12.0, color: Colors.grey[600], fontFamily: font1),
+
     button: TextStyle(
-        fontSize: 15.0, color: _lightTextColor, fontWeight: FontWeight.w600),
-    headline6: TextStyle(fontSize: 16.0, color: _lightTextColor),
-    subtitle1: TextStyle(fontSize: 16.0, color: _lightTextColor),
-    caption: TextStyle(fontSize: 12.0, color: _lightBackgroundAppBarColor),
+        fontSize: 15.0,
+        color: Colors.white,
+        // fontWeight: FontWeight.w600,
+        fontFamily: font1),
+    // subtitle1: TextStyle(fontSize: 16.0, color: _lightTextColor),
+    // caption: TextStyle(fontSize: 12.0, color: _lightBackgroundAppBarColor),
   );
 
   //the light theme
@@ -93,8 +99,8 @@ class AppThemes {
     ),
     appBarTheme: AppBarTheme(
       color: _lightBackgroundAppBarColor,
-      iconTheme: IconThemeData(color: _lightTextColor),
-      textTheme: _lightTextTheme,
+      // iconTheme: IconThemeData(color: _lightTextColor),
+      // textTheme: _lightTextTheme,
     ),
     colorScheme: ColorScheme.light(
       primary: _lightPrimaryColor,
@@ -104,8 +110,8 @@ class AppThemes {
     snackBarTheme:
         SnackBarThemeData(backgroundColor: _lightBackgroundAlertColor),
     iconTheme: IconThemeData(
-      color: _lightIconColor,
-    ),
+        // color: _lightIconColor,
+        ),
     popupMenuTheme: PopupMenuThemeData(color: _lightBackgroundAppBarColor),
     textTheme: _lightTextTheme,
     buttonTheme: ButtonThemeData(
@@ -123,7 +129,7 @@ class AppThemes {
             Radius.circular(8.0),
           )),
       enabledBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: _lightBorderColor, width: 1.0),
+        // borderSide: BorderSide(color: _lightBorderColor, width: 1.0),
         borderRadius: BorderRadius.all(Radius.circular(8.0)),
       ),
       focusedBorder: OutlineInputBorder(
@@ -131,11 +137,11 @@ class AppThemes {
         borderRadius: BorderRadius.all(Radius.circular(8.0)),
       ),
       errorBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: _lightBorderErrorColor),
+        // borderSide: BorderSide(color: _lightBorderErrorColor),
         borderRadius: BorderRadius.all(Radius.circular(8.0)),
       ),
       focusedErrorBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: _lightBorderErrorColor),
+        // borderSide: BorderSide(color: _lightBorderErrorColor),
         borderRadius: BorderRadius.all(Radius.circular(8.0)),
       ),
       fillColor: _lightBackgroundSecondaryColor,
@@ -143,20 +149,40 @@ class AppThemes {
     ),
   );
 
-//text theme for dark theme
-  /*static final TextStyle _darkScreenHeadingTextStyle =
-      _lightScreenHeadingTextStyle.copyWith(color: _darkTextColor);
-  static final TextStyle _darkScreenTaskNameTextStyle =
-      _lightScreenTaskNameTextStyle.copyWith(color: _darkTextColor);
-  static final TextStyle _darkScreenTaskDurationTextStyle =
-      _lightScreenTaskDurationTextStyle;
-  static final TextStyle _darkScreenButtonTextStyle = TextStyle(
-      fontSize: 14.0, color: _darkTextColor, fontWeight: FontWeight.w500);
-  static final TextStyle _darkScreenCaptionTextStyle = TextStyle(
-      fontSize: 12.0,
-      color: _darkBackgroundAppBarColor,
-      fontWeight: FontWeight.w100);*/
+  /*
+   * DARK THEME
+   */
 
+  //constants color range for dark theme
+  // static const Color _darkPrimaryColor = dodgerBlue;
+
+  // //Background Colors
+  // static const Color _darkBackgroundColor = ebonyClay;
+  // static const Color _darkBackgroundAppBarColor = _darkPrimaryColor;
+  // static const Color _darkBackgroundSecondaryColor =
+  //     Color.fromRGBO(0, 0, 0, .6);
+  // static const Color _darkBackgroundAlertColor = Colors.black;
+  // static const Color _darkBackgroundErrorColor =
+  //     Color.fromRGBO(255, 97, 136, 1);
+  // static const Color _darkBackgroundSuccessColor =
+  //     Color.fromRGBO(186, 215, 97, 1);
+
+  // //Text Colors
+  // static const Color _darkTextColor = Colors.white;
+  // static const Color _darkAlertTextColor = Colors.black;
+  // static const Color _darkTextSecondaryColor = Colors.black;
+
+  // //Border Color
+  // static const Color _darkBorderColor = nevada;
+
+  // //Icon Color
+  // static const Color _darkIconColor = nevada;
+
+  // static const Color _darkInputFillColor = _darkBackgroundSecondaryColor;
+  // static const Color _darkBorderActiveColor = _darkPrimaryColor;
+  // static const Color _darkBorderErrorColor = brinkPink;
+
+  /*
   static final TextTheme _darkTextTheme = TextTheme(
     headline1: TextStyle(fontSize: 20.0, color: _darkTextColor),
     bodyText1: TextStyle(fontSize: 16.0, color: _darkTextColor),
@@ -233,4 +259,5 @@ class AppThemes {
       //focusColor: _darkBorderActiveColor,
     ),
   );
+  */
 }

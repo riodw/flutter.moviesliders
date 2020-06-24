@@ -4,17 +4,20 @@ import 'package:flutter_moviesliders/views/views.dart';
 class Routes {
   Routes._(); //this is to prevent anyone from instantiating this object
   static const String signin = '/signin';
-  // static const String signup = '/signup';
-  static const String home = '/home';
-  static const String settings = '/settings';
-  // static const String resetPassword = '/reset-password';
-  static const String updateProfile = '/update-profile';
+  static const String myMovies = '/my_movies';
+  static const String movieReview = '/movie_review';
+  static const String chart = '/chart';
+  static const String sliders = '/sliders';
+  // static const String searchMovies = '/search_movies';
+  // static const String settings = '/settings';
 
   static final routes = <String, WidgetBuilder>{
-    signin: (BuildContext context) => SignInView(),
-    // signup: (BuildContext context) => SignUpUI(),
-    // settings: (BuildContext context) => SettingsUI(),
-    // resetPassword: (BuildContext context) => ResetPasswordUI(),
-    // updateProfile: (BuildContext context) => UpdateProfileUI(),
+    signin: (context) => SignInView(),
+    myMovies: (context) => MyMoviesView(),
+    movieReview: (context) => MovieReviewView(),
+    chart: (context) => ChartView(),
+    sliders: (context) => SlidersView(),
+    // searchMovies: ( context) => SearchMoviesView(),
+    // settings: ( context) => SettingsUI(),
   };
 }

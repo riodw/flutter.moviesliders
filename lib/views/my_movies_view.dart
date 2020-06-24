@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_moviesliders/services/auth_service.dart';
-// charts
-import 'package:charts_flutter/flutter.dart' as charts;
 // - auth
 import 'package:flutter_moviesliders/services/auth_service.dart';
-import 'package:flutter_moviesliders/widgets/provider_widget.dart';
 
 /* Comparison from episode to episode
 https://google.github.io/charts/flutter/example/scatter_plot_charts/comparison_points
@@ -57,7 +53,7 @@ class _MyMoviesState extends State<MyMoviesView> {
                         try {
                           AuthService _auth = AuthService();
                           await _auth.signOut();
-                          Navigator.pop(context);
+                          Navigator.of(context).pushNamed('/signin');
                         } catch (e) {
                           print(e);
                         }
@@ -120,10 +116,11 @@ class _MyMoviesState extends State<MyMoviesView> {
                     )),
                 Column(children: <Widget>[
                   Text(
-                    'Move Sliders',
-                    style: Theme.of(context).textTheme.headline4,
+                    'Movie Sliders',
+                    style: Theme.of(context).textTheme.headline1,
                   ),
-                  Text('Data Driven Movie Reviews')
+                  Text('Data Driven Movie Reviews',
+                      style: Theme.of(context).textTheme.bodyText1)
                 ])
               ])),
           Divider(
@@ -139,11 +136,10 @@ class _MyMoviesState extends State<MyMoviesView> {
             child: ButtonTheme(
               minWidth: 320.0,
               height: 40.0,
-              child:
-                  // GoogleSignInButton(onPressed: () {})
-                  RaisedButton(
-                onPressed: () async {
-                  Navigator.pushNamed(context, '/movie_review');
+              child: RaisedButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/sliders',
+                      arguments: 'this is a test');
                 },
                 textColor: Colors.white,
                 color: Colors.blueAccent,
@@ -169,70 +165,73 @@ class _MyMoviesState extends State<MyMoviesView> {
             indent: 0,
             endIndent: 0,
           ),
-          Container(
-              margin: EdgeInsets.symmetric(horizontal: 15.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.only(bottom: 10.0),
-                    color: Colors.grey[400],
-                    height: 170.0,
-                  ),
-                  Text(
-                    'Altered Carbon: Season 1 Episode 5 (The Wrong Man)',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 22.0,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 5.0),
-                  Text(
-                    '2017 - Rating 6.9',
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                      color: Colors.grey[600],
-                      fontSize: 18.0,
-                    ),
-                  ),
-                  SizedBox(height: 10.0),
-                  Row(children: <Widget>[
-                    Container(
-                      decoration: BoxDecoration(
-                          color: Colors.blue,
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(40.0))),
-                      width: 34.0,
-                      height: 34.0,
-                      margin: EdgeInsets.only(right: 10.0),
-                      child: Center(
-                          child: Text('RW',
-                              style: TextStyle(
-                                color: Colors.white,
-                              ))),
-                    ),
-                    Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            'Rio Weber',
-                            style: Theme.of(context).textTheme.bodyText1,
+          Column(
+            children: <Widget>[
+              GestureDetector(
+                child: Container(
+                    margin: EdgeInsets.symmetric(horizontal: 15.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          margin: EdgeInsets.only(bottom: 10.0),
+                          color: Colors.grey[400],
+                          height: 170.0,
+                        ),
+                        Text(
+                          'Altered Carbon: Season 1 Episode 5 (The Wrong Man)',
+                          style: Theme.of(context).textTheme.headline3,
+                        ),
+                        SizedBox(height: 5.0),
+                        Text(
+                          '2017 - Rating 6.9',
+                          textAlign: TextAlign.left,
+                          style: Theme.of(context).textTheme.headline4,
+                        ),
+                        SizedBox(height: 10.0),
+                        Row(children: <Widget>[
+                          Container(
+                            decoration: BoxDecoration(
+                                color: Colors.blue,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(40.0))),
+                            width: 34.0,
+                            height: 34.0,
+                            margin: EdgeInsets.only(right: 10.0),
+                            child: Center(
+                                child: Text('RW',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                    ))),
                           ),
-                          Text(
-                            '22 Mar 2018 - asdf',
-                            style: Theme.of(context).textTheme.bodyText2,
-                          )
-                        ])
-                  ]),
-                  Divider(
-                    color: Colors.grey[300],
-                    height: 25,
-                    thickness: 1,
-                    indent: 15,
-                    endIndent: 15,
-                  ),
-                ],
-              )),
+                          Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  'Rio Weber',
+                                  style: Theme.of(context).textTheme.bodyText1,
+                                ),
+                                Text(
+                                  '22 Mar 2018 - asdf',
+                                  style: Theme.of(context).textTheme.bodyText2,
+                                )
+                              ])
+                        ]),
+                        Divider(
+                          color: Colors.grey[300],
+                          height: 35,
+                          thickness: 1,
+                          indent: 15,
+                          endIndent: 15,
+                        ),
+                      ],
+                    )),
+                onTap: () {
+                  Navigator.pushNamed(context, '/movie_review');
+                },
+              )
+            ],
+          ),
         ])),
       ),
     );

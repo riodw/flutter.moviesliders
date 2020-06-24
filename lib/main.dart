@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
-//
+// pubs
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
           // project
           routes: Routes.routes,
           theme: AppThemes.lightTheme,
-          darkTheme: AppThemes.darkTheme,
+          // darkTheme: AppThemes.darkTheme,
           themeMode:
               themeProviderRef.isDarkModeOn ? ThemeMode.dark : ThemeMode.light,
           home:

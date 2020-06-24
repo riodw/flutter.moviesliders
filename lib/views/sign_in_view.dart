@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 // - auth
 import 'package:flutter_moviesliders/services/auth_service.dart';
-// import 'package:flutter_moviesliders/widgets/provider_widget.dart';
 
 class SignInView extends StatefulWidget {
   _SignInViewState createState() => _SignInViewState();
@@ -205,8 +204,21 @@ class _SignInViewState extends State<SignInView> {
                         textAlign: TextAlign.center,
                       ),
                     ),
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/signup');
+                    onPressed: () async {
+                      AuthService _auth = AuthService();
+                      bool status =
+                          await _auth.signInAnonymously().then((status) {
+                        setState(() {
+                          _loading = false;
+                        });
+                        return status != null;
+                      });
+                      if (!status) {
+                        print('Could not log in');
+                        // _scaffoldKey.currentState.showSnackBar(SnackBar(
+                        //   content: Text(labels.auth.signInError),
+                        // ));
+                      }
                     },
                   ),
                 ),

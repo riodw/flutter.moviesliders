@@ -63,7 +63,7 @@ List getRatings() {
 }
 
 class SlidersView extends StatefulWidget {
-  SlidersView({Key key, @required this.title}) : super(key: key);
+  SlidersView({Key key, this.title: 'this'}) : super(key: key);
 
   final String title;
 
@@ -108,9 +108,12 @@ class _SlidersViewState extends State<SlidersView> {
 
   @override
   Widget build(BuildContext context) {
+    // https://flutter.dev/docs/cookbook/navigation/navigate-with-arguments
+    final String title = ModalRoute.of(context).settings.arguments;
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(title),
         actions: <Widget>[
           // action buttons
           IconButton(
