@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-// import 'package:flutter/foundation.dart';
+import 'package:provider/provider.dart';
+// project
+import 'package:flutter_moviesliders/services/services.dart';
 
 final double minimumRating = 2;
 final double maximumRating = 100;
@@ -72,33 +73,18 @@ class SlidersView extends StatefulWidget {
 }
 
 class _SlidersViewState extends State<SlidersView> {
-  bool _darkMode = false;
   bool _paused = true;
   // ratings
   final List ratings = getRatings();
 
-  @override
-  void initState() {
-    super.initState();
-    _loadDarkMode();
-  }
-
-  // darkMode - Loading darkMode value on start
-  _loadDarkMode() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _darkMode = (prefs.getBool('darkMode') ?? false);
-    });
-  }
-
-  // darkMode - Incrementing counter after click
-  _flipDarkMode() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _darkMode = !(prefs.getBool('darkMode') ?? false);
-      prefs.setBool('darkMode', _darkMode);
-    });
-  }
+  /*
+   * HOW TO INIT RUN 
+   */
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   // _loadDarkMode();
+  // }
 
   void _pause() {
     setState(() {
@@ -109,6 +95,7 @@ class _SlidersViewState extends State<SlidersView> {
   @override
   Widget build(BuildContext context) {
     // https://flutter.dev/docs/cookbook/navigation/navigate-with-arguments
+    final themeProvider = Provider.of<ThemeProvider>(context);
     final String title = ModalRoute.of(context).settings.arguments;
 
     return Scaffold(
@@ -117,10 +104,14 @@ class _SlidersViewState extends State<SlidersView> {
         actions: <Widget>[
           // action buttons
           IconButton(
-            icon: _darkMode
+            icon: themeProvider.isDarkModeOn
                 ? Icon(Icons.brightness_low)
                 : Icon(Icons.brightness_high),
-            onPressed: _flipDarkMode,
+            onPressed: () {
+              var theme = themeProvider.isDarkModeOn ? 'light' : 'dark';
+              Provider.of<ThemeProvider>(context, listen: false)
+                  .updateTheme(theme);
+            },
           ),
         ],
       ),

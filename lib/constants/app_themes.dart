@@ -12,6 +12,9 @@ import 'package:flutter/material.dart';
 class AppThemes {
   AppThemes._();
 
+  /*
+   * FONT 
+   */
   static const String font1 = "Hind";
   // static String font1 = "ProductSans";
   static const String font2 = "Georgia";
@@ -22,7 +25,7 @@ class AppThemes {
   // static const Color brinkPink = Color.fromRGBO(255, 97, 136, 1);
   // static const Color juneBud = Color.fromRGBO(186, 215, 97, 1);
   // static const Color nevada = Color.fromRGBO(105, 109, 119, 1);
-  // static const Color ebonyClay = Color.fromRGBO(40, 42, 58, 1);
+  static const Color ebonyClay = Color.fromRGBO(40, 42, 58, 1);
 
   /*
    * LIGHT THEME
@@ -156,35 +159,34 @@ class AppThemes {
    */
 
   //constants color range for dark theme
-  // static const Color _darkPrimaryColor = dodgerBlue;
+  static const Color _darkPrimaryColor = Colors.blueGrey;
 
-  // //Background Colors
-  // static const Color _darkBackgroundColor = ebonyClay;
-  // static const Color _darkBackgroundAppBarColor = _darkPrimaryColor;
-  // static const Color _darkBackgroundSecondaryColor =
-  //     Color.fromRGBO(0, 0, 0, .6);
-  // static const Color _darkBackgroundAlertColor = Colors.black;
-  // static const Color _darkBackgroundErrorColor =
-  //     Color.fromRGBO(255, 97, 136, 1);
-  // static const Color _darkBackgroundSuccessColor =
-  //     Color.fromRGBO(186, 215, 97, 1);
+  //Background Colors
+  static const Color _darkBackgroundColor = ebonyClay;
+  static const Color _darkBackgroundAppBarColor = _darkPrimaryColor;
+  static const Color _darkBackgroundSecondaryColor =
+      Color.fromRGBO(0, 0, 0, .6);
+  static const Color _darkBackgroundAlertColor = Colors.black;
+  static const Color _darkBackgroundErrorColor =
+      Color.fromRGBO(255, 97, 136, 1);
+  static const Color _darkBackgroundSuccessColor =
+      Color.fromRGBO(186, 215, 97, 1);
 
-  // //Text Colors
-  // static const Color _darkTextColor = Colors.white;
-  // static const Color _darkAlertTextColor = Colors.black;
-  // static const Color _darkTextSecondaryColor = Colors.black;
+  // Text Colors
+  static const Color _darkTextColor = Colors.white;
+  static const Color _darkAlertTextColor = Colors.black;
+  static const Color _darkTextSecondaryColor = Colors.black;
 
-  // //Border Color
+  // Border Color
   // static const Color _darkBorderColor = nevada;
 
-  // //Icon Color
-  // static const Color _darkIconColor = nevada;
+  // Icon Color
+  static const Color _darkIconColor = Colors.white;
 
-  // static const Color _darkInputFillColor = _darkBackgroundSecondaryColor;
-  // static const Color _darkBorderActiveColor = _darkPrimaryColor;
+  static const Color _darkInputFillColor = _darkBackgroundSecondaryColor;
+  static const Color _darkBorderActiveColor = _darkPrimaryColor;
   // static const Color _darkBorderErrorColor = brinkPink;
 
-  /*
   static final TextTheme _darkTextTheme = TextTheme(
     headline1: TextStyle(fontSize: 20.0, color: _darkTextColor),
     bodyText1: TextStyle(fontSize: 16.0, color: _darkTextColor),
@@ -196,7 +198,6 @@ class AppThemes {
     caption: TextStyle(fontSize: 12.0, color: _darkBackgroundAppBarColor),
   );
 
-  //the dark theme
   static final ThemeData darkTheme = ThemeData(
     brightness: Brightness.dark,
     //primarySwatch: _darkPrimaryColor, //cant be Color on MaterialColor so it can compute different shades.
@@ -242,24 +243,23 @@ class AppThemes {
             Radius.circular(8.0),
           )),
       enabledBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: _darkBorderColor, width: 1.0),
+        // borderSide: BorderSide(color: _darkBorderColor, width: 1.0),
         borderRadius: BorderRadius.all(Radius.circular(8.0)),
       ),
       focusedBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: _darkBorderActiveColor),
+        // borderSide: BorderSide(color: _darkBorderActiveColor),
         borderRadius: BorderRadius.all(Radius.circular(8.0)),
       ),
       errorBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: _darkBorderErrorColor),
+        // borderSide: BorderSide(color: _darkBorderErrorColor),
         borderRadius: BorderRadius.all(Radius.circular(8.0)),
       ),
       focusedErrorBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: _darkBorderErrorColor),
+        // borderSide: BorderSide(color: _darkBorderErrorColor),
         borderRadius: BorderRadius.all(Radius.circular(8.0)),
       ),
       fillColor: _darkInputFillColor,
       //focusColor: _darkBorderActiveColor,
     ),
   );
-  */
 }

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
+// project
+import 'package:flutter_moviesliders/services/services.dart';
 // - auth
 import 'package:flutter_moviesliders/services/auth_service.dart';
 
@@ -17,10 +20,22 @@ class MyMoviesView extends StatefulWidget {
 class _MyMoviesState extends State<MyMoviesView> {
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Rated Movies'),
+        title: Text('My Rated Movies'),
         actions: <Widget>[
+          IconButton(
+            icon: themeProvider.isDarkModeOn
+                ? Icon(Icons.brightness_low)
+                : Icon(Icons.brightness_high),
+            onPressed: () {
+              var theme = themeProvider.isDarkModeOn ? 'light' : 'dark';
+              Provider.of<ThemeProvider>(context, listen: false)
+                  .updateTheme(theme);
+            },
+          ),
           // action buttons
           IconButton(
             icon: Icon(Icons.more_vert),
@@ -49,14 +64,10 @@ class _MyMoviesState extends State<MyMoviesView> {
                     ),
                     CupertinoActionSheetAction(
                       child: Text('Log Out'),
-                      onPressed: () async {
-                        try {
-                          AuthService _auth = AuthService();
-                          await _auth.signOut();
-                          Navigator.of(context).pushNamed('/signin');
-                        } catch (e) {
-                          print(e);
-                        }
+                      onPressed: () {
+                        AuthService _auth = AuthService();
+                        _auth.signOut();
+                        Navigator.of(context).pushNamed('/signin');
                       },
                     ),
                   ],

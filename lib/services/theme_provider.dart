@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_moviesliders/store/store.dart';
 
+// flutter_firebase_auth_starter/lib/ui/settings_ui.dart - For how to toggle (System, Light, Dark) theme
+/*
+ * system
+ * light
+ * dark 
+ */
+
 class ThemeProvider extends ChangeNotifier {
   // shared pref object
   SharedPreferenceHelper _sharedPrefsHelper;
