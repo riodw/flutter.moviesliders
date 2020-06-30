@@ -159,7 +159,7 @@ class AppThemes {
    */
 
   //constants color range for dark theme
-  static const Color _darkPrimaryColor = Colors.blueGrey;
+  static Color _darkPrimaryColor = Colors.blueGrey;
 
   //Background Colors
   static const Color _darkBackgroundColor = ebonyClay;
@@ -188,23 +188,44 @@ class AppThemes {
   // static const Color _darkBorderErrorColor = brinkPink;
 
   static final TextTheme _darkTextTheme = TextTheme(
-    headline1: TextStyle(fontSize: 20.0, color: _darkTextColor),
-    bodyText1: TextStyle(fontSize: 16.0, color: _darkTextColor),
-    bodyText2: TextStyle(fontSize: 14.0, color: Colors.grey),
+    headline1: TextStyle(
+        fontSize: 30.0,
+        color: _darkTextColor,
+        fontWeight: FontWeight.normal,
+        fontFamily: font1),
+    headline2: TextStyle(
+        fontSize: 30.0,
+        color: _darkTextColor,
+        fontWeight: FontWeight.bold,
+        fontFamily: font2),
+    headline3: TextStyle(
+        fontSize: 22.0,
+        color: _darkTextColor,
+        fontWeight: FontWeight.bold,
+        fontFamily: font1),
+    headline4: TextStyle(fontSize: 18.0, color: Colors.grey, fontFamily: font1),
+    // headline5: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold, color: _darkTextColor),
+    // headline6: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold, color: _darkTextColor),
+    bodyText1:
+        TextStyle(fontSize: 14.0, color: _darkTextColor, fontFamily: font1),
+    bodyText2: TextStyle(fontSize: 12.0, color: Colors.grey, fontFamily: font1),
+
     button: TextStyle(
-        fontSize: 15.0, color: _darkTextColor, fontWeight: FontWeight.w600),
-    headline6: TextStyle(fontSize: 16.0, color: _darkTextColor),
-    subtitle1: TextStyle(fontSize: 16.0, color: _darkTextColor),
-    caption: TextStyle(fontSize: 12.0, color: _darkBackgroundAppBarColor),
+        fontSize: 16.0,
+        color: _darkTextColor,
+        // fontWeight: FontWeight.w600,
+        fontFamily: font1),
+    // subtitle1: TextStyle(fontSize: 16.0, color: _darkTextColor),
+    // caption: TextStyle(fontSize: 12.0, color: _darkBackgroundAppBarColor),
   );
 
   static final ThemeData darkTheme = ThemeData(
     brightness: Brightness.dark,
-    //primarySwatch: _darkPrimaryColor, //cant be Color on MaterialColor so it can compute different shades.
-    accentColor: _darkPrimaryColor, //prefix icon color form input on focus
-
     fontFamily: font1,
     scaffoldBackgroundColor: _darkBackgroundColor,
+    //primarySwatch: _darkPrimaryColor, //cant be Color on MaterialColor so it can compute different shades.
+    // accentColor: _darkPrimaryColor, //prefix icon color form input on focus
+
     floatingActionButtonTheme: FloatingActionButtonThemeData(
       backgroundColor: _darkPrimaryColor,
     ),
