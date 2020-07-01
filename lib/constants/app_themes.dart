@@ -36,7 +36,6 @@ class AppThemes {
 
   //Background Colors
   static const Color _lightBackgroundColor = whiteLilac;
-  static const Color _lightBackgroundAppBarColor = _lightPrimaryColor;
   static const Color _lightBackgroundSecondaryColor = Colors.white;
   static const Color _lightBackgroundAlertColor = blackPearl;
   // static const Color _lightBackgroundErrorColor = Colors.red;
@@ -55,7 +54,6 @@ class AppThemes {
 
   //form input colors
   // static const Color _lightInputFillColor = _lightBackgroundSecondaryColor;
-  static const Color _lightBorderActiveColor = _lightPrimaryColor;
   // static const Color _lightBorderErrorColor = brinkPink;
 
   //text theme for light theme
@@ -90,7 +88,7 @@ class AppThemes {
         // fontWeight: FontWeight.w600,
         fontFamily: font1),
     // subtitle1: TextStyle(fontSize: 16.0, color: _lightTextColor),
-    // caption: TextStyle(fontSize: 12.0, color: _lightBackgroundAppBarColor),
+    // caption: TextStyle(fontSize: 12.0, color: _lightPrimaryColor),
   );
 
   //the light theme
@@ -102,7 +100,7 @@ class AppThemes {
       backgroundColor: _lightPrimaryColor,
     ),
     appBarTheme: AppBarTheme(
-      color: _lightBackgroundAppBarColor,
+      color: _lightPrimaryColor,
       // iconTheme: IconThemeData(color: _lightTextColor),
       // textTheme: _lightTextTheme,
     ),
@@ -111,12 +109,12 @@ class AppThemes {
       primaryVariant: _lightBackgroundColor,
       secondary: _lightSecondaryColor,
     ),
-    snackBarTheme:
-        SnackBarThemeData(backgroundColor: _lightBackgroundAlertColor),
-    iconTheme: IconThemeData(
-        // color: _lightIconColor,
-        ),
-    popupMenuTheme: PopupMenuThemeData(color: _lightBackgroundAppBarColor),
+    // snackBarTheme:
+    //     SnackBarThemeData(backgroundColor: _lightBackgroundAlertColor),
+    // iconTheme: IconThemeData(
+    //     color: _lightIconColor,
+    //     ),
+    // popupMenuTheme: PopupMenuThemeData(color: _lightPrimaryColor),
     textTheme: _lightTextTheme,
     buttonTheme: ButtonThemeData(
         shape: RoundedRectangleBorder(
@@ -125,33 +123,33 @@ class AppThemes {
         buttonColor: _lightPrimaryColor,
         textTheme: ButtonTextTheme.primary),
     buttonColor: _lightPrimaryColor,
-    unselectedWidgetColor: _lightPrimaryColor,
-    inputDecorationTheme: InputDecorationTheme(
-      //prefixStyle: TextStyle(color: _lightIconColor),
-      border: OutlineInputBorder(
-          borderSide: BorderSide(width: 1.0),
-          borderRadius: BorderRadius.all(
-            Radius.circular(8.0),
-          )),
-      enabledBorder: OutlineInputBorder(
-        // borderSide: BorderSide(color: _lightBorderColor, width: 1.0),
-        borderRadius: BorderRadius.all(Radius.circular(8.0)),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: _lightBorderActiveColor),
-        borderRadius: BorderRadius.all(Radius.circular(8.0)),
-      ),
-      errorBorder: OutlineInputBorder(
-        // borderSide: BorderSide(color: _lightBorderErrorColor),
-        borderRadius: BorderRadius.all(Radius.circular(8.0)),
-      ),
-      focusedErrorBorder: OutlineInputBorder(
-        // borderSide: BorderSide(color: _lightBorderErrorColor),
-        borderRadius: BorderRadius.all(Radius.circular(8.0)),
-      ),
-      fillColor: _lightBackgroundSecondaryColor,
-      //focusColor: _lightBorderActiveColor,
-    ),
+    // unselectedWidgetColor: _lightPrimaryColor,
+    // inputDecorationTheme: InputDecorationTheme(
+    //   //prefixStyle: TextStyle(color: _lightIconColor),
+    //   // border: OutlineInputBorder(
+    //   //     borderSide: BorderSide(width: 1.0),
+    //   //     borderRadius: BorderRadius.all(
+    //   //       Radius.circular(8.0),
+    //   //     )),
+    //   // enabledBorder: OutlineInputBorder(
+    //   //   // borderSide: BorderSide(color: _lightBorderColor, width: 1.0),
+    //   //   borderRadius: BorderRadius.all(Radius.circular(8.0)),
+    //   // ),
+    //   // focusedBorder: OutlineInputBorder(
+    //   //   borderSide: BorderSide(color: _lightBackgroundSecondaryColor),
+    //   //   borderRadius: BorderRadius.all(Radius.circular(8.0)),
+    //   // ),
+    //   // errorBorder: OutlineInputBorder(
+    //   //   // borderSide: BorderSide(color: _lightBorderErrorColor),
+    //   //   borderRadius: BorderRadius.all(Radius.circular(8.0)),
+    //   // ),
+    //   // focusedErrorBorder: OutlineInputBorder(
+    //   //   // borderSide: BorderSide(color: _lightBorderErrorColor),
+    //   //   borderRadius: BorderRadius.all(Radius.circular(8.0)),
+    //   // ),
+    //   fillColor: _lightPrimaryColor,
+    //   //focusColor: _lightPrimaryColor,
+    // ),
   );
 
   /*
@@ -159,7 +157,7 @@ class AppThemes {
    */
 
   //constants color range for dark theme
-  static Color _darkPrimaryColor = Colors.blueGrey;
+  static const Color _darkPrimaryColor = Colors.blueGrey;
 
   //Background Colors
   static const Color _darkBackgroundColor = ebonyClay;
@@ -255,32 +253,32 @@ class AppThemes {
         buttonColor: _darkPrimaryColor,
         textTheme: ButtonTextTheme.primary),
     unselectedWidgetColor: _darkPrimaryColor,
-    inputDecorationTheme: InputDecorationTheme(
-      prefixStyle: TextStyle(color: _darkIconColor),
-      //labelStyle: TextStyle(color: nevada),
-      border: OutlineInputBorder(
-          borderSide: BorderSide(width: 1.0),
-          borderRadius: BorderRadius.all(
-            Radius.circular(8.0),
-          )),
-      enabledBorder: OutlineInputBorder(
-        // borderSide: BorderSide(color: _darkBorderColor, width: 1.0),
-        borderRadius: BorderRadius.all(Radius.circular(8.0)),
-      ),
-      focusedBorder: OutlineInputBorder(
-        // borderSide: BorderSide(color: _darkBorderActiveColor),
-        borderRadius: BorderRadius.all(Radius.circular(8.0)),
-      ),
-      errorBorder: OutlineInputBorder(
-        // borderSide: BorderSide(color: _darkBorderErrorColor),
-        borderRadius: BorderRadius.all(Radius.circular(8.0)),
-      ),
-      focusedErrorBorder: OutlineInputBorder(
-        // borderSide: BorderSide(color: _darkBorderErrorColor),
-        borderRadius: BorderRadius.all(Radius.circular(8.0)),
-      ),
-      fillColor: _darkInputFillColor,
-      //focusColor: _darkBorderActiveColor,
-    ),
+    // inputDecorationTheme: InputDecorationTheme(
+    //   prefixStyle: TextStyle(color: _darkIconColor),
+    //   //labelStyle: TextStyle(color: nevada),
+    //   border: OutlineInputBorder(
+    //       borderSide: BorderSide(width: 1.0),
+    //       borderRadius: BorderRadius.all(
+    //         Radius.circular(8.0),
+    //       )),
+    //   enabledBorder: OutlineInputBorder(
+    //     // borderSide: BorderSide(color: _darkBorderColor, width: 1.0),
+    //     borderRadius: BorderRadius.all(Radius.circular(8.0)),
+    //   ),
+    //   focusedBorder: OutlineInputBorder(
+    //     // borderSide: BorderSide(color: _darkBorderActiveColor),
+    //     borderRadius: BorderRadius.all(Radius.circular(8.0)),
+    //   ),
+    //   errorBorder: OutlineInputBorder(
+    //     // borderSide: BorderSide(color: _darkBorderErrorColor),
+    //     borderRadius: BorderRadius.all(Radius.circular(8.0)),
+    //   ),
+    //   focusedErrorBorder: OutlineInputBorder(
+    //     // borderSide: BorderSide(color: _darkBorderErrorColor),
+    //     borderRadius: BorderRadius.all(Radius.circular(8.0)),
+    //   ),
+    //   fillColor: _darkInputFillColor,
+    //   //focusColor: _darkBorderActiveColor,
+    // ),
   );
 }

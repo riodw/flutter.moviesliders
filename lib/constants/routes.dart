@@ -8,7 +8,6 @@ class Routes {
   static const String movieReview = '/movie_review';
   static const String chart = '/chart';
   static const String sliders = '/sliders';
-  // static const String searchMovies = '/search_movies';
   // static const String settings = '/settings';
 
   static final routes = <String, WidgetBuilder>{
@@ -17,7 +16,6 @@ class Routes {
     movieReview: (context) => MovieReviewView(),
     chart: (context) => ChartView(),
     sliders: (context) => SlidersView(),
-    // searchMovies: ( context) => SearchMoviesView(),
     // settings: ( context) => SettingsUI(),
   };
 }

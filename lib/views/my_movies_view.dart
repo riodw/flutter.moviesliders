@@ -148,10 +148,6 @@ class _MyMoviesState extends State<MyMoviesView> {
               minWidth: 320.0,
               height: 40.0,
               child: RaisedButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/sliders',
-                      arguments: 'this is a test');
-                },
                 // textColor: Colors.white,
                 color: Colors.blueAccent,
                 shape: RoundedRectangleBorder(
@@ -163,6 +159,13 @@ class _MyMoviesState extends State<MyMoviesView> {
                     textAlign: TextAlign.center,
                   ),
                 ),
+                onPressed: () {
+                  showSearch(
+                    context: context,
+                    delegate: MovieSearch(),
+                  );
+                  // Navigator.pushNamed(context, '/search_movies');
+                },
               ),
             ),
           ),
@@ -243,5 +246,75 @@ class _MyMoviesState extends State<MyMoviesView> {
         ])),
       ),
     );
+  }
+}
+
+class MovieSearch extends SearchDelegate {
+  @override
+  String get searchFieldLabel => 'Search Movies';
+
+  @override
+  ThemeData appBarTheme(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    return theme.copyWith(
+      primaryColor: theme.primaryColor,
+      primaryIconTheme: theme.primaryIconTheme,
+      primaryColorBrightness: theme.primaryColorBrightness,
+      primaryTextTheme: theme.textTheme,
+    );
+  }
+
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    return [
+      IconButton(
+        icon: Icon(Icons.clear),
+        onPressed: () {
+          query = '';
+        },
+      ),
+    ];
+  }
+
+  @override
+  Widget buildLeading(BuildContext context) {
+    return IconButton(
+      icon: Icon(Icons.arrow_back),
+      onPressed: () {
+        close(context, null);
+      },
+    );
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    print('build Results');
+    return null;
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    // This method is called everytime the search term changes.
+    // If you want to add search suggestions as the user enters their search term, this is the place to do that.
+    print('build Suggestions');
+    return SafeArea(
+        child: Column(
+      children: <Widget>[
+        Text('hi'),
+        Text('hi'),
+        Text('hi'),
+        Text('hi'),
+        Text('hi'),
+        Text('hi'),
+        Text('hi'),
+        Text('hi'),
+        Text('hi'),
+        Text('hi'),
+        Text('hi'),
+        Text('hi'),
+        Text('hi'),
+        Text('hi'),
+      ],
+    ));
   }
 }

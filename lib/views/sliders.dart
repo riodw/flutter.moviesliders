@@ -7,6 +7,9 @@ import 'package:flutter_moviesliders/services/services.dart';
 final double minimumRating = 2;
 final double maximumRating = 100;
 
+// Navigator.pushNamed(context, '/sliders',
+//     arguments: 'this is a test');
+
 List raw_ratings = [
   {
     'name': 'Interest',
