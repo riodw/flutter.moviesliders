@@ -1,10 +1,13 @@
+import 'dart:convert';
+// packages
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
 // project
-import 'package:flutter_moviesliders/services/services.dart';
 // - auth
 import 'package:flutter_moviesliders/services/auth_service.dart';
+import 'package:flutter_moviesliders/services/services.dart';
 
 /* Comparison from episode to episode
 https://google.github.io/charts/flutter/example/scatter_plot_charts/comparison_points
@@ -250,6 +253,45 @@ class _MyMoviesState extends State<MyMoviesView> {
 }
 
 class MovieSearch extends SearchDelegate {
+  // FIND MOVIES
+  /*
+   * https://www.omdbapi.com/
+   * https://www.themoviedb.org/?language=en-US
+   * https://stackoverflow.com/questions/1966503/does-imdb-provide-an-api
+   * 
+   * Get movie details
+   * https://sg.media-imdb.com/suggests/a/aa.json
+   * http://www.omdbapi.com/?i=tt3896198&apikey=cf1629a0
+   */
+
+  static final String imdbUrl = "https://sg.media-imdb.com/suggests/";
+
+  Future<String> fetchAlbum(String query) async {
+    // print(query?.substring(0, 1));
+    final urlSearch = imdbUrl + query.substring(0, 1) + "/" + query + ".json";
+    // print(urlSearch);
+    final response = await http.get(urlSearch);
+
+    // print(response.statusCode);
+    // print(response.body);
+
+    var imdbJson = response.body;
+
+    imdbJson =
+        imdbJson.substring(imdbJson.indexOf("(") + 1, imdbJson.length - 1);
+    var imdb = json.decode(imdbJson);
+
+    // print(imdb['d']);
+
+    for (var word in imdb['d']) {
+      if (word['q'] != null && word['q'] == "feature") {
+        print(word['l'] + ', ' + word['y'].toString());
+      }
+    }
+
+    return imdbJson;
+  }
+
   @override
   String get searchFieldLabel => 'Search Movies';
 
@@ -294,9 +336,16 @@ class MovieSearch extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
+    print('\n');
     // This method is called everytime the search term changes.
     // If you want to add search suggestions as the user enters their search term, this is the place to do that.
-    print('build Suggestions');
+    if (query.length > 3) {
+      fetchAlbum(query);
+    } else {
+      return SafeArea(child: Center(child: Text("Search Movies")));
+    }
+
+    // print('build Suggestions');
     return SafeArea(
         child: Column(
       children: <Widget>[
