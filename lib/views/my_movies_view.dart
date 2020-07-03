@@ -87,167 +87,187 @@ class _MyMoviesState extends State<MyMoviesView> {
           ),
         ],
       ),
-      body: Container(
-        child: SafeArea(
-            child: ListView(children: <Widget>[
-          Container(
-              margin: EdgeInsets.only(
-                  top: 20.0, left: 25.0, right: 20.0, bottom: 10.0),
-              child: Row(children: <Widget>[
-                Container(
-                    margin: EdgeInsets.only(right: 20.0),
+      body: SafeArea(
+          child: ListView(children: <Widget>[
+        Container(
+            margin: EdgeInsets.only(
+                top: 20.0, left: 25.0, right: 20.0, bottom: 10.0),
+            child: Row(children: <Widget>[
+              Container(
+                  margin: EdgeInsets.only(right: 20.0),
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey,
+                        blurRadius:
+                            22.0, // has the effect of softening the shadow
+                        spreadRadius:
+                            0, // has the effect of extending the shadow
+                        // offset: Offset(
+                        // 10.0, // horizontal, move right 10
+                        // 10.0, // vertical, move down 10
+                        // ),
+                      )
+                    ],
+                  ),
+                  child: Container(
+                    padding: EdgeInsets.all(5),
                     decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(14),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.grey,
+                          color: Colors.white,
                           blurRadius:
-                              22.0, // has the effect of softening the shadow
+                              0, // has the effect of softening the shadow
                           spreadRadius:
                               0, // has the effect of extending the shadow
-                          // offset: Offset(
-                          // 10.0, // horizontal, move right 10
-                          // 10.0, // vertical, move down 10
-                          // ),
                         )
                       ],
                     ),
-                    child: Container(
-                      padding: EdgeInsets.all(5),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(14),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.white,
-                            blurRadius:
-                                0, // has the effect of softening the shadow
-                            spreadRadius:
-                                0, // has the effect of extending the shadow
-                          )
-                        ],
-                      ),
-                      child: Image.asset('assets/images/moviesliders_icon.png',
-                          width: 60),
-                    )),
-                Column(children: <Widget>[
-                  Text(
-                    'Movie Sliders',
-                    style: Theme.of(context).textTheme.headline1,
-                  ),
-                  Text('Data Driven Movie Reviews',
-                      style: Theme.of(context).textTheme.bodyText1)
-                ])
-              ])),
-          Divider(
-            color: Colors.grey[300],
-            height: 25,
-            thickness: 1,
-            indent: 0,
-            endIndent: 0,
-          ),
-          Container(
-            margin:
-                EdgeInsets.only(top: 0.0, right: 30.0, bottom: 0, left: 30.0),
-            child: ButtonTheme(
-              minWidth: 320.0,
-              height: 40.0,
-              child: RaisedButton(
-                // textColor: Colors.white,
-                color: Colors.blueAccent,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0)),
-                child: Container(
-                  child: Text(
-                    'New Review',
-                    style: Theme.of(context).textTheme.button,
-                    textAlign: TextAlign.center,
-                  ),
+                    child: Image.asset('assets/images/moviesliders_icon.png',
+                        width: 60),
+                  )),
+              Column(children: <Widget>[
+                Text(
+                  'Movie Sliders',
+                  style: Theme.of(context).textTheme.headline1,
                 ),
-                onPressed: () {
-                  showSearch(
-                    context: context,
-                    delegate: MovieSearch(),
-                  );
-                  // Navigator.pushNamed(context, '/search_movies');
-                },
+                Text('Data Driven Movie Reviews',
+                    style: Theme.of(context).textTheme.bodyText1)
+              ])
+            ])),
+        Divider(
+          color: Colors.grey[300],
+          height: 25,
+          thickness: 1,
+          indent: 0,
+          endIndent: 0,
+        ),
+        Container(
+          margin: EdgeInsets.only(top: 0.0, right: 30.0, bottom: 0, left: 30.0),
+          child: ButtonTheme(
+            minWidth: 320.0,
+            height: 40.0,
+            child: RaisedButton(
+              // textColor: Colors.white,
+              color: Colors.blueAccent,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0)),
+              child: Container(
+                child: Text(
+                  'New Review',
+                  style: Theme.of(context).textTheme.button,
+                  textAlign: TextAlign.center,
+                ),
               ),
+              onPressed: () {
+                showSearch(
+                  context: context,
+                  delegate: MovieSearch(),
+                );
+                // Navigator.pushNamed(context, '/search_movies');
+              },
             ),
           ),
-          Divider(
-            color: Colors.grey[300],
-            height: 25,
-            thickness: 1,
-            indent: 0,
-            endIndent: 0,
-          ),
-          Column(
-            children: <Widget>[
-              GestureDetector(
-                child: Container(
-                    margin: EdgeInsets.symmetric(horizontal: 15.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
+        ),
+        Divider(
+          color: Colors.grey[300],
+          height: 25,
+          thickness: 1,
+          indent: 0,
+          endIndent: 0,
+        ),
+        Column(
+          children: <Widget>[
+            GestureDetector(
+              child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 15.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        margin: EdgeInsets.only(bottom: 10.0),
+                        color: Colors.grey[400],
+                        height: 170.0,
+                      ),
+                      Text(
+                        'Altered Carbon: Season 1 Episode 5 (The Wrong Man)',
+                        style: Theme.of(context).textTheme.headline3,
+                      ),
+                      SizedBox(height: 5.0),
+                      Text(
+                        '2017 - Rating 6.9',
+                        textAlign: TextAlign.left,
+                        style: Theme.of(context).textTheme.headline4,
+                      ),
+                      SizedBox(height: 10.0),
+                      Row(children: <Widget>[
                         Container(
-                          margin: EdgeInsets.only(bottom: 10.0),
-                          color: Colors.grey[400],
-                          height: 170.0,
+                          decoration: BoxDecoration(
+                              color: Colors.blue,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(40.0))),
+                          width: 34.0,
+                          height: 34.0,
+                          margin: EdgeInsets.only(right: 10.0),
+                          child: Center(
+                              child: Text('RW',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ))),
                         ),
-                        Text(
-                          'Altered Carbon: Season 1 Episode 5 (The Wrong Man)',
-                          style: Theme.of(context).textTheme.headline3,
-                        ),
-                        SizedBox(height: 5.0),
-                        Text(
-                          '2017 - Rating 6.9',
-                          textAlign: TextAlign.left,
-                          style: Theme.of(context).textTheme.headline4,
-                        ),
-                        SizedBox(height: 10.0),
-                        Row(children: <Widget>[
-                          Container(
-                            decoration: BoxDecoration(
-                                color: Colors.blue,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(40.0))),
-                            width: 34.0,
-                            height: 34.0,
-                            margin: EdgeInsets.only(right: 10.0),
-                            child: Center(
-                                child: Text('RW',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                    ))),
-                          ),
-                          Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  'Rio Weber',
-                                  style: Theme.of(context).textTheme.bodyText1,
-                                ),
-                                Text(
-                                  '22 Mar 2018 - asdf',
-                                  style: Theme.of(context).textTheme.bodyText2,
-                                )
-                              ])
-                        ]),
-                        Divider(
-                          color: Colors.grey[300],
-                          height: 35,
-                          thickness: 1,
-                          indent: 15,
-                          endIndent: 15,
-                        ),
-                      ],
-                    )),
-                onTap: () {
-                  Navigator.pushNamed(context, '/movie_review');
-                },
-              )
-            ],
-          ),
-        ])),
-      ),
+                        Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                'Rio Weber',
+                                style: Theme.of(context).textTheme.bodyText1,
+                              ),
+                              Text(
+                                '22 Mar 2018 - asdf',
+                                style: Theme.of(context).textTheme.bodyText2,
+                              )
+                            ])
+                      ]),
+                      Divider(
+                        color: Colors.grey[300],
+                        height: 35,
+                        thickness: 1,
+                        indent: 15,
+                        endIndent: 15,
+                      ),
+                    ],
+                  )),
+              onTap: () {
+                Navigator.pushNamed(context, '/movie_review');
+              },
+            )
+          ],
+        ),
+      ])),
+    );
+  }
+}
+
+class Suggestion {
+  final String title;
+  final String id;
+  final String staring;
+  final int year;
+  final String type;
+  final media;
+
+  Suggestion(
+      {this.title, this.id, this.staring, this.year, this.type, this.media});
+
+  factory Suggestion.fromJson(Map<String, dynamic> json) {
+    return Suggestion(
+      title: json['l'],
+      id: json['id'],
+      staring: json['s'],
+      year: json['y'],
+      type: json['q'],
+      media: json['i'],
     );
   }
 }
@@ -266,14 +286,13 @@ class MovieSearch extends SearchDelegate {
 
   static final String imdbUrl = "https://sg.media-imdb.com/suggests/";
 
-  Future<String> fetchAlbum(String query) async {
-    // print(query?.substring(0, 1));
+  Future<List<Suggestion>> _fetchAlbum(String query) async {
+    List<Suggestion> suggestions = [];
+
     final urlSearch = imdbUrl + query.substring(0, 1) + "/" + query + ".json";
-    // print(urlSearch);
     final response = await http.get(urlSearch);
 
-    // print(response.statusCode);
-    // print(response.body);
+    if (response.statusCode != 200) return [];
 
     var imdbJson = response.body;
 
@@ -281,15 +300,16 @@ class MovieSearch extends SearchDelegate {
         imdbJson.substring(imdbJson.indexOf("(") + 1, imdbJson.length - 1);
     var imdb = json.decode(imdbJson);
 
-    // print(imdb['d']);
-
     for (var word in imdb['d']) {
-      if (word['q'] != null && word['q'] == "feature") {
-        print(word['l'] + ', ' + word['y'].toString());
+      if (word['q'] != null &&
+          word['q'] == "feature" &&
+          word['i'] != null &&
+          word['i'][0] != null) {
+        suggestions.add(Suggestion.fromJson(word));
       }
     }
 
-    return imdbJson;
+    return suggestions;
   }
 
   @override
@@ -336,34 +356,104 @@ class MovieSearch extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    print('\n');
-    // This method is called everytime the search term changes.
-    // If you want to add search suggestions as the user enters their search term, this is the place to do that.
-    if (query.length > 3) {
-      fetchAlbum(query);
-    } else {
-      return SafeArea(child: Center(child: Text("Search Movies")));
+    if (query.length < 4) {
+      return SafeArea(
+          child: Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              "Search Movies",
+              style: Theme.of(context).textTheme.headline1,
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Text("Enter at least three letters"),
+          ],
+        ),
+      ));
     }
 
-    // print('build Suggestions');
+    // https://stackoverflow.com/questions/57250986/the-argument-type-futurewidget-cant-be-assigned-to-the-parameter-type-widg
+    // https://stackoverflow.com/questions/49781657/adjust-gridview-child-height-according-to-the-dynamic-content-in-flutter
+    var suggestions = FutureBuilder<List<Suggestion>>(
+        future: _fetchAlbum(query),
+        builder: (context, AsyncSnapshot<List<Suggestion>> snapshot) {
+          print(snapshot.data.length);
+          if (snapshot.hasError)
+            return Center(
+              child: Text('Error'),
+            );
+          if (snapshot.data.length == 0)
+            return Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    "No Movies To Show",
+                    style: Theme.of(context).textTheme.headline1,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text("Try entering more search characters."),
+                ],
+              ),
+            );
+          return GridView.count(
+            primary: true,
+            // padding: const EdgeInsets.only(b: 20),
+            crossAxisSpacing: 8,
+            mainAxisSpacing: 8,
+            crossAxisCount: 3,
+            childAspectRatio: .52,
+            children: <Widget>[
+              for (Suggestion suggestion in snapshot.data)
+                Container(
+                    child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      height: 180,
+                      decoration: BoxDecoration(
+                          // color: Colors.yellow,
+                          image: DecorationImage(
+                        fit: BoxFit.fitWidth,
+                        alignment: FractionalOffset.topCenter,
+                        image: NetworkImage(
+                          suggestion.media[0],
+                        ),
+                      )),
+                    ),
+                    Text(
+                      suggestion.title,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
+                    Text(
+                      suggestion.year.toString(),
+                      style: Theme.of(context).textTheme.bodyText2,
+                    ),
+                  ],
+                ))
+            ],
+          );
+        });
+
     return SafeArea(
         child: Column(
-      children: <Widget>[
-        Text('hi'),
-        Text('hi'),
-        Text('hi'),
-        Text('hi'),
-        Text('hi'),
-        Text('hi'),
-        Text('hi'),
-        Text('hi'),
-        Text('hi'),
-        Text('hi'),
-        Text('hi'),
-        Text('hi'),
-        Text('hi'),
-        Text('hi'),
-      ],
-    ));
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+          Text(
+            'Movies',
+            textAlign: TextAlign.left,
+            style: Theme.of(context).textTheme.headline6,
+          ),
+          Flexible(child: suggestions),
+        ]));
   }
 }
