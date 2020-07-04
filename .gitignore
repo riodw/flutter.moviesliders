@@ -21,6 +21,7 @@
 #.vscode/
 
 # Flutter/Dart/Pub related
+.me
 **/doc/api/
 .dart_tool/
 .flutter-plugins
@@ -30,7 +31,8 @@
 .pub/
 /build/
 .last_build_id
-
+.metadata
+pubspec.lock
 # Web related
 lib/generated_plugin_registrant.dart
 
