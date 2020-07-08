@@ -292,7 +292,7 @@ class MovieSearch extends SearchDelegate {
     final urlSearch = imdbUrl + query.substring(0, 1) + "/" + query + ".json";
     final response = await http.get(urlSearch);
 
-    if (response.statusCode != 200) return [];
+    if (response.statusCode != 200) return suggestions;
 
     var imdbJson = response.body;
 
@@ -381,12 +381,11 @@ class MovieSearch extends SearchDelegate {
     var suggestions = FutureBuilder<List<Suggestion>>(
         future: _fetchAlbum(query),
         builder: (context, AsyncSnapshot<List<Suggestion>> snapshot) {
-          print(snapshot.data.length);
-          if (snapshot.hasError)
+          if (snapshot.hasError || snapshot.data == null)
             return Center(
               child: Text('Error'),
             );
-          if (snapshot.data.length == 0)
+          if (snapshot.data == null || snapshot.data.length == 0)
             return Center(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -412,34 +411,39 @@ class MovieSearch extends SearchDelegate {
             childAspectRatio: .52,
             children: <Widget>[
               for (Suggestion suggestion in snapshot.data)
-                Container(
-                    child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Container(
-                      height: 180,
-                      decoration: BoxDecoration(
-                          // color: Colors.yellow,
-                          image: DecorationImage(
-                        fit: BoxFit.fitWidth,
-                        alignment: FractionalOffset.topCenter,
-                        image: NetworkImage(
-                          suggestion.media[0],
-                        ),
-                      )),
-                    ),
-                    Text(
-                      suggestion.title,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.bodyText1,
-                    ),
-                    Text(
-                      suggestion.year.toString(),
-                      style: Theme.of(context).textTheme.bodyText2,
-                    ),
-                  ],
-                ))
+                GestureDetector(
+                  child: Container(
+                      child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        height: 180,
+                        decoration: BoxDecoration(
+                            // color: Colors.yellow,
+                            image: DecorationImage(
+                          fit: BoxFit.fitWidth,
+                          alignment: FractionalOffset.topCenter,
+                          image: NetworkImage(
+                            suggestion.media[0],
+                          ),
+                        )),
+                      ),
+                      Text(
+                        suggestion.title,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.bodyText1,
+                      ),
+                      Text(
+                        suggestion.year.toString(),
+                        style: Theme.of(context).textTheme.bodyText2,
+                      ),
+                    ],
+                  )),
+                  onTap: () {
+                    print(suggestion.id);
+                  },
+                ),
             ],
           );
         });
