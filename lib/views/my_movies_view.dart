@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 // project
 // - auth
 import 'package:flutter_moviesliders/services/auth_service.dart';
+import 'package:flutter_moviesliders/models/models.dart';
 import 'package:flutter_moviesliders/services/services.dart';
 
 /* Comparison from episode to episode
@@ -249,29 +250,6 @@ class _MyMoviesState extends State<MyMoviesView> {
   }
 }
 
-class Suggestion {
-  final String title;
-  final String id;
-  final String staring;
-  final int year;
-  final String type;
-  final media;
-
-  Suggestion(
-      {this.title, this.id, this.staring, this.year, this.type, this.media});
-
-  factory Suggestion.fromJson(Map<String, dynamic> json) {
-    return Suggestion(
-      title: json['l'],
-      id: json['id'],
-      staring: json['s'],
-      year: json['y'],
-      type: json['q'],
-      media: json['i'],
-    );
-  }
-}
-
 class MovieSearch extends SearchDelegate {
   // FIND MOVIES
   /*
@@ -443,7 +421,7 @@ class MovieSearch extends SearchDelegate {
                   onTap: () {
                     // print(suggestion.id);
                     Navigator.pushNamed(context, '/movie_info',
-                        arguments: suggestion.id);
+                        arguments: suggestion);
                   },
                 ),
             ],
