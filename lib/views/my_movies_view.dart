@@ -441,7 +441,9 @@ class MovieSearch extends SearchDelegate {
                     ],
                   )),
                   onTap: () {
-                    print(suggestion.id);
+                    // print(suggestion.id);
+                    Navigator.pushNamed(context, '/movie_info',
+                        arguments: suggestion.id);
                   },
                 ),
             ],

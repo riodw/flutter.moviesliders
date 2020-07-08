@@ -13,10 +13,11 @@ class MovieInfoView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
+    final String id = ModalRoute.of(context).settings.arguments;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('My Rated Movies'),
+        title: Text(id),
         actions: <Widget>[],
       ),
       body: SafeArea(
