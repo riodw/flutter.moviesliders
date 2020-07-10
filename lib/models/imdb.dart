@@ -1,4 +1,4 @@
-class ImdbSuggestion {
+class ImdbModel {
   final String title;
   final String id;
   final String staring;
@@ -6,11 +6,11 @@ class ImdbSuggestion {
   final String type;
   final media;
 
-  ImdbSuggestion(
+  ImdbModel(
       {this.title, this.id, this.staring, this.year, this.type, this.media});
 
-  factory ImdbSuggestion.fromJson(Map<String, dynamic> json) {
-    return ImdbSuggestion(
+  factory ImdbModel.fromJson(Map<String, dynamic> json) {
+    return ImdbModel(
       title: json['l'],
       id: json['id'],
       staring: json['s'],

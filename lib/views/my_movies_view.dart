@@ -252,10 +252,11 @@ class _MyMoviesState extends State<MyMoviesView> {
 
 final String imdbUrl = "https://sg.media-imdb.com/suggests/";
 
-Future<List<ImdbSuggestion>> _fetchAlbum(String query) async {
-  List<ImdbSuggestion> suggestions = [];
+Future<List<ImdbModel>> _fetchImdb(String query) async {
+  List<ImdbModel> suggestions = [];
 
-  final urlSearch = imdbUrl + query.substring(0, 1) + "/" + query + ".json";
+  final String urlSearch =
+      imdbUrl + query.substring(0, 1) + "/" + query + ".json";
   final response = await http.get(urlSearch);
 
   if (response.statusCode != 200) return suggestions;
@@ -270,7 +271,7 @@ Future<List<ImdbSuggestion>> _fetchAlbum(String query) async {
         word['q'] == "feature" &&
         word['i'] != null &&
         word['i'][0] != null) {
-      suggestions.add(ImdbSuggestion.fromJson(word));
+      suggestions.add(ImdbModel.fromJson(word));
     }
   }
 
@@ -355,9 +356,9 @@ class MovieSearch extends SearchDelegate {
 
     // https://stackoverflow.com/questions/57250986/the-argument-type-futurewidget-cant-be-assigned-to-the-parameter-type-widg
     // https://stackoverflow.com/questions/49781657/adjust-gridview-child-height-according-to-the-dynamic-content-in-flutter
-    var suggestions = FutureBuilder<List<ImdbSuggestion>>(
-        future: _fetchAlbum(query),
-        builder: (context, AsyncSnapshot<List<ImdbSuggestion>> snapshot) {
+    var suggestions = FutureBuilder<List<ImdbModel>>(
+        future: _fetchImdb(query),
+        builder: (context, AsyncSnapshot<List<ImdbModel>> snapshot) {
           if (snapshot.hasError || snapshot.data == null)
             return Center(
               child: Text('Error'),
@@ -387,7 +388,7 @@ class MovieSearch extends SearchDelegate {
             crossAxisCount: 3,
             childAspectRatio: .52,
             children: <Widget>[
-              for (ImdbSuggestion suggestion in snapshot.data)
+              for (ImdbModel suggestion in snapshot.data)
                 GestureDetector(
                   child: Container(
                       child: Column(

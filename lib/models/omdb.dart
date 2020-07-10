@@ -1,4 +1,4 @@
-class OmdbapiSelected {
+class OmdbModel {
   final String title;
   final int year;
   final String rated;
@@ -25,7 +25,7 @@ class OmdbapiSelected {
   final String website;
   final String response;
 
-  OmdbapiSelected({
+  OmdbModel({
     this.title,
     this.year,
     this.rated,
@@ -53,8 +53,8 @@ class OmdbapiSelected {
     this.response,
   });
 
-  factory OmdbapiSelected.fromJson(Map<String, dynamic> json) {
-    return OmdbapiSelected(
+  factory OmdbModel.fromJson(Map<String, dynamic> json) {
+    return OmdbModel(
       title: json['Title'],
       year: json['Year'],
       rated: json['Rated'],
