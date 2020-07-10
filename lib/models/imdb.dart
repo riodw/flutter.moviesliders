@@ -1,6 +1,4 @@
-// import 'dart:convert';
-
-class Suggestion {
+class ImdbSuggestion {
   final String title;
   final String id;
   final String staring;
@@ -8,11 +6,11 @@ class Suggestion {
   final String type;
   final media;
 
-  Suggestion(
+  ImdbSuggestion(
       {this.title, this.id, this.staring, this.year, this.type, this.media});
 
-  factory Suggestion.fromJson(Map<String, dynamic> json) {
-    return Suggestion(
+  factory ImdbSuggestion.fromJson(Map<String, dynamic> json) {
+    return ImdbSuggestion(
       title: json['l'],
       id: json['id'],
       staring: json['s'],

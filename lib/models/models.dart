@@ -1,2 +1,3 @@
 // export 'user_model.dart';
-export 'suggestion.dart';
+export 'imdb.dart';
+export 'omdbapi.dart';

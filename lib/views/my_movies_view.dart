@@ -250,6 +250,33 @@ class _MyMoviesState extends State<MyMoviesView> {
   }
 }
 
+final String imdbUrl = "https://sg.media-imdb.com/suggests/";
+
+Future<List<ImdbSuggestion>> _fetchAlbum(String query) async {
+  List<ImdbSuggestion> suggestions = [];
+
+  final urlSearch = imdbUrl + query.substring(0, 1) + "/" + query + ".json";
+  final response = await http.get(urlSearch);
+
+  if (response.statusCode != 200) return suggestions;
+
+  var imdbJson = response.body;
+
+  imdbJson = imdbJson.substring(imdbJson.indexOf("(") + 1, imdbJson.length - 1);
+  var imdb = json.decode(imdbJson);
+
+  for (var word in imdb['d']) {
+    if (word['q'] != null &&
+        word['q'] == "feature" &&
+        word['i'] != null &&
+        word['i'][0] != null) {
+      suggestions.add(ImdbSuggestion.fromJson(word));
+    }
+  }
+
+  return suggestions;
+}
+
 class MovieSearch extends SearchDelegate {
   // FIND MOVIES
   /*
@@ -261,34 +288,6 @@ class MovieSearch extends SearchDelegate {
    * https://sg.media-imdb.com/suggests/a/aa.json
    * http://www.omdbapi.com/?i=tt3896198&apikey=cf1629a0
    */
-
-  static final String imdbUrl = "https://sg.media-imdb.com/suggests/";
-
-  Future<List<Suggestion>> _fetchAlbum(String query) async {
-    List<Suggestion> suggestions = [];
-
-    final urlSearch = imdbUrl + query.substring(0, 1) + "/" + query + ".json";
-    final response = await http.get(urlSearch);
-
-    if (response.statusCode != 200) return suggestions;
-
-    var imdbJson = response.body;
-
-    imdbJson =
-        imdbJson.substring(imdbJson.indexOf("(") + 1, imdbJson.length - 1);
-    var imdb = json.decode(imdbJson);
-
-    for (var word in imdb['d']) {
-      if (word['q'] != null &&
-          word['q'] == "feature" &&
-          word['i'] != null &&
-          word['i'][0] != null) {
-        suggestions.add(Suggestion.fromJson(word));
-      }
-    }
-
-    return suggestions;
-  }
 
   @override
   String get searchFieldLabel => 'Search Movies';
@@ -356,9 +355,9 @@ class MovieSearch extends SearchDelegate {
 
     // https://stackoverflow.com/questions/57250986/the-argument-type-futurewidget-cant-be-assigned-to-the-parameter-type-widg
     // https://stackoverflow.com/questions/49781657/adjust-gridview-child-height-according-to-the-dynamic-content-in-flutter
-    var suggestions = FutureBuilder<List<Suggestion>>(
+    var suggestions = FutureBuilder<List<ImdbSuggestion>>(
         future: _fetchAlbum(query),
-        builder: (context, AsyncSnapshot<List<Suggestion>> snapshot) {
+        builder: (context, AsyncSnapshot<List<ImdbSuggestion>> snapshot) {
           if (snapshot.hasError || snapshot.data == null)
             return Center(
               child: Text('Error'),
@@ -388,7 +387,7 @@ class MovieSearch extends SearchDelegate {
             crossAxisCount: 3,
             childAspectRatio: .52,
             children: <Widget>[
-              for (Suggestion suggestion in snapshot.data)
+              for (ImdbSuggestion suggestion in snapshot.data)
                 GestureDetector(
                   child: Container(
                       child: Column(

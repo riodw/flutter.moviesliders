@@ -17,7 +17,8 @@ class MovieInfoView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
-    final Suggestion suggestion = ModalRoute.of(context).settings.arguments;
+    final ImdbSuggestion suggestion = ModalRoute.of(context).settings.arguments;
+    print(suggestion.id);
 
     return Scaffold(
       appBar: AppBar(
