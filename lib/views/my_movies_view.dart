@@ -358,12 +358,13 @@ class MovieSearch extends SearchDelegate {
     // https://stackoverflow.com/questions/49781657/adjust-gridview-child-height-according-to-the-dynamic-content-in-flutter
     var suggestions = FutureBuilder<List<ImdbModel>>(
         future: _fetchImdb(query),
-        builder: (context, AsyncSnapshot<List<ImdbModel>> snapshot) {
+        builder:
+            (BuildContext context, AsyncSnapshot<List<ImdbModel>> snapshot) {
           if (snapshot.hasError || snapshot.data == null)
             return Center(
               child: Text('Error'),
             );
-          if (snapshot.data == null || snapshot.data.length == 0)
+          if (snapshot.data.length == 0)
             return Center(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,

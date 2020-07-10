@@ -56,7 +56,7 @@ class OmdbModel {
   factory OmdbModel.fromJson(Map<String, dynamic> json) {
     return OmdbModel(
       title: json['Title'],
-      year: json['Year'],
+      year: int.parse(json['Year']),
       rated: json['Rated'],
       released: json['Released'],
       runtime: json['Runtime'],
