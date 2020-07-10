@@ -17,49 +17,124 @@ import 'package:flutter_moviesliders/models/models.dart';
 final String omdbUrl = "https://www.omdbapi.com/?apikey=cf1629a0";
 
 // OmdbModel
-Future<Text> _fetchOmdb(String imbdId) async {
+Future<OmdbModel> _fetchOmdb(String imbdId) async {
   final String url = omdbUrl + "&i=" + imbdId;
   final response = await http.get(url);
   if (response.statusCode != 200) return null;
 
   var omdbJson = response.body;
-  print(omdbJson);
+  // print(omdbJson);
+  // OmdbModel omdb_selected = OmdbModel.fromJson(json.decode(omdbJson));
 
-  OmdbModel omdb_selected = OmdbModel.fromJson(json.decode(omdbJson));
-
-  return Text(omdb_selected.title);
+  // return Text(omdb_selected.title);
+  return OmdbModel.fromJson(json.decode(omdbJson));
 }
 
 class MovieInfoView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
-    final ImdbModel suggestion = ModalRoute.of(context).settings.arguments;
-    // print(suggestion.id);
+    final ImdbModel selected = ModalRoute.of(context).settings.arguments;
+
+    var contents = FutureBuilder<OmdbModel>(
+      future: _fetchOmdb(selected.id),
+      builder: (BuildContext context, AsyncSnapshot<OmdbModel> snapshot) {
+        OmdbModel omdb;
+        // print(snapshot.data);
+        if (snapshot.hasError || snapshot.data == null)
+          return Center(
+            child: Text('Error', style: Theme.of(context).textTheme.headline4),
+          );
+        // if (snapshot.hasData) {
+        //   textChild = snapshot;
+        // }
+        omdb = snapshot.data;
+
+        return Container(
+            margin: EdgeInsets.symmetric(horizontal: 15),
+            child: Column(
+              children: <Widget>[
+                SizedBox(
+                  height: 10,
+                ),
+                Center(
+                    child: Container(
+                  height: 260,
+                  child: Image.network(
+                    omdb.poster,
+                    fit: BoxFit.fill,
+                  ),
+                )),
+                SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      omdb.year.toString(),
+                      style: Theme.of(context).textTheme.headline5,
+                    ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    Chip(
+                      label: Text(omdb.rated),
+                    ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    Text(
+                      omdb.runtime,
+                      style: Theme.of(context).textTheme.headline5,
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  width: double.infinity,
+                  child: ButtonTheme(
+                    // minWidth: 330.0,
+                    height: 40.0,
+                    child: RaisedButton(
+                      // textColor: Colors.white,
+                      color: Colors.blueAccent,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(4.0)),
+                      child: Container(
+                        child: Text(
+                          'Start Review',
+                          style: Theme.of(context).textTheme.button,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      onPressed: () {
+                        // Navigator.pushNamed(context, '/search_movies');
+                      },
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  omdb.plot,
+                  style: Theme.of(context).textTheme.bodyText1,
+                ),
+              ],
+            ));
+      },
+    );
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(suggestion.title),
-        actions: <Widget>[],
-      ),
-      body: SafeArea(
-          child: FutureBuilder<Text>(
-        future: _fetchOmdb(suggestion.id),
-        builder: (BuildContext context, AsyncSnapshot<Text> snapshot) {
-          Text textChild;
-          // print(snapshot.data);
-          if (snapshot.hasError || snapshot.data == null) {
-            textChild = Text(
-              'Error',
-              style: Theme.of(context).textTheme.headline4,
-            );
-          }
-          if (snapshot.hasData) {
-            // textChild = snapshot;
-          }
-          return Center(child: textChild);
-        },
-      )),
-    );
+        appBar: AppBar(
+          title: Text(selected.title),
+          actions: <Widget>[],
+        ),
+        body: SafeArea(
+          child: contents,
+        ));
   }
 }
