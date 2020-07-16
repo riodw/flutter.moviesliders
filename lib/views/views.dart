@@ -4,3 +4,6 @@ export 'package:flutter_moviesliders/views/movie_review.dart';
 export 'package:flutter_moviesliders/views/sliders_view.dart';
 export 'package:flutter_moviesliders/views/chart_view.dart';
 export 'package:flutter_moviesliders/views/movie_info_view.dart';
+export 'package:flutter_moviesliders/views/about_view.dart';
+export 'package:flutter_moviesliders/views/tos_view.dart';
+export 'package:flutter_moviesliders/views/privacy_view.dart';

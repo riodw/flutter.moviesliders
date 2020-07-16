@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_moviesliders/widgets/chart_widget.dart';
 
 /* Comparison from episode to episode
-https://google.github.io/charts/flutter/example/scatter_plot_charts/comparison_points
+ * https://google.github.io/charts/flutter/example/scatter_plot_charts/comparison_points
 */
 
 class ChartView extends StatelessWidget {
@@ -15,9 +15,9 @@ class ChartView extends StatelessWidget {
         title: Text('Black Mirror: Season 4 Episode 5 (Metalhead)'),
         actions: <Widget>[],
       ),
-      body: Container(
-        // margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
-        child: SafeArea(
+      body: SafeArea(
+        child: Container(
+            // margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
             child: NumericComboLinePointChart.withSampleData(animate: false)),
       ),
     );

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_moviesliders/widgets/chart_widget.dart';
 
 /* Comparison from episode to episode
-https://google.github.io/charts/flutter/example/scatter_plot_charts/comparison_points
+ * https://google.github.io/charts/flutter/example/scatter_plot_charts/comparison_points
 */
 
 class MovieReviewView extends StatelessWidget {

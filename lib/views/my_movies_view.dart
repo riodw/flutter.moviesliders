@@ -10,10 +10,6 @@ import 'package:flutter_moviesliders/services/auth_service.dart';
 import 'package:flutter_moviesliders/models/models.dart';
 import 'package:flutter_moviesliders/services/services.dart';
 
-/* Comparison from episode to episode
-https://google.github.io/charts/flutter/example/scatter_plot_charts/comparison_points
-*/
-
 class MyMoviesView extends StatefulWidget {
   MyMoviesView({Key key}) : super(key: key);
 
@@ -51,24 +47,31 @@ class _MyMoviesState extends State<MyMoviesView> {
                     CupertinoActionSheetAction(
                       child: Text('About MovieSliders'),
                       onPressed: () {
-                        print('pressed: About MovieSliders');
+                        Navigator.pop(context);
+                        Navigator.pushNamed(context, '/about');
+                        // print('pressed: About MovieSliders');
                       },
                     ),
                     CupertinoActionSheetAction(
                       child: Text('Terms of Service'),
                       onPressed: () {
-                        print('pressed: Terms of Service');
+                        Navigator.pop(context);
+                        Navigator.pushNamed(context, '/tos');
+                        // print('pressed: Terms of Service');
                       },
                     ),
                     CupertinoActionSheetAction(
                       child: Text('Privacy'),
                       onPressed: () {
-                        print('pressed: Privacy Policy');
+                        Navigator.pop(context);
+                        Navigator.pushNamed(context, '/privacy');
+                        // print('pressed: Privacy Policy');
                       },
                     ),
                     CupertinoActionSheetAction(
                       child: Text('Log Out'),
                       onPressed: () {
+                        // Navigator.pop(context);
                         AuthService _auth = AuthService();
                         _auth.signOut();
                         Navigator.of(context).pushNamed('/signin');
@@ -148,7 +151,7 @@ class _MyMoviesState extends State<MyMoviesView> {
           margin: EdgeInsets.only(top: 0.0, right: 30.0, bottom: 0, left: 30.0),
           child: ButtonTheme(
             minWidth: 320.0,
-            height: 40.0,
+            height: 50.0,
             child: RaisedButton(
               // textColor: Colors.white,
               color: Colors.blueAccent,
@@ -360,11 +363,16 @@ class MovieSearch extends SearchDelegate {
         future: _fetchImdb(query),
         builder:
             (BuildContext context, AsyncSnapshot<List<ImdbModel>> snapshot) {
-          if (snapshot.hasError || snapshot.data == null)
+          if (snapshot.hasError)
             return Center(
-              child: Text('Error'),
+              child:
+                  Text('Error', style: Theme.of(context).textTheme.headline4),
             );
-          if (snapshot.data.length == 0)
+          else if (snapshot.data == null)
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          else if (snapshot.data.length == 0)
             return Center(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,

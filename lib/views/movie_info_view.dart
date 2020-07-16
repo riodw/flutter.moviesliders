@@ -11,10 +11,10 @@ import 'package:flutter_moviesliders/services/services.dart';
 import 'package:flutter_moviesliders/models/models.dart';
 
 /**
- * https://www.omdbapi.com/?i=tt3896198&apikey=cf1629a0
+https://www.omdbapi.com/?apikey=cf1629a0&v=1&plot=full&i=tt3896198
  */
 
-final String omdbUrl = "https://www.omdbapi.com/?apikey=cf1629a0";
+final String omdbUrl = "https://www.omdbapi.com/?apikey=cf1629a0&v=1&plot=full";
 
 // OmdbModel
 Future<OmdbModel> _fetchOmdb(String imbdId) async {
@@ -41,9 +41,14 @@ class MovieInfoView extends StatelessWidget {
       builder: (BuildContext context, AsyncSnapshot<OmdbModel> snapshot) {
         OmdbModel omdb;
         // print(snapshot.data);
-        if (snapshot.hasError || snapshot.data == null)
+
+        if (snapshot.hasError)
           return Center(
             child: Text('Error', style: Theme.of(context).textTheme.headline4),
+          );
+        else if (snapshot.data == null)
+          return Center(
+            child: CircularProgressIndicator(),
           );
         // if (snapshot.hasData) {
         //   textChild = snapshot;
@@ -97,7 +102,7 @@ class MovieInfoView extends StatelessWidget {
                   width: double.infinity,
                   child: ButtonTheme(
                     // minWidth: 330.0,
-                    height: 40.0,
+                    height: 50.0,
                     child: RaisedButton(
                       // textColor: Colors.white,
                       color: Colors.blueAccent,
@@ -111,7 +116,8 @@ class MovieInfoView extends StatelessWidget {
                         ),
                       ),
                       onPressed: () {
-                        // Navigator.pushNamed(context, '/search_movies');
+                        Navigator.pushNamed(context, '/sliders',
+                            arguments: selected.title);
                       },
                     ),
                   ),
@@ -121,6 +127,8 @@ class MovieInfoView extends StatelessWidget {
                 ),
                 Text(
                   omdb.plot,
+                  maxLines: 19,
+                  overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.bodyText1,
                 ),
               ],

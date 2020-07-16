@@ -102,32 +102,39 @@ class _SlidersViewState extends State<SlidersView> {
     final String title = ModalRoute.of(context).settings.arguments;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
-        actions: <Widget>[
-          // action buttons
-          IconButton(
-            icon: themeProvider.isDarkModeOn
-                ? Icon(Icons.brightness_low)
-                : Icon(Icons.brightness_high),
-            onPressed: () {
-              var theme = themeProvider.isDarkModeOn ? 'light' : 'dark';
-              Provider.of<ThemeProvider>(context, listen: false)
-                  .updateTheme(theme);
-            },
-          ),
-        ],
-      ),
-      body: Container(
-        margin: const EdgeInsets.only(top: 10.0, bottom: 10.0),
-        child: Column(
-          children: <Widget>[
-            Container(
-                margin:
-                    const EdgeInsets.only(bottom: 5.0, left: 10.0, right: 10.0),
-                child: Row(
+        appBar: AppBar(
+          title: Text(title),
+          actions: <Widget>[
+            // action buttons
+            IconButton(
+              icon: themeProvider.isDarkModeOn
+                  ? Icon(Icons.brightness_low)
+                  : Icon(Icons.brightness_high),
+              onPressed: () {
+                var theme = themeProvider.isDarkModeOn ? 'light' : 'dark';
+                Provider.of<ThemeProvider>(context, listen: false)
+                    .updateTheme(theme);
+              },
+            ),
+          ],
+        ),
+        body: SafeArea(
+          child: Container(
+            margin: const EdgeInsets.only(top: 10.0
+                // , bottom: 10.0
+                ),
+            child: Column(
+              children: <Widget>[
+                // Container(
+                //     margin: const EdgeInsets.only(
+                //         bottom: 5.0, left: 10.0, right: 10.0),
+                //     child:
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
+                    Chip(
+                      label: Text('160 min'),
+                    ),
                     CupertinoButton(
                       child: _paused ? Text('Play') : Text('Pause'),
                       color: _paused
@@ -135,40 +142,45 @@ class _SlidersViewState extends State<SlidersView> {
                           : Theme.of(context).colorScheme.secondary,
                       onPressed: _pause,
                     ),
+                    Chip(
+                      label: Text('160 min'),
+                    ),
                   ],
-                )),
-            Expanded(
-              child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    for (Rating rating in ratings)
-                      Column(children: <Widget>[
-                        Expanded(
-                            child: RotatedBox(
-                          quarterTurns: -1,
-                          child: CupertinoSlider(
-                              value: rating.rating,
-                              activeColor: _paused ? Colors.grey : rating.color,
-                              min: Rating.minRating,
-                              max: Rating.maxRating,
-                              onChanged: (newRating) {
-                                setState(() {
-                                  rating.rating = newRating;
-                                });
-                              }),
-                        )),
-                        _paused
-                            ? rating.name
-                            : Text(
-                                rating.rating.round().toString(),
-                              ),
+                ),
+                // ),
+                Expanded(
+                  child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        for (Rating rating in ratings)
+                          Column(children: <Widget>[
+                            Expanded(
+                                child: RotatedBox(
+                              quarterTurns: -1,
+                              child: CupertinoSlider(
+                                  value: rating.rating,
+                                  activeColor:
+                                      _paused ? Colors.grey : rating.color,
+                                  min: Rating.minRating,
+                                  max: Rating.maxRating,
+                                  onChanged: (newRating) {
+                                    setState(() {
+                                      rating.rating = newRating;
+                                    });
+                                  }),
+                            )),
+                            _paused
+                                ? rating.name
+                                : Text(
+                                    rating.rating.round().toString(),
+                                  ),
+                          ]),
                       ]),
-                  ]),
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
-    );
+          ),
+        ));
   }
 }
