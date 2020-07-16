@@ -9,6 +9,8 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_moviesliders/services/auth_service.dart';
 import 'package:flutter_moviesliders/models/models.dart';
 import 'package:flutter_moviesliders/services/services.dart';
+// charts
+import 'package:flutter_moviesliders/widgets/chart_widget.dart';
 
 class MyMoviesView extends StatefulWidget {
   MyMoviesView({Key key}) : super(key: key);
@@ -191,8 +193,20 @@ class _MyMoviesState extends State<MyMoviesView> {
                     children: <Widget>[
                       Container(
                         margin: EdgeInsets.only(bottom: 10.0),
-                        color: Colors.grey[400],
+                        decoration: BoxDecoration(
+                          border: Border(
+                            top: BorderSide(width: 1, color: Colors.grey[350]),
+                            left: BorderSide(width: 1, color: Colors.grey[350]),
+                            right:
+                                BorderSide(width: 1, color: Colors.grey[350]),
+                            bottom:
+                                BorderSide(width: 1, color: Colors.grey[350]),
+                          ),
+                          // color: Color(0xFFBFBFBF),
+                        ),
                         height: 170.0,
+                        child: NumericComboLinePointChart.withSampleData(
+                            animate: false),
                       ),
                       Text(
                         'Altered Carbon: Season 1 Episode 5 (The Wrong Man)',
@@ -245,7 +259,7 @@ class _MyMoviesState extends State<MyMoviesView> {
               onTap: () {
                 Navigator.pushNamed(context, '/movie_review');
               },
-            )
+            ),
           ],
         ),
       ])),
