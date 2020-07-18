@@ -205,7 +205,7 @@ class _MyMoviesState extends State<MyMoviesView> {
                           // color: Color(0xFFBFBFBF),
                         ),
                         height: 170.0,
-                        child: NumericComboLinePointChart.withSampleData(
+                        child: NumericComboLinePointChartRaw.withSampleData(
                             animate: false),
                       ),
                       Text(
