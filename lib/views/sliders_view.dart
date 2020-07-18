@@ -45,7 +45,7 @@ class Rating {
 
   // getters
   Text get name => Text(this.rawName);
-  Color get color => Color(int.parse("0xff${this.rawColor}"));
+  Color get color => Color(int.parse('0xff${this.rawColor}'));
   double get rating => _rating;
   // setters
   set rating(double value) {
