@@ -27,9 +27,9 @@ Future<OmdbModel> _fetchOmdb(String imbdId) async {
 
   var omdbJson = response.body;
   // print(omdbJson);
-  // OmdbModel omdb_selected = OmdbModel.fromJson(json.decode(omdbJson));
+  // OmdbModel omdb_imdb = OmdbModel.fromJson(json.decode(omdbJson));
 
-  // return Text(omdb_selected.title);
+  // return Text(omdb_imdb.title);
   return OmdbModel.fromJson(json.decode(omdbJson));
 }
 
@@ -40,10 +40,10 @@ class MovieInfoView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
-    final ImdbModel selected = ModalRoute.of(context).settings.arguments;
+    final ImdbModel imdb = ModalRoute.of(context).settings.arguments;
 
     var contents = FutureBuilder<OmdbModel>(
-      future: _fetchOmdb(selected.id),
+      future: _fetchOmdb(imdb.id),
       builder: (BuildContext context, AsyncSnapshot<OmdbModel> snapshot) {
         OmdbModel omdb;
         // print(snapshot.data);
@@ -123,12 +123,14 @@ class MovieInfoView extends StatelessWidget {
                       ),
                       onPressed: () async {
                         // TODO: Add ImdbModel to a 'Movies' list with a counter
-                        await dbRef.child('review').push().set(<String, Object>{
+                        var reviewFireReference = dbRef.child('review').push();
+
+                        await reviewFireReference.set(<String, Object>{
                           'date_reviewed': DateTime.now().toString(),
                           'rating_avg': 69.236465,
                           'link_id': omdb.imdbID,
                           'type': omdb.type,
-                          'title': selected.title,
+                          'title': imdb.title,
                           'user_id': 'asdf',
                           'user': {
                             'name': 'asdf asdf',
@@ -140,42 +142,68 @@ class MovieInfoView extends StatelessWidget {
                             'runtime': omdb.runtime,
                             'date_released':
                                 omdb.released, // TODO convert to date time
-                            'media': selected.media,
+                            'media': imdb.media,
                           },
                           // the review data
                           'trends': [
                             {
                               'name': 'Interest',
                               'color': 'c62928',
-                              'data': [],
+                              'data': [
+                                {
+                                  "s": 0,
+                                  "v": 2,
+                                },
+                              ],
                             },
                             {
                               'name': 'Cliche',
                               'color': '01e675',
-                              'data': [],
+                              'data': [
+                                {
+                                  "s": 0,
+                                  "v": 2,
+                                },
+                              ],
                             },
                             {
                               'name': 'Funny',
                               'color': '2ab6f6',
-                              'data': [],
+                              'data': [
+                                {
+                                  "s": 0,
+                                  "v": 2,
+                                },
+                              ],
                             },
                             {
                               'name': 'Dumb',
                               'color': 'bd00ff',
-                              'data': [],
+                              'data': [
+                                {
+                                  "s": 0,
+                                  "v": 2,
+                                },
+                              ],
                             },
                             {
                               'name': 'WTF',
                               'color': 'fdff00',
-                              'data': [],
+                              'data': [
+                                {
+                                  "s": 0,
+                                  "v": 2,
+                                },
+                              ],
                             },
                           ],
-                          // reports for tampering
-                          'report': []
                         }).then((onValue) {
-                          // print(onValue.toString());
-                          Navigator.pushNamed(context, '/sliders',
-                              arguments: selected.title);
+                          // print(reviewReference.key);
+                          Navigator.pushNamed(context, '/sliders', arguments: {
+                            'title': imdb.title,
+                            'review_fire_id': reviewFireReference.key,
+                            'omdb': omdb
+                          });
                           return onValue;
                         }).catchError((onError) {
                           print(onError.toString());
@@ -203,7 +231,7 @@ class MovieInfoView extends StatelessWidget {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text(selected.title),
+          title: Text(imdb.title),
           actions: <Widget>[],
         ),
         body: SafeArea(

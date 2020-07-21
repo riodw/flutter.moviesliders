@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
+// firebase
+import 'package:firebase_database/firebase_database.dart';
 // project
+import 'package:flutter_moviesliders/models/models.dart';
 import 'package:flutter_moviesliders/services/services.dart';
 
 final double minimumRating = 2;
@@ -79,6 +82,18 @@ class _SlidersViewState extends State<SlidersView> {
   bool _paused = true;
   // ratings
   final List ratings = getRatings();
+  // TODO onLoad set this val to the reviewInstance
+  // firebase
+  final dbRef = FirebaseDatabase.instance.reference();
+
+  List<DatabaseReference> review_trends;
+
+  @override
+  void initState() {
+    super.initState();
+    // Put trends into review_trends
+    print('asdf');
+  }
 
   /*
    * HOW TO INIT RUN 
@@ -89,7 +104,11 @@ class _SlidersViewState extends State<SlidersView> {
   //   // _loadDarkMode();
   // }
 
-  void _pause() {
+  void _pause(String key) async {
+    var reviewFireReference = dbRef.child('review').child(key).once();
+    print(reviewFireReference);
+
+    // await ;
     setState(() {
       _paused = !_paused;
     });
@@ -99,11 +118,13 @@ class _SlidersViewState extends State<SlidersView> {
   Widget build(BuildContext context) {
     // https://flutter.dev/docs/cookbook/navigation/navigate-with-arguments
     final themeProvider = Provider.of<ThemeProvider>(context);
-    final String title = ModalRoute.of(context).settings.arguments;
+    final Map arguments = ModalRoute.of(context).settings.arguments;
+    final OmdbModel omdb = arguments['omdb'];
+    // print(arguments['review_fire_id']);
 
     return Scaffold(
         appBar: AppBar(
-          title: Text(title),
+          title: Text(arguments['title']),
           actions: <Widget>[
             // action buttons
             IconButton(
@@ -125,29 +146,46 @@ class _SlidersViewState extends State<SlidersView> {
                 ),
             child: Column(
               children: <Widget>[
-                // Container(
-                //     margin: const EdgeInsets.only(
-                //         bottom: 5.0, left: 10.0, right: 10.0),
-                //     child:
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     Chip(
-                      label: Text('160 min'),
+                      label: Text(omdb.runtime),
                     ),
-                    CupertinoButton(
-                      child: _paused ? Text('Play') : Text('Pause'),
-                      color: _paused
-                          ? Theme.of(context).colorScheme.primary
-                          : Theme.of(context).colorScheme.secondary,
-                      onPressed: _pause,
+                    Container(
+                      width: 180,
+                      child: CupertinoButton(
+                        child: _paused ? Text('Play') : Text('Pause'),
+                        color: _paused
+                            ? Theme.of(context).colorScheme.primary
+                            : Theme.of(context).colorScheme.secondary,
+                        // onPressed: _pause(arguments['review_fire_id']),
+                        onPressed: () {
+                          // review_trends = dbRef
+                          //     .child('review')
+                          //     .child(arguments['review_fire_id'])
+                          //     .child('trends')
+                          //     .orderByChild('name')
+                          //     .equalTo('');
+
+                          //     var
+                          //     .then((DataSnapshot snapshot) {
+                          // }
+                          // );
+                          // print(snapshot.value['title']);
+
+                          // await ;
+                          setState(() {
+                            _paused = !_paused;
+                          });
+                        },
+                      ),
                     ),
                     Chip(
                       label: Text('160 min'),
                     ),
                   ],
                 ),
-                // ),
                 Expanded(
                   child: Row(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
