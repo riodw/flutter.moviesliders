@@ -382,73 +382,74 @@ class MovieSearch extends SearchDelegate {
               child:
                   Text('Error', style: Theme.of(context).textTheme.headline4),
             );
-          else if (snapshot.data == null)
+          else if (snapshot.hasData) {
+            if (snapshot.data.length == 0)
+              return Center(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      "No Movies To Show",
+                      style: Theme.of(context).textTheme.headline1,
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text("Try entering more search characters."),
+                  ],
+                ),
+              );
+            return GridView.count(
+              primary: true,
+              // padding: const EdgeInsets.only(b: 20),
+              crossAxisSpacing: 8,
+              mainAxisSpacing: 8,
+              crossAxisCount: 3,
+              childAspectRatio: .52,
+              children: <Widget>[
+                for (ImdbModel suggestion in snapshot.data)
+                  GestureDetector(
+                    child: Container(
+                        child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          height: 180,
+                          decoration: BoxDecoration(
+                              // color: Colors.yellow,
+                              image: DecorationImage(
+                            fit: BoxFit.fitWidth,
+                            alignment: FractionalOffset.topCenter,
+                            image: NetworkImage(
+                              suggestion.media[0],
+                            ),
+                          )),
+                        ),
+                        Text(
+                          suggestion.title,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
+                        Text(
+                          suggestion.year.toString(),
+                          style: Theme.of(context).textTheme.bodyText2,
+                        ),
+                      ],
+                    )),
+                    onTap: () {
+                      // print(suggestion.id);
+                      Navigator.pushNamed(context, '/movie_info',
+                          arguments: suggestion);
+                    },
+                  ),
+              ],
+            );
+          } else
             return Center(
               child: CircularProgressIndicator(),
             );
-          else if (snapshot.data.length == 0)
-            return Center(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    "No Movies To Show",
-                    style: Theme.of(context).textTheme.headline1,
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Text("Try entering more search characters."),
-                ],
-              ),
-            );
-          return GridView.count(
-            primary: true,
-            // padding: const EdgeInsets.only(b: 20),
-            crossAxisSpacing: 8,
-            mainAxisSpacing: 8,
-            crossAxisCount: 3,
-            childAspectRatio: .52,
-            children: <Widget>[
-              for (ImdbModel suggestion in snapshot.data)
-                GestureDetector(
-                  child: Container(
-                      child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Container(
-                        height: 180,
-                        decoration: BoxDecoration(
-                            // color: Colors.yellow,
-                            image: DecorationImage(
-                          fit: BoxFit.fitWidth,
-                          alignment: FractionalOffset.topCenter,
-                          image: NetworkImage(
-                            suggestion.media[0],
-                          ),
-                        )),
-                      ),
-                      Text(
-                        suggestion.title,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
-                      Text(
-                        suggestion.year.toString(),
-                        style: Theme.of(context).textTheme.bodyText2,
-                      ),
-                    ],
-                  )),
-                  onTap: () {
-                    // print(suggestion.id);
-                    Navigator.pushNamed(context, '/movie_info',
-                        arguments: suggestion);
-                  },
-                ),
-            ],
-          );
         });
 
     return SafeArea(

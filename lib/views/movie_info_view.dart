@@ -145,7 +145,7 @@ class MovieInfoView extends StatelessWidget {
                             'media': imdb.media,
                           },
                           // the review data
-                          'trends': [
+                          'trend': [
                             {
                               'name': 'Interest',
                               'color': 'c62928',

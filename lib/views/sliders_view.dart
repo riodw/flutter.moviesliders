@@ -13,28 +13,28 @@ final double maximumRating = 100;
 // Navigator.pushNamed(context, '/sliders',
 //     arguments: 'this is a test');
 
-List raw_ratings = [
-  {
-    'name': 'Interest',
-    'color': 'c62928',
-  },
-  {
-    'name': 'Cliche',
-    'color': '01e675',
-  },
-  {
-    'name': 'Funny',
-    'color': '2ab6f6',
-  },
-  {
-    'name': 'Dumb',
-    'color': 'bd00ff',
-  },
-  {
-    'name': 'WTF',
-    'color': 'fdff00',
-  },
-];
+// List raw_ratings = [
+//   {
+//     'name': 'Interest',
+//     'color': 'c62928',
+//   },
+//   {
+//     'name': 'Cliche',
+//     'color': '01e675',
+//   },
+//   {
+//     'name': 'Funny',
+//     'color': '2ab6f6',
+//   },
+//   {
+//     'name': 'Dumb',
+//     'color': 'bd00ff',
+//   },
+//   {
+//     'name': 'WTF',
+//     'color': 'fdff00',
+//   },
+// ];
 
 class Rating {
   Rating(this.rawName, this.rawColor);
@@ -53,21 +53,39 @@ class Rating {
   // setters
   set rating(double value) {
     _rating = value;
-    // print('Changed');
+    print('Changed: ' + value.toString());
+  }
+
+  factory Rating.fromJson(Map<dynamic, dynamic> json) {
+    return Rating(
+      json['name'],
+      json['color'],
+    );
   }
 }
 
-List getRatings() {
-  List<Rating> ratings = [];
+// Future<List<Rating>> getRatings(
+//     final String key, final DatabaseReference dbRef) async {
+//   List<Rating> ratings = [];
 
-  for (var i = 0; i < raw_ratings.length; i++) {
-    var r = raw_ratings[i];
-    // Rating rate = ;
-    ratings.add(Rating(r['name'], r['color']));
-  }
+//   var reviewTrendsFireReference =
+//       dbRef.child('review').child(key).child('trend');
 
-  return ratings;
-}
+//   print(reviewTrendsFireReference);
+
+//   final asdf = await reviewTrendsFireReference.once();
+
+//   print(asdf);
+//   // final asdf = await reviewFireReference.set(<String, Object>{});
+
+//   for (var i = 0; i < raw_ratings.length; i++) {
+//     var r = raw_ratings[i];
+//     // Rating rate = ;
+//     ratings.add(Rating(r['name'], r['color']));
+//   }
+
+//   return ratings;
+// }
 
 class SlidersView extends StatefulWidget {
   SlidersView({Key key, this.title: 'this'}) : super(key: key);
@@ -80,39 +98,22 @@ class SlidersView extends StatefulWidget {
 
 class _SlidersViewState extends State<SlidersView> {
   bool _paused = true;
-  // ratings
-  final List ratings = getRatings();
-  // TODO onLoad set this val to the reviewInstance
   // firebase
-  final dbRef = FirebaseDatabase.instance.reference();
+  final DatabaseReference dbRef = FirebaseDatabase.instance.reference();
 
   List<DatabaseReference> review_trends;
 
-  @override
-  void initState() {
-    super.initState();
-    // Put trends into review_trends
-    print('asdf');
-  }
-
-  /*
-   * HOW TO INIT RUN 
-   */
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   // _loadDarkMode();
-  // }
-
-  void _pause(String key) async {
-    var reviewFireReference = dbRef.child('review').child(key).once();
-    print(reviewFireReference);
-
-    // await ;
+  void _pause() {
     setState(() {
       _paused = !_paused;
     });
   }
+
+  // updateSlider(Rating rating, double newRating) {
+  //   setState(() {
+  //     rating.rating = newRating;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -159,26 +160,7 @@ class _SlidersViewState extends State<SlidersView> {
                         color: _paused
                             ? Theme.of(context).colorScheme.primary
                             : Theme.of(context).colorScheme.secondary,
-                        // onPressed: _pause(arguments['review_fire_id']),
-                        onPressed: () {
-                          // review_trends = dbRef
-                          //     .child('review')
-                          //     .child(arguments['review_fire_id'])
-                          //     .child('trends')
-                          //     .orderByChild('name')
-                          //     .equalTo('');
-
-                          //     var
-                          //     .then((DataSnapshot snapshot) {
-                          // }
-                          // );
-                          // print(snapshot.value['title']);
-
-                          // await ;
-                          setState(() {
-                            _paused = !_paused;
-                          });
-                        },
+                        onPressed: _pause,
                       ),
                     ),
                     Chip(
@@ -187,34 +169,59 @@ class _SlidersViewState extends State<SlidersView> {
                   ],
                 ),
                 Expanded(
-                  child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        for (Rating rating in ratings)
-                          Column(children: <Widget>[
-                            Expanded(
-                                child: RotatedBox(
-                              quarterTurns: -1,
-                              child: CupertinoSlider(
-                                  value: rating.rating,
-                                  activeColor:
-                                      _paused ? Colors.grey : rating.color,
-                                  min: Rating.minRating,
-                                  max: Rating.maxRating,
-                                  onChanged: (newRating) {
-                                    setState(() {
-                                      rating.rating = newRating;
-                                    });
-                                  }),
-                            )),
-                            _paused
-                                ? rating.name
-                                : Text(
-                                    rating.rating.round().toString(),
-                                  ),
-                          ]),
-                      ]),
+                  // SLIDERS
+                  child: FutureBuilder<DataSnapshot>(
+                      future: dbRef
+                          .child('review')
+                          .child(arguments['review_fire_id'])
+                          .child('trend')
+                          .once(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<DataSnapshot> snapshot) {
+                        if (snapshot.hasError) {
+                          return Center(
+                            child: Text('Error',
+                                style: Theme.of(context).textTheme.headline4),
+                          );
+                        } else if (snapshot.hasData) {
+                          List<Rating> ratings = [];
+                          for (var rating in snapshot.data.value) {
+                            ratings
+                                .add(Rating(rating['name'], rating['color']));
+                          }
+                          return Row(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                for (Rating rating in ratings)
+                                  Column(children: <Widget>[
+                                    Expanded(
+                                        child: RotatedBox(
+                                      quarterTurns: -1,
+                                      child: CupertinoSlider(
+                                          value: rating.rating,
+                                          activeColor: _paused
+                                              ? Colors.grey
+                                              : rating.color,
+                                          min: Rating.minRating,
+                                          max: Rating.maxRating,
+                                          onChanged: (newRating) {
+                                            setState(() =>
+                                                rating.rating = newRating);
+                                          }),
+                                    )),
+                                    _paused
+                                        ? rating.name
+                                        : Text(
+                                            rating.rating.round().toString(),
+                                          ),
+                                  ]),
+                              ]);
+                        } else
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                      }),
                 ),
               ],
             ),
