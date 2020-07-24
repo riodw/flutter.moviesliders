@@ -96,12 +96,16 @@ class SlidersView extends StatefulWidget {
   _SlidersViewState createState() => _SlidersViewState();
 }
 
+// do away with the FutureBuilder in this case and extract all of the list processing code to initState.
+// Call dbRef.child('foo_bar').once() in initState and with a .then callback, fill your elements list and call setState.
+
 class _SlidersViewState extends State<SlidersView> {
   bool _paused = true;
   // firebase
   final DatabaseReference dbRef = FirebaseDatabase.instance.reference();
 
-  List<DatabaseReference> review_trends;
+  // List<DatabaseReference> review_trends;
+  List<Rating> ratings = [];
 
   void _pause() {
     setState(() {
@@ -114,6 +118,21 @@ class _SlidersViewState extends State<SlidersView> {
   //     rating.rating = newRating;
   //   });
   // }
+
+  @override
+  void initState() {
+    super.initState();
+
+    var asdf = dbRef
+        .child('review')
+        .child('-MCt7kwueCB1EiaqO_Mw')
+        .child('trend')
+        .once();
+
+    // for (var rating in snapshot.data.value) {
+    //   ratings.add(Rating(rating['name'], rating['color']));
+    // }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -169,30 +188,12 @@ class _SlidersViewState extends State<SlidersView> {
                   ],
                 ),
                 Expanded(
-                  // SLIDERS
-                  child: FutureBuilder<DataSnapshot>(
-                      future: dbRef
-                          .child('review')
-                          .child(arguments['review_fire_id'])
-                          .child('trend')
-                          .once(),
-                      builder: (BuildContext context,
-                          AsyncSnapshot<DataSnapshot> snapshot) {
-                        if (snapshot.hasError) {
-                          return Center(
-                            child: Text('Error',
-                                style: Theme.of(context).textTheme.headline4),
-                          );
-                        } else if (snapshot.hasData) {
-                          List<Rating> ratings = [];
-                          for (var rating in snapshot.data.value) {
-                            ratings
-                                .add(Rating(rating['name'], rating['color']));
-                          }
-                          return Row(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
+                    // SLIDERS
+                    child: ratings.length > 0
+                        ? Row(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
                                 for (Rating rating in ratings)
                                   Column(children: <Widget>[
                                     Expanded(
@@ -216,13 +217,10 @@ class _SlidersViewState extends State<SlidersView> {
                                             rating.rating.round().toString(),
                                           ),
                                   ]),
-                              ]);
-                        } else
-                          return Center(
+                              ])
+                        : Center(
                             child: CircularProgressIndicator(),
-                          );
-                      }),
-                ),
+                          )),
               ],
             ),
           ),
