@@ -6,30 +6,22 @@ import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 // firebase
 import 'package:firebase_database/firebase_database.dart';
-
 // project
-// - auth
-// import 'package:flutter_moviesliders/services/auth_service.dart';
 import 'package:flutter_moviesliders/services/services.dart';
+import 'package:flutter_moviesliders/views/views.dart';
 import 'package:flutter_moviesliders/models/models.dart';
 
 /**
 https://www.omdbapi.com/?apikey=cf1629a0&v=1&plot=full&i=tt3896198
  */
 
-final String omdbUrl = 'https://www.omdbapi.com/?apikey=cf1629a0&v=1&plot=full';
-
 // OmdbModel
 Future<OmdbModel> _fetchOmdb(String imbdId) async {
-  final String url = omdbUrl + '&i=' + imbdId;
+  final String url = OmdbModel.url + '&i=' + imbdId;
   final response = await http.get(url);
   if (response.statusCode != 200) return null;
 
   var omdbJson = response.body;
-  // print(omdbJson);
-  // OmdbModel omdb_imdb = OmdbModel.fromJson(json.decode(omdbJson));
-
-  // return Text(omdb_imdb.title);
   return OmdbModel.fromJson(json.decode(omdbJson));
 }
 
@@ -47,7 +39,6 @@ class MovieInfoView extends StatelessWidget {
       builder: (BuildContext context, AsyncSnapshot<OmdbModel> snapshot) {
         OmdbModel omdb;
         // print(snapshot.data);
-
         if (snapshot.hasError)
           return Center(
             child: Text('Error', style: Theme.of(context).textTheme.headline4),
@@ -56,9 +47,6 @@ class MovieInfoView extends StatelessWidget {
           return Center(
             child: CircularProgressIndicator(),
           );
-        // if (snapshot.hasData) {
-        //   textChild = snapshot;
-        // }
         omdb = snapshot.data;
 
         return Container(
@@ -122,7 +110,6 @@ class MovieInfoView extends StatelessWidget {
                         ),
                       ),
                       onPressed: () async {
-                        // TODO: Add ImdbModel to a 'Movies' list with a counter
                         DatabaseReference reviewFireReference =
                             dbRef.child('review').push();
 
@@ -157,22 +144,27 @@ class MovieInfoView extends StatelessWidget {
                             {
                               'name': 'Interest',
                               'color': 'c62928',
+                              'order': 1,
                             },
                             {
                               'name': 'Cliche',
                               'color': '01e675',
+                              'order': 2,
                             },
                             {
                               'name': 'Funny',
                               'color': '2ab6f6',
+                              'order': 3,
                             },
                             {
                               'name': 'Dumb',
                               'color': 'bd00ff',
+                              'order': 4,
                             },
                             {
                               'name': 'WTF',
                               'color': 'fdff00',
+                              'order': 5,
                             },
                           ];
 
@@ -183,18 +175,24 @@ class MovieInfoView extends StatelessWidget {
                                   trends.child(_trend.key).child('data').push();
                               _trend_data.set(
                                 {
-                                  "s": 0,
-                                  "v": 2,
+                                  's': 0,
+                                  'v': 2,
                                 },
                               );
                             });
                           });
                           // change page
-                          Navigator.pushNamed(context, '/sliders', arguments: {
-                            'title': imdb.title,
-                            'review_fire_id': reviewFireReference.key,
-                            'omdb': omdb
-                          });
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SlidersView(
+                                    imdb.title, reviewFireReference.key, omdb)),
+                          );
+                          // Navigator.pushNamed(context, '/sliders', arguments: {
+                          //   'title': imdb.title,
+                          //   'review_fire_id': reviewFireReference.key,
+                          //   'omdb': omdb
+                          // });
                         }).catchError((onError) {
                           print(onError.toString());
                           return false;

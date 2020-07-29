@@ -7,7 +7,7 @@ class Routes {
   static const String myMovies = '/my_movies';
   static const String movieReview = '/movie_review';
   static const String chart = '/chart';
-  static const String sliders = '/sliders';
+  // static const String sliders = '/sliders';
   static const String about = '/about';
   static const String movieInfo = '/movie_info';
   static const String tos = '/tos';
@@ -19,7 +19,7 @@ class Routes {
     myMovies: (context) => MyMoviesView(),
     movieReview: (context) => MovieReviewView(),
     chart: (context) => ChartView(),
-    sliders: (context) => SlidersView(),
+    // sliders: (context) => SlidersView(),
     movieInfo: (context) => MovieInfoView(),
     about: (context) => AboutView(),
     tos: (context) => TermsOfServiceView(),

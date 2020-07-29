@@ -1,4 +1,5 @@
 import 'dart:async';
+// packages
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
@@ -8,59 +9,68 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_moviesliders/models/models.dart';
 import 'package:flutter_moviesliders/services/services.dart';
 
-final double minimumRating = 2;
-final double maximumRating = 100;
-
-class Rating {
-  Rating(this.rawName, this.rawColor, this.trend);
-  // Rating(
-  //   this.rawName,
-  //   this.rawColor,
-  // );
-
-  static final double minRating = minimumRating;
-  static final double maxRating = maximumRating;
-  final String rawName, rawColor;
-  Text _name;
-  Color _color;
-  double _rating = 40; // TODO change this to 2
-  DatabaseReference trend;
-
-  // getters
-  Text get name => Text(this.rawName);
-  Color get color => Color(int.parse('0xff${this.rawColor}'));
-  double get rating => _rating;
-  // setters
-  set rating(double value) {
-    _rating = value;
-    // print('Changed: ' + value.toString());
-  }
-
-  // factory Rating.fromJson(Map<dynamic, dynamic> json) {
-  //   return Rating(
-  //     json['name'],
-  //     json['color'],
-  //   );
-  // }
-}
-
 class SlidersView extends StatefulWidget {
-  SlidersView({Key key, this.title: 'this'}) : super(key: key);
+  SlidersView(this.title, this.reviewKey, this.omdb);
 
   final String title;
+  final String reviewKey;
+  final OmdbModel omdb;
 
   @override
   _SlidersViewState createState() => _SlidersViewState();
 }
 
 class _SlidersViewState extends State<SlidersView> {
-  bool _paused = true;
-  final DatabaseReference dbRef = FirebaseDatabase.instance.reference();
-  DatabaseReference trends;
+  static final DatabaseReference dbRef = FirebaseDatabase.instance.reference();
   Timer timer;
-
-  // List<DatabaseReference> review_trends;
+  bool _paused = true;
   List<Rating> ratings = [];
+  DatabaseReference review_trends;
+  int seconds = 0;
+  int time_spent = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    print(widget.title);
+    /*
+      do away with the FutureBuilder in this case and extract all of the list 
+      processing code to initState.
+      Call dbRef.child('foo_bar').once() in initState and with a .then callback, 
+      fill your elements list and call setState.
+    */
+    review_trends = dbRef.child('review').child(widget.reviewKey);
+
+    review_trends.child('trend').once().then((DataSnapshot snapshot) {
+      setState(() {
+        snapshot.value.forEach((key, value) {
+          ratings.add(Rating(
+              value['name'],
+              value['color'],
+              value['order'],
+              review_trends
+                  .child('trend')
+                  .child(key.toString())
+                  .child('data')));
+        });
+        ratings.sort((a, b) => a.order.compareTo(b.order));
+      });
+    });
+
+    // every 2 seconds update
+    timer = Timer.periodic(Duration(seconds: 2), (Timer t) => _updateTrends(t));
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    print('here');
+    // delete
+    if (seconds == 0) {
+      review_trends.remove();
+      super.dispose();
+    }
+  }
 
   void _pause() {
     setState(() {
@@ -68,58 +78,33 @@ class _SlidersViewState extends State<SlidersView> {
     });
   }
 
-  // updateSlider(Rating rating, double newRating) {
-  //   setState(() {
-  //     rating.rating = newRating;
-  //   });
-  // }
-
-  @override
-  void initState() {
-    super.initState();
-    /*
-      do away with the FutureBuilder in this case and extract all of the list 
-      processing code to initState.
-      Call dbRef.child('foo_bar').once() in initState and with a .then callback, 
-      fill your elements list and call setState.
-    */
-    DatabaseReference review_trends =
-        dbRef.child('review').child('-MDMuzY0Cgm2oDLCLAL2').child('trend');
-
-    review_trends.once().then((DataSnapshot snapshot) {
-      setState(() {
-        snapshot.value.forEach((key, value) {
-          // print(key.toString() + ' : ' + value.toString());
-          ratings.add(Rating(value['name'], value['color'],
-              review_trends.child(key.toString())));
-        });
-      });
+  void _updateTrends(Timer t) {
+    // print(t.tick); // how many times t has been updated
+    if (_paused || ratings.length == 0) return;
+    seconds = seconds + 2;
+    ratings.forEach((Rating rating) {
+      DatabaseReference ratingRef = rating.trend.push();
+      ratingRef.set(
+        {
+          's': seconds,
+          'v': rating.rating.round(),
+        },
+      );
     });
-
-    //
-    timer = Timer.periodic(Duration(seconds: 2), (Timer t) => updateTrends());
-  }
-
-  @override
-  void dispose() {
-    timer?.cancel();
-    super.dispose();
-  }
-
-  void updateTrends() {
-    if (!_paused) print(ratings.length);
+    setState(() {
+      time_spent = (seconds.toDouble() / 60).truncate();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     // https://flutter.dev/docs/cookbook/navigation/navigate-with-arguments
     final themeProvider = Provider.of<ThemeProvider>(context);
-    final Map arguments = ModalRoute.of(context).settings.arguments;
-    final OmdbModel omdb = arguments['omdb'];
+    // final Map arguments = ModalRoute.of(context).settings.arguments;
 
     return Scaffold(
         appBar: AppBar(
-          title: Text(arguments['title']),
+          title: Text(widget.title),
           actions: <Widget>[
             // action buttons
             IconButton(
@@ -145,7 +130,7 @@ class _SlidersViewState extends State<SlidersView> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     Chip(
-                      label: Text(omdb.runtime),
+                      label: Text(widget.omdb.runtime),
                     ),
                     Container(
                       width: 180,
@@ -158,7 +143,7 @@ class _SlidersViewState extends State<SlidersView> {
                       ),
                     ),
                     Chip(
-                      label: Text('160 min'),
+                      label: Text(time_spent.toString() + ' min'),
                     ),
                   ],
                 ),

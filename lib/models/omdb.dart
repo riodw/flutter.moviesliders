@@ -24,6 +24,8 @@ class OmdbModel {
   final String production;
   final String website;
   final String response;
+  static final String url =
+      'https://www.omdbapi.com/?apikey=cf1629a0&v=1&plot=full';
 
   OmdbModel({
     this.title,
