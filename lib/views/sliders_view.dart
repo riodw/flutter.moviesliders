@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
@@ -10,34 +11,12 @@ import 'package:flutter_moviesliders/services/services.dart';
 final double minimumRating = 2;
 final double maximumRating = 100;
 
-// Navigator.pushNamed(context, '/sliders',
-//     arguments: 'this is a test');
-
-// List raw_ratings = [
-//   {
-//     'name': 'Interest',
-//     'color': 'c62928',
-//   },
-//   {
-//     'name': 'Cliche',
-//     'color': '01e675',
-//   },
-//   {
-//     'name': 'Funny',
-//     'color': '2ab6f6',
-//   },
-//   {
-//     'name': 'Dumb',
-//     'color': 'bd00ff',
-//   },
-//   {
-//     'name': 'WTF',
-//     'color': 'fdff00',
-//   },
-// ];
-
 class Rating {
-  Rating(this.rawName, this.rawColor);
+  Rating(this.rawName, this.rawColor, this.trend);
+  // Rating(
+  //   this.rawName,
+  //   this.rawColor,
+  // );
 
   static final double minRating = minimumRating;
   static final double maxRating = maximumRating;
@@ -45,6 +24,7 @@ class Rating {
   Text _name;
   Color _color;
   double _rating = 40; // TODO change this to 2
+  DatabaseReference trend;
 
   // getters
   Text get name => Text(this.rawName);
@@ -53,39 +33,16 @@ class Rating {
   // setters
   set rating(double value) {
     _rating = value;
-    print('Changed: ' + value.toString());
+    // print('Changed: ' + value.toString());
   }
 
-  factory Rating.fromJson(Map<dynamic, dynamic> json) {
-    return Rating(
-      json['name'],
-      json['color'],
-    );
-  }
+  // factory Rating.fromJson(Map<dynamic, dynamic> json) {
+  //   return Rating(
+  //     json['name'],
+  //     json['color'],
+  //   );
+  // }
 }
-
-// Future<List<Rating>> getRatings(
-//     final String key, final DatabaseReference dbRef) async {
-//   List<Rating> ratings = [];
-
-//   var reviewTrendsFireReference =
-//       dbRef.child('review').child(key).child('trend');
-
-//   print(reviewTrendsFireReference);
-
-//   final asdf = await reviewTrendsFireReference.once();
-
-//   print(asdf);
-//   // final asdf = await reviewFireReference.set(<String, Object>{});
-
-//   for (var i = 0; i < raw_ratings.length; i++) {
-//     var r = raw_ratings[i];
-//     // Rating rate = ;
-//     ratings.add(Rating(r['name'], r['color']));
-//   }
-
-//   return ratings;
-// }
 
 class SlidersView extends StatefulWidget {
   SlidersView({Key key, this.title: 'this'}) : super(key: key);
@@ -96,13 +53,11 @@ class SlidersView extends StatefulWidget {
   _SlidersViewState createState() => _SlidersViewState();
 }
 
-// do away with the FutureBuilder in this case and extract all of the list processing code to initState.
-// Call dbRef.child('foo_bar').once() in initState and with a .then callback, fill your elements list and call setState.
-
 class _SlidersViewState extends State<SlidersView> {
   bool _paused = true;
-  // firebase
   final DatabaseReference dbRef = FirebaseDatabase.instance.reference();
+  DatabaseReference trends;
+  Timer timer;
 
   // List<DatabaseReference> review_trends;
   List<Rating> ratings = [];
@@ -122,16 +77,37 @@ class _SlidersViewState extends State<SlidersView> {
   @override
   void initState() {
     super.initState();
+    /*
+      do away with the FutureBuilder in this case and extract all of the list 
+      processing code to initState.
+      Call dbRef.child('foo_bar').once() in initState and with a .then callback, 
+      fill your elements list and call setState.
+    */
+    DatabaseReference review_trends =
+        dbRef.child('review').child('-MDMuzY0Cgm2oDLCLAL2').child('trend');
 
-    var asdf = dbRef
-        .child('review')
-        .child('-MCt7kwueCB1EiaqO_Mw')
-        .child('trend')
-        .once();
+    review_trends.once().then((DataSnapshot snapshot) {
+      setState(() {
+        snapshot.value.forEach((key, value) {
+          // print(key.toString() + ' : ' + value.toString());
+          ratings.add(Rating(value['name'], value['color'],
+              review_trends.child(key.toString())));
+        });
+      });
+    });
 
-    // for (var rating in snapshot.data.value) {
-    //   ratings.add(Rating(rating['name'], rating['color']));
-    // }
+    //
+    timer = Timer.periodic(Duration(seconds: 2), (Timer t) => updateTrends());
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
+  }
+
+  void updateTrends() {
+    if (!_paused) print(ratings.length);
   }
 
   @override
@@ -140,7 +116,6 @@ class _SlidersViewState extends State<SlidersView> {
     final themeProvider = Provider.of<ThemeProvider>(context);
     final Map arguments = ModalRoute.of(context).settings.arguments;
     final OmdbModel omdb = arguments['omdb'];
-    // print(arguments['review_fire_id']);
 
     return Scaffold(
         appBar: AppBar(
@@ -219,7 +194,7 @@ class _SlidersViewState extends State<SlidersView> {
                                   ]),
                               ])
                         : Center(
-                            child: CircularProgressIndicator(),
+                            child: const CircularProgressIndicator(),
                           )),
               ],
             ),

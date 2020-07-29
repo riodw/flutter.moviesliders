@@ -123,7 +123,8 @@ class MovieInfoView extends StatelessWidget {
                       ),
                       onPressed: () async {
                         // TODO: Add ImdbModel to a 'Movies' list with a counter
-                        var reviewFireReference = dbRef.child('review').push();
+                        DatabaseReference reviewFireReference =
+                            dbRef.child('review').push();
 
                         await reviewFireReference.set(<String, Object>{
                           'date_reviewed': DateTime.now().toString(),
@@ -145,66 +146,55 @@ class MovieInfoView extends StatelessWidget {
                             'media': imdb.media,
                           },
                           // the review data
-                          'trend': [
+                          'trend': [],
+                        }).then((onValue) {
+                          DatabaseReference trends = dbRef
+                              .child('review')
+                              .child(reviewFireReference.key)
+                              .child('trend');
+
+                          var _trends = [
                             {
                               'name': 'Interest',
                               'color': 'c62928',
-                              'data': [
-                                {
-                                  "s": 0,
-                                  "v": 2,
-                                },
-                              ],
                             },
                             {
                               'name': 'Cliche',
                               'color': '01e675',
-                              'data': [
-                                {
-                                  "s": 0,
-                                  "v": 2,
-                                },
-                              ],
                             },
                             {
                               'name': 'Funny',
                               'color': '2ab6f6',
-                              'data': [
-                                {
-                                  "s": 0,
-                                  "v": 2,
-                                },
-                              ],
                             },
                             {
                               'name': 'Dumb',
                               'color': 'bd00ff',
-                              'data': [
-                                {
-                                  "s": 0,
-                                  "v": 2,
-                                },
-                              ],
                             },
                             {
                               'name': 'WTF',
                               'color': 'fdff00',
-                              'data': [
+                            },
+                          ];
+
+                          _trends.forEach((element) {
+                            DatabaseReference _trend = trends.push();
+                            _trend.set(element).then((asdf) {
+                              DatabaseReference _trend_data =
+                                  trends.child(_trend.key).child('data').push();
+                              _trend_data.set(
                                 {
                                   "s": 0,
                                   "v": 2,
                                 },
-                              ],
-                            },
-                          ],
-                        }).then((onValue) {
-                          // print(reviewReference.key);
+                              );
+                            });
+                          });
+                          // change page
                           Navigator.pushNamed(context, '/sliders', arguments: {
                             'title': imdb.title,
                             'review_fire_id': reviewFireReference.key,
                             'omdb': omdb
                           });
-                          return onValue;
                         }).catchError((onError) {
                           print(onError.toString());
                           return false;
