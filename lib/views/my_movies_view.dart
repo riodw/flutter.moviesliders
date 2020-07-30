@@ -155,8 +155,6 @@ class _MyMoviesState extends State<MyMoviesView> {
             minWidth: 320.0,
             height: 50.0,
             child: RaisedButton(
-              // textColor: Colors.white,
-              color: Colors.blueAccent,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.0)),
               child: Container(
@@ -171,7 +169,6 @@ class _MyMoviesState extends State<MyMoviesView> {
                   context: context,
                   delegate: MovieSearch(),
                 );
-                // Navigator.pushNamed(context, '/search_movies');
               },
             ),
           ),
@@ -267,25 +264,25 @@ class _MyMoviesState extends State<MyMoviesView> {
   }
 }
 
-final String imdbUrl = "https://sg.media-imdb.com/suggests/";
+final String imdbUrl = 'https://sg.media-imdb.com/suggests/';
 
 Future<List<ImdbModel>> _fetchImdb(String query) async {
   List<ImdbModel> suggestions = [];
 
   final String urlSearch =
-      imdbUrl + query.substring(0, 1) + "/" + query + ".json";
+      imdbUrl + query.substring(0, 1) + '/' + query + '.json';
   final response = await http.get(urlSearch);
 
   if (response.statusCode != 200) return suggestions;
 
   var imdbJson = response.body;
 
-  imdbJson = imdbJson.substring(imdbJson.indexOf("(") + 1, imdbJson.length - 1);
+  imdbJson = imdbJson.substring(imdbJson.indexOf('(') + 1, imdbJson.length - 1);
   var imdb = json.decode(imdbJson);
 
   for (var word in imdb['d']) {
     if (word['q'] != null &&
-        word['q'] == "feature" &&
+        word['q'] == 'feature' &&
         word['i'] != null &&
         word['i'][0] != null) {
       suggestions.add(ImdbModel.fromJson(word));

@@ -98,8 +98,6 @@ class MovieInfoView extends StatelessWidget {
                     // minWidth: 330.0,
                     height: 50.0,
                     child: RaisedButton(
-                      // textColor: Colors.white,
-                      color: Colors.blueAccent,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(4.0)),
                       child: Container(
@@ -115,7 +113,7 @@ class MovieInfoView extends StatelessWidget {
 
                         await reviewFireReference.set(<String, Object>{
                           'date_reviewed': DateTime.now().toString(),
-                          'rating_avg': 69.236465,
+                          'rating_avg': 2,
                           'link_id': omdb.imdbID,
                           'type': omdb.type,
                           'title': imdb.title,
@@ -186,7 +184,9 @@ class MovieInfoView extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => SlidersView(
-                                    imdb.title, reviewFireReference.key, omdb)),
+                                    title: imdb.title,
+                                    reviewKey: reviewFireReference.key,
+                                    omdb: omdb)),
                           );
                           // Navigator.pushNamed(context, '/sliders', arguments: {
                           //   'title': imdb.title,

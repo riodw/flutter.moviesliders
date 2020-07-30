@@ -12,7 +12,7 @@ class MovieReviewView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Review'),
+        title: Text('Movie Review'),
         actions: <Widget>[],
       ),
       body: SafeArea(

@@ -24,38 +24,41 @@ class OmdbModel {
   final String production;
   final String website;
   final String response;
+  final int runtimeNum;
   static final String url =
       'https://www.omdbapi.com/?apikey=cf1629a0&v=1&plot=full';
 
-  OmdbModel({
-    this.title,
-    this.year,
-    this.rated,
-    this.released,
-    this.runtime,
-    this.genre,
-    this.director,
-    this.writer,
-    this.actors,
-    this.plot,
-    this.language,
-    this.country,
-    this.awards,
-    this.poster,
-    this.ratings,
-    this.metascore,
-    this.imdbRating,
-    this.imdbVotes,
-    this.imdbID,
-    this.type,
-    this.dvd,
-    this.boxOffice,
-    this.production,
-    this.website,
-    this.response,
-  });
+  OmdbModel(
+      {this.title,
+      this.rated,
+      this.released,
+      this.runtime,
+      this.genre,
+      this.director,
+      this.writer,
+      this.actors,
+      this.plot,
+      this.language,
+      this.country,
+      this.awards,
+      this.poster,
+      this.ratings,
+      this.metascore,
+      this.imdbRating,
+      this.imdbVotes,
+      this.imdbID,
+      this.type,
+      this.dvd,
+      this.boxOffice,
+      this.production,
+      this.website,
+      this.response,
+      // processed
+      this.year,
+      this.runtimeNum});
 
   factory OmdbModel.fromJson(Map<String, dynamic> json) {
+    // String temp = json['Runtime'].substring(0, json['Runtime'].indexOf(" "))
     return OmdbModel(
       title: json['Title'],
       year: int.parse(json['Year']),
@@ -82,6 +85,8 @@ class OmdbModel {
       production: json['Production'],
       website: json['Website'],
       response: json['Response'],
+      runtimeNum:
+          int.parse(json['Runtime'].substring(0, json['Runtime'].indexOf(" "))),
     );
   }
 }

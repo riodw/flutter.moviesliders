@@ -9,7 +9,7 @@ class Rating {
   static final double maxRating = 100;
   final String rawName, rawColor;
   final int order;
-  double _rating = 40; // TODO change this to 2
+  double _rating = 2;
   Text _name;
   Color _color;
   DatabaseReference trend;
