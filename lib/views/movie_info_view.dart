@@ -38,7 +38,6 @@ class MovieInfoView extends StatelessWidget {
       future: _fetchOmdb(imdb.id),
       builder: (BuildContext context, AsyncSnapshot<OmdbModel> snapshot) {
         OmdbModel omdb;
-        // print(snapshot.data);
         if (snapshot.hasError)
           return Center(
             child: Text('Error', style: Theme.of(context).textTheme.headline4),
