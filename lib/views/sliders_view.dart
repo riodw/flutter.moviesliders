@@ -30,7 +30,7 @@ class _SlidersViewState extends State<SlidersView> {
   static final DatabaseReference dbRef = FirebaseDatabase.instance.reference();
   bool _paused = true;
   Timer _timer;
-  List<Rating> _ratings = [];
+  List<Trend> _ratings = [];
   DatabaseReference _reviewRef;
   int _seconds = 0;
   int _timeSpent = 0;
@@ -52,7 +52,7 @@ class _SlidersViewState extends State<SlidersView> {
     _reviewRef.child('trend').once().then((DataSnapshot snapshot) {
       setState(() {
         snapshot.value.forEach((key, value) {
-          _ratings.add(Rating(value['name'], value['color'], value['order'],
+          _ratings.add(Trend(value['name'], value['color'], value['order'],
               _reviewRef.child('trend').child(key.toString()).child('data')));
         });
         _ratings.sort((a, b) => a.order.compareTo(b.order));
@@ -76,7 +76,7 @@ class _SlidersViewState extends State<SlidersView> {
     _paused = true;
     _timer?.cancel();
     double average = _avg / _updates;
-    _reviewRef.child('rating_avg').set(average);
+    _reviewRef.child('avg').set(average);
   }
 
   void _updateTrends() {
@@ -109,7 +109,7 @@ class _SlidersViewState extends State<SlidersView> {
       }
     });
 
-    _ratings.forEach((Rating _rating) {
+    _ratings.forEach((Trend _rating) {
       // update average
       if (_rating.rawName == 'Interest') {
         _avg = _avg + _rating.rating.round();
@@ -242,7 +242,7 @@ class _SlidersViewState extends State<SlidersView> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
-                                    for (Rating rating in _ratings)
+                                    for (Trend rating in _ratings)
                                       Column(children: <Widget>[
                                         Expanded(
                                             child: RotatedBox(
@@ -252,8 +252,8 @@ class _SlidersViewState extends State<SlidersView> {
                                               activeColor: _paused
                                                   ? Colors.grey
                                                   : rating.color,
-                                              min: Rating.minRating,
-                                              max: Rating.maxRating,
+                                              min: Trend.minRating,
+                                              max: Trend.maxRating,
                                               onChanged: (newRating) {
                                                 setState(() =>
                                                     rating.rating = newRating);

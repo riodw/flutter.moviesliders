@@ -1,4 +1,35 @@
 class OmdbModel {
+  OmdbModel(
+      this.title,
+      this.year,
+      this.rated,
+      this.released,
+      this.runtime,
+      this.genre,
+      this.director,
+      this.writer,
+      this.actors,
+      this.plot,
+      this.language,
+      this.country,
+      this.awards,
+      this.poster,
+      this.ratings,
+      this.metascore,
+      this.imdbRating,
+      this.imdbVotes,
+      this.imdbID,
+      this.type,
+      this.dvd,
+      this.boxOffice,
+      this.production,
+      this.website,
+      this.response)
+      : runtimeNum = int.parse(runtime.substring(0, runtime.indexOf(" ")));
+
+  static final String url =
+      'https://www.omdbapi.com/?apikey=cf1629a0&v=1&plot=full';
+
   final String title;
   final int year;
   final String rated;
@@ -24,69 +55,37 @@ class OmdbModel {
   final String production;
   final String website;
   final String response;
+  // calculated values
   final int runtimeNum;
-  static final String url =
-      'https://www.omdbapi.com/?apikey=cf1629a0&v=1&plot=full';
-
-  OmdbModel(
-      {this.title,
-      this.rated,
-      this.released,
-      this.runtime,
-      this.genre,
-      this.director,
-      this.writer,
-      this.actors,
-      this.plot,
-      this.language,
-      this.country,
-      this.awards,
-      this.poster,
-      this.ratings,
-      this.metascore,
-      this.imdbRating,
-      this.imdbVotes,
-      this.imdbID,
-      this.type,
-      this.dvd,
-      this.boxOffice,
-      this.production,
-      this.website,
-      this.response,
-      // processed
-      this.year,
-      this.runtimeNum});
 
   factory OmdbModel.fromJson(Map<String, dynamic> json) {
     // String temp = json['Runtime'].substring(0, json['Runtime'].indexOf(" "))
     return OmdbModel(
-      title: json['Title'],
-      year: int.parse(json['Year']),
-      rated: json['Rated'],
-      released: json['Released'],
-      runtime: json['Runtime'],
-      genre: json['Genre'],
-      director: json['Director'],
-      writer: json['Writer'],
-      actors: json['Actors'],
-      plot: json['Plot'],
-      language: json['Language'],
-      country: json['Country'],
-      awards: json['Awards'],
-      poster: json['Poster'],
-      ratings: json['Ratings'],
-      metascore: json['Metascore'],
-      imdbRating: json['imdbRating'],
-      imdbVotes: json['imdbVotes'],
-      imdbID: json['imdbID'],
-      type: json['Type'],
-      dvd: json['DVD'],
-      boxOffice: json['BoxOffice'],
-      production: json['Production'],
-      website: json['Website'],
-      response: json['Response'],
-      runtimeNum:
-          int.parse(json['Runtime'].substring(0, json['Runtime'].indexOf(" "))),
+      json['Title'],
+      int.parse(json['Year']),
+      json['Rated'],
+      json['Released'],
+      json['Runtime'],
+      json['Genre'],
+      json['Director'],
+      json['Writer'],
+      json['Actors'],
+      json['Plot'],
+      json['Language'],
+      json['Country'],
+      json['Awards'],
+      json['Poster'],
+      json['Ratings'],
+      json['Metascore'],
+      json['imdbRating'],
+      json['imdbVotes'],
+      json['imdbID'],
+      json['Type'],
+      json['DVD'],
+      json['BoxOffice'],
+      json['Production'],
+      json['Website'],
+      json['Response'],
     );
   }
 }

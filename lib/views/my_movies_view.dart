@@ -4,14 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
-// firebase
 import 'package:firebase_database/firebase_database.dart';
 // project
-// - auth
-import 'package:flutter_moviesliders/services/auth_service.dart';
 import 'package:flutter_moviesliders/models/models.dart';
+import 'package:flutter_moviesliders/services/auth_service.dart';
 import 'package:flutter_moviesliders/services/services.dart';
-// charts
+// widgets
 import 'package:flutter_moviesliders/widgets/chart_widget.dart';
 
 class MyMoviesView extends StatefulWidget {
@@ -195,13 +193,13 @@ class _MyMoviesState extends State<MyMoviesView> {
                       print(snapshot.error);
                       return Text('Error');
                     } else if (snapshot.hasData && snapshot.data != null) {
-                      print(snapshot.data.value);
-                      List review = [];
+                      // print(snapshot.data.value);
+                      List<Review> reviews = [];
                       snapshot.data.value.forEach((key, value) {
-                        review.add(value);
+                        reviews.add(Review.fromJson(value));
                       });
                       return Column(children: <Widget>[
-                        for (var asdf in review)
+                        for (var review in reviews)
                           GestureDetector(
                             child: Container(
                                 margin: EdgeInsets.symmetric(horizontal: 15.0),
@@ -232,18 +230,19 @@ class _MyMoviesState extends State<MyMoviesView> {
                                           .withSampleData(animate: false),
                                     ),
                                     Text(
-                                      'Altered Carbon: Season 1 Episode 5 (The Wrong Man)',
+                                      review.title,
                                       style:
                                           Theme.of(context).textTheme.headline3,
                                     ),
                                     SizedBox(height: 5.0),
                                     Text(
-                                      '2017 - Rating 6.9',
+                                      '2017 - Rating: ' +
+                                          review.avg10.toString(),
                                       textAlign: TextAlign.left,
                                       style:
                                           Theme.of(context).textTheme.headline4,
                                     ),
-                                    SizedBox(height: 10.0),
+                                    SizedBox(height: 8.0),
                                     Row(children: <Widget>[
                                       Container(
                                         decoration: BoxDecoration(
@@ -264,7 +263,7 @@ class _MyMoviesState extends State<MyMoviesView> {
                                               CrossAxisAlignment.start,
                                           children: <Widget>[
                                             Text(
-                                              'Rio Weber',
+                                              review.userName,
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .bodyText1,
@@ -279,7 +278,7 @@ class _MyMoviesState extends State<MyMoviesView> {
                                     ]),
                                     Divider(
                                       color: Colors.grey[300],
-                                      height: 35,
+                                      height: 40,
                                       thickness: 1,
                                       indent: 15,
                                       endIndent: 15,

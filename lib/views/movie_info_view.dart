@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
-// firebase
 import 'package:firebase_database/firebase_database.dart';
 // project
 import 'package:flutter_moviesliders/services/services.dart';
@@ -112,17 +111,17 @@ class MovieInfoView extends StatelessWidget {
 
                         await reviewFireReference.set(<String, Object>{
                           'date_reviewed': DateTime.now().toString(),
-                          'rating_avg': 2,
-                          'link_id': omdb.imdbID,
-                          'type': omdb.type,
+                          'avg': 2,
                           'title': imdb.title,
+                          'type': omdb.type,
+                          'link_id': omdb.imdbID,
                           'user_id': 'asdf',
                           'user': {
                             'name': 'asdf asdf',
                             'review_number': 0,
                           },
                           'movie': {
-                            'movie_id': omdb.imdbID,
+                            'imdb_id': omdb.imdbID,
                             'title': omdb.title,
                             'runtime': omdb.runtime,
                             'date_released':

@@ -1,22 +1,24 @@
+// packages
 import 'package:flutter/material.dart';
-// firebase
 import 'package:firebase_database/firebase_database.dart';
 
-class Rating {
-  Rating(this.rawName, this.rawColor, this.order, this.trend);
+class Trend {
+  Trend(this.rawName, this.rawColor, this.order, this.trend)
+      : name = Text(rawName),
+        color = Color(int.parse('0xff${rawColor}'));
 
   static final double minRating = 2;
   static final double maxRating = 100;
-  final String rawName, rawColor;
+  final String rawName;
+  final String rawColor;
   final int order;
+  final DatabaseReference trend;
+  // calculated values
+  final Text name;
+  final Color color;
   double _rating = 2;
-  Text _name;
-  Color _color;
-  DatabaseReference trend;
 
   // getters
-  Text get name => Text(this.rawName);
-  Color get color => Color(int.parse('0xff${this.rawColor}'));
   double get rating => _rating;
   // setters
   set rating(double value) {
@@ -24,8 +26,8 @@ class Rating {
     // print('Changed: ' + value.toString());
   }
 
-  // factory Rating.fromJson(Map<dynamic, dynamic> json) {
-  //   return Rating(
+  // factory Trend.fromJson(Map<dynamic, dynamic> json) {
+  //   return Trend(
   //     json['name'],
   //     json['color'],
   //   );
