@@ -6,9 +6,9 @@ import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_database/firebase_database.dart';
 // project
-import 'package:flutter_moviesliders/models/models.dart';
 import 'package:flutter_moviesliders/services/auth_service.dart';
 import 'package:flutter_moviesliders/services/services.dart';
+import 'package:flutter_moviesliders/models/models.dart';
 // widgets
 import 'package:flutter_moviesliders/widgets/chart_widget.dart';
 
@@ -199,7 +199,7 @@ class _MyMoviesState extends State<MyMoviesView> {
                         reviews.add(Review.fromJson(value));
                       });
                       return Column(children: <Widget>[
-                        for (var review in reviews)
+                        for (Review review in reviews)
                           GestureDetector(
                             child: Container(
                                 margin: EdgeInsets.symmetric(horizontal: 15.0),
@@ -227,7 +227,8 @@ class _MyMoviesState extends State<MyMoviesView> {
                                       ),
                                       height: 170.0,
                                       child: NumericComboLinePointChartRaw
-                                          .withSampleData(animate: false),
+                                          .withTrendData(review.trends,
+                                              animate: false),
                                     ),
                                     Text(
                                       review.title,
@@ -236,7 +237,11 @@ class _MyMoviesState extends State<MyMoviesView> {
                                     ),
                                     SizedBox(height: 5.0),
                                     Text(
-                                      '2017 - Rating: ' +
+                                      (review.type == 'movie'
+                                              ? review.movie.dateReleased.year
+                                                  .toString()
+                                              : '9999') +
+                                          ' - Rating: ' +
                                           review.avg10.toString(),
                                       textAlign: TextAlign.left,
                                       style:
@@ -269,7 +274,9 @@ class _MyMoviesState extends State<MyMoviesView> {
                                                   .bodyText1,
                                             ),
                                             Text(
-                                              '22 Mar 2018 - asdf',
+                                              review.dateReviewedReadable
+                                              // + ' - asdf'
+                                              ,
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .bodyText2,

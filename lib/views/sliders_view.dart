@@ -30,7 +30,7 @@ class _SlidersViewState extends State<SlidersView> {
   static final DatabaseReference dbRef = FirebaseDatabase.instance.reference();
   bool _paused = true;
   Timer _timer;
-  List<Trend> _ratings = [];
+  List<Trend> _trends = [];
   DatabaseReference _reviewRef;
   int _seconds = 0;
   int _timeSpent = 0;
@@ -52,10 +52,14 @@ class _SlidersViewState extends State<SlidersView> {
     _reviewRef.child('trend').once().then((DataSnapshot snapshot) {
       setState(() {
         snapshot.value.forEach((key, value) {
-          _ratings.add(Trend(value['name'], value['color'], value['order'],
-              _reviewRef.child('trend').child(key.toString()).child('data')));
+          _trends.add(Trend(
+              value['name'], value['color'], value['order'], key.toString(),
+              trendDataRef: _reviewRef
+                  .child('trend')
+                  .child(key.toString())
+                  .child('data')));
         });
-        _ratings.sort((a, b) => a.order.compareTo(b.order));
+        _trends.sort((a, b) => a.order.compareTo(b.order));
       });
     });
 
@@ -80,7 +84,7 @@ class _SlidersViewState extends State<SlidersView> {
   }
 
   void _updateTrends() {
-    if (_paused || _ratings.length == 0) return;
+    if (_paused || _trends.length == 0) return;
     _seconds = _seconds + 2;
     setState(() {
       _timeSpent = (_seconds.toDouble() / 60).truncate();
@@ -109,13 +113,13 @@ class _SlidersViewState extends State<SlidersView> {
       }
     });
 
-    _ratings.forEach((Trend _rating) {
+    _trends.forEach((Trend _rating) {
       // update average
       if (_rating.rawName == 'Interest') {
         _avg = _avg + _rating.rating.round();
       }
       // post updated
-      DatabaseReference ratingRef = _rating.trend.push();
+      DatabaseReference ratingRef = _rating.trendDataRef.push();
       ratingRef.set(
         {
           's': _seconds,
@@ -236,13 +240,13 @@ class _SlidersViewState extends State<SlidersView> {
                     ),
                     Expanded(
                         // SLIDERS
-                        child: _ratings.length > 0
+                        child: _trends.length > 0
                             ? Row(
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
-                                    for (Trend rating in _ratings)
+                                    for (Trend rating in _trends)
                                       Column(children: <Widget>[
                                         Expanded(
                                             child: RotatedBox(

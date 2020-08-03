@@ -1,3 +1,4 @@
 export 'routes.dart';
-// export 'globals.dart'; // language keys
+export 'globals.dart';
 export 'app_themes.dart';
+// language keys

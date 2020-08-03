@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_database/firebase_database.dart';
 // project
+import 'package:flutter_moviesliders/constants/globals.dart';
 import 'package:flutter_moviesliders/services/services.dart';
 import 'package:flutter_moviesliders/views/views.dart';
 import 'package:flutter_moviesliders/models/models.dart';
@@ -120,23 +121,30 @@ class MovieInfoView extends StatelessWidget {
                             'name': 'asdf asdf',
                             'review_number': 0,
                           },
-                          'movie': {
+                          'medium': {
                             'imdb_id': omdb.imdbID,
                             'title': omdb.title,
                             'runtime': omdb.runtime,
-                            'date_released':
-                                omdb.released, // TODO convert to date time
+                            'date_released': (() {
+                              final List<String> dateParsed =
+                                  omdb.released.split(' ');
+                              final int day = int.parse(dateParsed[0]);
+                              final int year = int.parse(dateParsed[2]);
+                              int month = interpretMonthString(dateParsed[1]);
+                              return DateTime.utc(year, month, day);
+                            })()
+                                .toString(),
                             'media': imdb.media,
                           },
                           // the review data
                           'trend': [],
                         }).then((onValue) {
-                          DatabaseReference trends = dbRef
+                          final DatabaseReference trends = dbRef
                               .child('review')
                               .child(reviewFireReference.key)
                               .child('trend');
 
-                          var _trends = [
+                          final List _trends = [
                             {
                               'name': 'Interest',
                               'color': 'c62928',
@@ -193,7 +201,7 @@ class MovieInfoView extends StatelessWidget {
                           // });
                         }).catchError((onError) {
                           print(onError.toString());
-                          return false;
+                          return null;
                         });
                         // https://medium.com/firebase-tips-tricks/how-to-use-firebase-queries-in-flutter-361f21005467
                         // https://pub.dev/packages/firebase_database/example#-example-tab-
