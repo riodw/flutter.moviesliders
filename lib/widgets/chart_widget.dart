@@ -54,79 +54,79 @@ class NumericComboLinePointChart extends StatelessWidget {
   }
 
   /// Create one series with sample hard coded data.
-  static List<charts.Series<TrendData, int>> _createSampleData() {
+  static List<charts.Series<Rating, int>> _createSampleData() {
     final interestData = [
-      TrendData(0, 5),
-      TrendData(1, 80),
-      TrendData(2, 85),
-      TrendData(3, 75),
+      Rating(0, 5),
+      Rating(1, 80),
+      Rating(2, 85),
+      Rating(3, 75),
     ];
     final clicheData = [
-      TrendData(0, 2),
-      TrendData(1, 2),
-      TrendData(2, 10),
-      TrendData(3, 22),
+      Rating(0, 2),
+      Rating(1, 2),
+      Rating(2, 10),
+      Rating(3, 22),
     ];
     final dumbData = [
-      TrendData(0, 5),
-      TrendData(1, 35),
-      TrendData(2, 10),
-      TrendData(3, 5),
+      Rating(0, 5),
+      Rating(1, 35),
+      Rating(2, 10),
+      Rating(3, 5),
     ];
     final wtfData = [
-      TrendData(0, 2),
-      TrendData(1, 2),
-      TrendData(2, 22),
-      TrendData(3, 2),
+      Rating(0, 2),
+      Rating(1, 2),
+      Rating(2, 22),
+      Rating(3, 2),
     ];
     final funnyData = [
-      TrendData(0, 2),
-      TrendData(1, 2),
-      TrendData(2, 10),
-      TrendData(3, 2),
+      Rating(0, 2),
+      Rating(1, 2),
+      Rating(2, 10),
+      Rating(3, 2),
     ];
 
     return [
-      charts.Series<TrendData, int>(
+      charts.Series<Rating, int>(
         id: 'Interest',
         colorFn: (_, __) => charts.MaterialPalette.red.shadeDefault,
-        domainFn: (TrendData rating, _) => rating.second,
-        measureFn: (TrendData rating, _) => rating.value,
+        domainFn: (Rating rating, _) => rating.second,
+        measureFn: (Rating rating, _) => rating.value,
         data: interestData,
       ),
-      charts.Series<TrendData, int>(
+      charts.Series<Rating, int>(
         id: 'Cliche',
         colorFn: (_, __) => charts.MaterialPalette.green.shadeDefault,
-        domainFn: (TrendData rating, _) => rating.second,
-        measureFn: (TrendData rating, _) => rating.value,
+        domainFn: (Rating rating, _) => rating.second,
+        measureFn: (Rating rating, _) => rating.value,
         data: clicheData,
       ),
-      charts.Series<TrendData, int>(
+      charts.Series<Rating, int>(
         id: 'Dumb',
         colorFn: (_, __) => charts.MaterialPalette.purple.shadeDefault,
-        domainFn: (TrendData rating, _) => rating.second,
-        measureFn: (TrendData rating, _) => rating.value,
+        domainFn: (Rating rating, _) => rating.second,
+        measureFn: (Rating rating, _) => rating.value,
         data: dumbData,
       ),
-      charts.Series<TrendData, int>(
+      charts.Series<Rating, int>(
         id: 'WTF',
         colorFn: (_, __) => charts.MaterialPalette.yellow.shadeDefault,
-        domainFn: (TrendData rating, _) => rating.second,
-        measureFn: (TrendData rating, _) => rating.value,
+        domainFn: (Rating rating, _) => rating.second,
+        measureFn: (Rating rating, _) => rating.value,
         data: wtfData,
       ),
-      charts.Series<TrendData, int>(
+      charts.Series<Rating, int>(
         id: 'Funny',
         colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-        domainFn: (TrendData rating, _) => rating.second,
-        measureFn: (TrendData rating, _) => rating.value,
+        domainFn: (Rating rating, _) => rating.second,
+        measureFn: (Rating rating, _) => rating.value,
         data: funnyData,
       ),
-      // charts.Series<TrendData, int>(
+      // charts.Series<Rating, int>(
       //     id: 'Mobile',
       //     colorFn: (_, __) => charts.MaterialPalette.green.shadeDefault,
-      //     domainFn: (TrendData sales, _) => sales.year,
-      //     measureFn: (TrendData sales, _) => sales.sales,
+      //     domainFn: (Rating sales, _) => sales.year,
+      //     measureFn: (Rating sales, _) => sales.sales,
       //     data: mobileSalesData)
       // Configure our custom point renderer for this series.
       // ..setAttribute(charts.rendererIdKey, 'customPoint'),
@@ -149,17 +149,17 @@ class NumericComboLinePointChartRaw extends StatelessWidget {
     );
   }
 
-  factory NumericComboLinePointChartRaw.withTrendData(trendsList,
+  factory NumericComboLinePointChartRaw.withRatings(trendsList,
       {bool animate: true}) {
-    List<charts.Series<TrendData, int>> trendSeries = [];
+    List<charts.Series<Rating, int>> trendSeries = [];
 
     for (Trend trend in trendsList) {
-      var trendSeri = charts.Series<TrendData, int>(
+      var trendSeri = charts.Series<Rating, int>(
         id: trend.rawName,
         colorFn: (_, __) => charts.ColorUtil.fromDartColor(trend.color),
-        domainFn: (TrendData rating, _) => rating.second,
-        measureFn: (TrendData rating, _) => rating.value,
-        data: trend.trendDatas,
+        domainFn: (Rating rating, _) => rating.second,
+        measureFn: (Rating rating, _) => rating.value,
+        data: trend.ratings,
       );
 
       trendSeries.add(trendSeri);
@@ -206,79 +206,79 @@ class NumericComboLinePointChartRaw extends StatelessWidget {
   }
 
   /// Create one series with sample hard coded data.
-  static List<charts.Series<TrendData, int>> _createSampleData() {
+  static List<charts.Series<Rating, int>> _createSampleData() {
     final interestData = [
-      TrendData(0, 5),
-      TrendData(1, 80),
-      TrendData(2, 85),
-      TrendData(3, 75),
+      Rating(0, 5),
+      Rating(1, 80),
+      Rating(2, 85),
+      Rating(3, 75),
     ];
     final clicheData = [
-      TrendData(0, 2),
-      TrendData(1, 2),
-      TrendData(2, 10),
-      TrendData(3, 22),
+      Rating(0, 2),
+      Rating(1, 2),
+      Rating(2, 10),
+      Rating(3, 22),
     ];
     final dumbData = [
-      TrendData(0, 5),
-      TrendData(1, 35),
-      TrendData(2, 10),
-      TrendData(3, 5),
+      Rating(0, 5),
+      Rating(1, 35),
+      Rating(2, 10),
+      Rating(3, 5),
     ];
     final wtfData = [
-      TrendData(0, 2),
-      TrendData(1, 2),
-      TrendData(2, 22),
-      TrendData(3, 2),
+      Rating(0, 2),
+      Rating(1, 2),
+      Rating(2, 22),
+      Rating(3, 2),
     ];
     final funnyData = [
-      TrendData(0, 2),
-      TrendData(1, 2),
-      TrendData(2, 10),
-      TrendData(3, 2),
+      Rating(0, 2),
+      Rating(1, 2),
+      Rating(2, 10),
+      Rating(3, 2),
     ];
 
     return [
-      charts.Series<TrendData, int>(
+      charts.Series<Rating, int>(
         id: 'Interest',
         colorFn: (_, __) => charts.MaterialPalette.red.shadeDefault,
-        domainFn: (TrendData rating, _) => rating.second,
-        measureFn: (TrendData rating, _) => rating.value,
+        domainFn: (Rating rating, _) => rating.second,
+        measureFn: (Rating rating, _) => rating.value,
         data: interestData,
       ),
-      charts.Series<TrendData, int>(
+      charts.Series<Rating, int>(
         id: 'Cliche',
         colorFn: (_, __) => charts.MaterialPalette.green.shadeDefault,
-        domainFn: (TrendData rating, _) => rating.second,
-        measureFn: (TrendData rating, _) => rating.value,
+        domainFn: (Rating rating, _) => rating.second,
+        measureFn: (Rating rating, _) => rating.value,
         data: clicheData,
       ),
-      charts.Series<TrendData, int>(
+      charts.Series<Rating, int>(
         id: 'Dumb',
         colorFn: (_, __) => charts.MaterialPalette.purple.shadeDefault,
-        domainFn: (TrendData rating, _) => rating.second,
-        measureFn: (TrendData rating, _) => rating.value,
+        domainFn: (Rating rating, _) => rating.second,
+        measureFn: (Rating rating, _) => rating.value,
         data: dumbData,
       ),
-      charts.Series<TrendData, int>(
+      charts.Series<Rating, int>(
         id: 'WTF',
         colorFn: (_, __) => charts.MaterialPalette.yellow.shadeDefault,
-        domainFn: (TrendData rating, _) => rating.second,
-        measureFn: (TrendData rating, _) => rating.value,
+        domainFn: (Rating rating, _) => rating.second,
+        measureFn: (Rating rating, _) => rating.value,
         data: wtfData,
       ),
-      charts.Series<TrendData, int>(
+      charts.Series<Rating, int>(
         id: 'Funny',
         colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-        domainFn: (TrendData rating, _) => rating.second,
-        measureFn: (TrendData rating, _) => rating.value,
+        domainFn: (Rating rating, _) => rating.second,
+        measureFn: (Rating rating, _) => rating.value,
         data: funnyData,
       ),
-      // charts.Series<TrendData, int>(
+      // charts.Series<Rating, int>(
       //     id: 'Mobile',
       //     colorFn: (_, __) => charts.MaterialPalette.green.shadeDefault,
-      //     domainFn: (TrendData sales, _) => sales.year,
-      //     measureFn: (TrendData sales, _) => sales.sales,
+      //     domainFn: (Rating sales, _) => sales.year,
+      //     measureFn: (Rating sales, _) => sales.sales,
       //     data: mobileSalesData)
       // Configure our custom point renderer for this series.
       // ..setAttribute(charts.rendererIdKey, 'customPoint'),

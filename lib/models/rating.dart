@@ -1,5 +1,5 @@
-class TrendData {
-  TrendData(
+class Rating {
+  Rating(
     this.second,
     this.value,
   );

@@ -186,14 +186,18 @@ class _MyMoviesState extends State<MyMoviesView> {
                 endIndent: 0,
               ),
               FutureBuilder<DataSnapshot>(
-                  future: dbRef.child('review').once(),
+                  future: dbRef.child('reviews').once(),
                   builder: (BuildContext context,
                       AsyncSnapshot<DataSnapshot> snapshot) {
                     if (snapshot.hasError) {
                       print(snapshot.error);
                       return Text('Error');
                     } else if (snapshot.hasData && snapshot.data != null) {
-                      // print(snapshot.data.value);
+                      if (snapshot.data.value == null)
+                        return Center(
+                          child: Text('No Reviews to show'),
+                        );
+                      print(snapshot.data.value);
                       List<Review> reviews = [];
                       snapshot.data.value.forEach((key, value) {
                         reviews.add(Review.fromJson(value));
@@ -227,7 +231,7 @@ class _MyMoviesState extends State<MyMoviesView> {
                                       ),
                                       height: 170.0,
                                       child: NumericComboLinePointChartRaw
-                                          .withTrendData(review.trends,
+                                          .withRatings(review.trends,
                                               animate: false),
                                     ),
                                     Text(
@@ -400,13 +404,13 @@ class MovieSearch extends SearchDelegate {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              "Search Movies",
+              'Search Movies',
               style: Theme.of(context).textTheme.headline1,
             ),
             SizedBox(
               height: 10,
             ),
-            Text("Enter at least three letters"),
+            Text('Enter at least three letters'),
           ],
         ),
       ));
@@ -431,13 +435,13 @@ class MovieSearch extends SearchDelegate {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text(
-                      "No Movies To Show",
+                      'No Movies To Show',
                       style: Theme.of(context).textTheme.headline1,
                     ),
                     SizedBox(
                       height: 10,
                     ),
-                    Text("Try entering more search characters."),
+                    Text('Try entering more search characters.'),
                   ],
                 ),
               );

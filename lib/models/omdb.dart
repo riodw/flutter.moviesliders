@@ -25,7 +25,7 @@ class OmdbModel {
       this.production,
       this.website,
       this.response)
-      : runtimeNum = int.parse(runtime.substring(0, runtime.indexOf(" ")));
+      : runtimeNum = int.parse(runtime.substring(0, runtime.indexOf(' ')));
 
   static final String url =
       'https://www.omdbapi.com/?apikey=cf1629a0&v=1&plot=full';
@@ -59,7 +59,7 @@ class OmdbModel {
   final int runtimeNum;
 
   factory OmdbModel.fromJson(Map<String, dynamic> json) {
-    // String temp = json['Runtime'].substring(0, json['Runtime'].indexOf(" "))
+    // String temp = json['Runtime'].substring(0, json['Runtime'].indexOf(' '))
     return OmdbModel(
       json['Title'],
       int.parse(json['Year']),

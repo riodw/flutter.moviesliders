@@ -11,7 +11,7 @@ import 'package:flutter_moviesliders/store/store.dart';
 class ThemeProvider extends ChangeNotifier {
   // shared pref object
   SharedPreferenceHelper _sharedPrefsHelper;
-  String _currentTheme = "system";
+  String _currentTheme = 'system';
 
   ThemeProvider() {
     _sharedPrefsHelper = SharedPreferenceHelper();

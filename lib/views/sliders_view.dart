@@ -47,17 +47,17 @@ class _SlidersViewState extends State<SlidersView> {
       Call dbRef.child('foo_bar').once() in initState and with a .then callback, 
       fill your elements list and call setState.
     */
-    _reviewRef = dbRef.child('review').child(widget.reviewKey);
+    _reviewRef = dbRef.child('reviews').child(widget.reviewKey);
 
-    _reviewRef.child('trend').once().then((DataSnapshot snapshot) {
+    _reviewRef.child('trends').once().then((DataSnapshot snapshot) {
       setState(() {
         snapshot.value.forEach((key, value) {
           _trends.add(Trend(
               value['name'], value['color'], value['order'], key.toString(),
-              trendDataRef: _reviewRef
-                  .child('trend')
+              ratingRef: _reviewRef
+                  .child('trends')
                   .child(key.toString())
-                  .child('data')));
+                  .child('ratings')));
         });
         _trends.sort((a, b) => a.order.compareTo(b.order));
       });
@@ -113,17 +113,17 @@ class _SlidersViewState extends State<SlidersView> {
       }
     });
 
-    _trends.forEach((Trend _rating) {
+    _trends.forEach((Trend _trend) {
       // update average
-      if (_rating.rawName == 'Interest') {
-        _avg = _avg + _rating.rating.round();
+      if (_trend.rawName == 'Interest') {
+        _avg = _avg + _trend.rating.round();
       }
       // post updated
-      DatabaseReference ratingRef = _rating.trendDataRef.push();
+      DatabaseReference ratingRef = _trend.ratingRef.push();
       ratingRef.set(
         {
           's': _seconds,
-          'v': _rating.rating.round(),
+          'v': _trend.rating.round(),
         },
       );
     });
@@ -246,27 +246,27 @@ class _SlidersViewState extends State<SlidersView> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
-                                    for (Trend rating in _trends)
+                                    for (Trend _trend in _trends)
                                       Column(children: <Widget>[
                                         Expanded(
                                             child: RotatedBox(
                                           quarterTurns: -1,
                                           child: CupertinoSlider(
-                                              value: rating.rating,
+                                              value: _trend.rating,
                                               activeColor: _paused
                                                   ? Colors.grey
-                                                  : rating.color,
+                                                  : _trend.color,
                                               min: Trend.minRating,
                                               max: Trend.maxRating,
                                               onChanged: (newRating) {
                                                 setState(() =>
-                                                    rating.rating = newRating);
+                                                    _trend.rating = newRating);
                                               }),
                                         )),
                                         _paused
-                                            ? rating.name
+                                            ? _trend.name
                                             : Text(
-                                                rating.rating
+                                                _trend.rating
                                                     .round()
                                                     .toString(),
                                               ),

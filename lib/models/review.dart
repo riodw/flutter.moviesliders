@@ -53,7 +53,7 @@ class Review {
       json['user_id'],
       json['user']['name'],
       json['user']['review_number'],
-      setTrends(json['trend']),
+      setTrends(json['trends']),
     );
   }
 
@@ -62,17 +62,17 @@ class Review {
     trendJson.forEach((key, value) {
       trends.add(Trend(
           value['name'], value['color'], value['order'], key.toString(),
-          trendDatas: setTrendDatas(value['data'])));
+          ratings: setRatings(value['ratings'])));
     });
     return trends;
   }
 
-  static List<TrendData> setTrendDatas(Map<dynamic, dynamic> trendJson) {
-    List<TrendData> trendDatas = [];
+  static List<Rating> setRatings(Map<dynamic, dynamic> trendJson) {
+    List<Rating> ratings = [];
     trendJson.forEach((key, value) {
-      trendDatas.add(TrendData(value['s'], value['v']));
+      ratings.add(Rating(value['s'], value['v']));
     });
-    trendDatas.sort((a, b) => a.second.compareTo(b.second));
-    return trendDatas;
+    ratings.sort((a, b) => a.second.compareTo(b.second));
+    return ratings;
   }
 }

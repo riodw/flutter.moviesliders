@@ -108,7 +108,7 @@ class MovieInfoView extends StatelessWidget {
                       ),
                       onPressed: () async {
                         DatabaseReference reviewFireReference =
-                            dbRef.child('review').push();
+                            dbRef.child('reviews').push();
 
                         await reviewFireReference.set(<String, Object>{
                           'date_reviewed': DateTime.now().toString(),
@@ -137,12 +137,12 @@ class MovieInfoView extends StatelessWidget {
                             'media': imdb.media,
                           },
                           // the review data
-                          'trend': [],
+                          'trends': [],
                         }).then((onValue) {
                           final DatabaseReference trends = dbRef
-                              .child('review')
+                              .child('reviews')
                               .child(reviewFireReference.key)
-                              .child('trend');
+                              .child('trends');
 
                           final List _trends = [
                             {
@@ -175,9 +175,11 @@ class MovieInfoView extends StatelessWidget {
                           _trends.forEach((element) {
                             DatabaseReference _trend = trends.push();
                             _trend.set(element).then((asdf) {
-                              DatabaseReference _trend_data =
-                                  trends.child(_trend.key).child('data').push();
-                              _trend_data.set(
+                              DatabaseReference _ratings = trends
+                                  .child(_trend.key)
+                                  .child('ratings')
+                                  .push();
+                              _ratings.set(
                                 {
                                   's': 0,
                                   'v': 2,

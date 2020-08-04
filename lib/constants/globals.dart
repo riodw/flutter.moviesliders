@@ -1,58 +1,58 @@
 String interpretMonthInt(int month) {
   switch (month) {
     case 1:
-      return "Jan";
+      return 'Jan';
     case 2:
-      return "Feb";
+      return 'Feb';
     case 3:
-      return "Mar";
+      return 'Mar';
     case 4:
-      return "Apr";
+      return 'Apr';
     case 5:
-      return "May";
+      return 'May';
     case 6:
-      return "Jun";
+      return 'Jun';
     case 7:
-      return "Jul";
+      return 'Jul';
     case 8:
-      return "Aug";
+      return 'Aug';
     case 9:
-      return "Sep";
+      return 'Sep';
     case 10:
-      return "Oct";
+      return 'Oct';
     case 11:
-      return "Nov";
+      return 'Nov';
     case 12:
-      return "Dec";
+      return 'Dec';
   }
   return 'Good job, you broke it';
 }
 
 int interpretMonthString(String month) {
   switch (month) {
-    case "Jan":
+    case 'Jan':
       return 1;
-    case "Feb":
+    case 'Feb':
       return 2;
-    case "Mar":
+    case 'Mar':
       return 3;
-    case "Apr":
+    case 'Apr':
       return 4;
-    case "May":
+    case 'May':
       return 5;
-    case "Jun":
+    case 'Jun':
       return 6;
-    case "Jul":
+    case 'Jul':
       return 7;
-    case "Aug":
+    case 'Aug':
       return 8;
-    case "Sep":
+    case 'Sep':
       return 9;
-    case "Oct":
+    case 'Oct':
       return 10;
-    case "Nov":
+    case 'Nov':
       return 11;
-    case "Dec":
+    case 'Dec':
       return 12;
   }
   return 1;

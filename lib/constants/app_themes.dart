@@ -15,9 +15,9 @@ class AppThemes {
   /*
    * FONT 
    */
-  static const String font1 = "Hind";
-  // static String font1 = "ProductSans";
-  static const String font2 = "Georgia";
+  static const String font1 = 'Hind';
+  // static String font1 = 'ProductSans';
+  static const String font2 = 'Georgia';
 
   // static const Color primaryBlue = Colors.blueAccent;
   static const Color whiteLilac = Color.fromRGBO(248, 250, 252, 1);
