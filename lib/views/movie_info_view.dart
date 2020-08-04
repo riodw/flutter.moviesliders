@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 // project
 import 'package:flutter_moviesliders/constants/globals.dart';
 import 'package:flutter_moviesliders/services/services.dart';
@@ -31,7 +32,8 @@ class MovieInfoView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context);
+    // final ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
+    final FirebaseUser userProvider = Provider.of<FirebaseUser>(context);
     final ImdbModel imdb = ModalRoute.of(context).settings.arguments;
 
     var contents = FutureBuilder<OmdbModel>(
@@ -116,9 +118,11 @@ class MovieInfoView extends StatelessWidget {
                           'title': imdb.title,
                           'type': omdb.type,
                           'link_id': omdb.imdbID,
-                          'user_id': 'asdf',
+                          'user_id': userProvider.uid,
                           'user': {
-                            'name': 'asdf asdf',
+                            'name': userProvider.isAnonymous
+                                ? 'Anonymous'
+                                : userProvider.displayName,
                             'review_number': 0,
                           },
                           'medium': {
@@ -139,12 +143,12 @@ class MovieInfoView extends StatelessWidget {
                           // the review data
                           'trends': [],
                         }).then((onValue) {
-                          final DatabaseReference trends = dbRef
+                          final DatabaseReference trendsRef = dbRef
                               .child('reviews')
                               .child(reviewFireReference.key)
                               .child('trends');
 
-                          final List _trends = [
+                          final List trends = [
                             {
                               'name': 'Interest',
                               'color': 'c62928',
@@ -172,11 +176,11 @@ class MovieInfoView extends StatelessWidget {
                             },
                           ];
 
-                          _trends.forEach((element) {
-                            DatabaseReference _trend = trends.push();
-                            _trend.set(element).then((asdf) {
-                              DatabaseReference _ratings = trends
-                                  .child(_trend.key)
+                          trends.forEach((element) {
+                            DatabaseReference trend = trendsRef.push();
+                            trend.set(element).then((asdf) {
+                              DatabaseReference _ratings = trendsRef
+                                  .child(trend.key)
                                   .child('ratings')
                                   .push();
                               _ratings.set(

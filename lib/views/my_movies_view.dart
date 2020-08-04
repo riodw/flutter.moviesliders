@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 // project
 import 'package:flutter_moviesliders/services/auth_service.dart';
 import 'package:flutter_moviesliders/services/services.dart';
@@ -24,7 +25,8 @@ class _MyMoviesState extends State<MyMoviesView> {
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context);
+    final ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
+    final FirebaseUser userProvider = Provider.of<FirebaseUser>(context);
 
     return Scaffold(
         appBar: AppBar(
@@ -75,10 +77,8 @@ class _MyMoviesState extends State<MyMoviesView> {
                       CupertinoActionSheetAction(
                         child: Text('Log Out'),
                         onPressed: () {
-                          // Navigator.pop(context);
-                          AuthService _auth = AuthService();
+                          final AuthService _auth = AuthService();
                           _auth.signOut();
-                          Navigator.of(context).pushNamed('/signin');
                         },
                       ),
                     ],
@@ -193,11 +193,11 @@ class _MyMoviesState extends State<MyMoviesView> {
                       print(snapshot.error);
                       return Text('Error');
                     } else if (snapshot.hasData && snapshot.data != null) {
+                      // No Reviews found
                       if (snapshot.data.value == null)
                         return Center(
                           child: Text('No Reviews to show'),
                         );
-                      print(snapshot.data.value);
                       List<Review> reviews = [];
                       snapshot.data.value.forEach((key, value) {
                         reviews.add(Review.fromJson(value));
