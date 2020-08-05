@@ -1,6 +1,6 @@
 class OmdbModel {
   OmdbModel(
-      this.title,
+      {this.title,
       this.year,
       this.rated,
       this.released,
@@ -24,9 +24,12 @@ class OmdbModel {
       this.boxOffice,
       this.production,
       this.website,
-      this.response)
+      this.response})
       : runtimeNum = int.parse(runtime.substring(0, runtime.indexOf(' ')));
 
+/*
+https://www.omdbapi.com/?apikey=cf1629a0&v=1&plot=full&i=tt3896198
+*/
   static final String url =
       'https://www.omdbapi.com/?apikey=cf1629a0&v=1&plot=full';
 
@@ -44,7 +47,7 @@ class OmdbModel {
   final String country;
   final String awards;
   final String poster;
-  final ratings;
+  final List ratings;
   final String metascore;
   final String imdbRating;
   final String imdbVotes;
@@ -61,31 +64,31 @@ class OmdbModel {
   factory OmdbModel.fromJson(Map<String, dynamic> json) {
     // String temp = json['Runtime'].substring(0, json['Runtime'].indexOf(' '))
     return OmdbModel(
-      json['Title'],
-      int.parse(json['Year']),
-      json['Rated'],
-      json['Released'],
-      json['Runtime'],
-      json['Genre'],
-      json['Director'],
-      json['Writer'],
-      json['Actors'],
-      json['Plot'],
-      json['Language'],
-      json['Country'],
-      json['Awards'],
-      json['Poster'],
-      json['Ratings'],
-      json['Metascore'],
-      json['imdbRating'],
-      json['imdbVotes'],
-      json['imdbID'],
-      json['Type'],
-      json['DVD'],
-      json['BoxOffice'],
-      json['Production'],
-      json['Website'],
-      json['Response'],
+      title: json['Title'],
+      year: int.parse(json['Year']),
+      rated: json['Rated'],
+      released: json['Released'],
+      runtime: json['Runtime'],
+      genre: json['Genre'],
+      director: json['Director'],
+      writer: json['Writer'],
+      actors: json['Actors'],
+      plot: json['Plot'],
+      language: json['Language'],
+      country: json['Country'],
+      awards: json['Awards'],
+      poster: json['Poster'],
+      ratings: json['Ratings'],
+      metascore: json['Metascore'],
+      imdbRating: json['imdbRating'],
+      imdbVotes: json['imdbVotes'],
+      imdbID: json['imdbID'],
+      type: json['Type'],
+      dvd: json['DVD'],
+      boxOffice: json['BoxOffice'],
+      production: json['Production'],
+      website: json['Website'],
+      response: json['Response'],
     );
   }
 }

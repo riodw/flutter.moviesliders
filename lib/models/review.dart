@@ -3,7 +3,7 @@ import 'package:flutter_moviesliders/constants/globals.dart';
 import 'package:flutter_moviesliders/models/models.dart';
 
 class Review {
-  Review(
+  Review({
     this.dateReviewed,
     this.avg,
     this.title,
@@ -14,7 +14,7 @@ class Review {
     this.userName,
     this.userReviewNumber,
     this.trends,
-  )   : dateTimeReviewed = DateTime.parse(dateReviewed),
+  })  : dateTimeReviewed = DateTime.parse(dateReviewed),
         avg10 = (avg.toDouble().truncate() / 10).toString(),
         movie = type == 'movie' ? Movie.fromJson(medium) : null,
         dateReviewedReadable = (() {
@@ -44,16 +44,16 @@ class Review {
 
   factory Review.fromJson(Map<dynamic, dynamic> json) {
     return Review(
-      json['date_reviewed'],
-      json['avg'].toDouble(),
-      json['title'],
-      json['type'],
-      json['link_id'],
-      json['medium'],
-      json['user_id'],
-      json['user']['name'],
-      json['user']['review_number'],
-      setTrends(json['trends']),
+      dateReviewed: json['date_reviewed'],
+      avg: json['avg'].toDouble(),
+      title: json['title'],
+      type: json['type'],
+      linkId: json['link_id'],
+      medium: json['medium'],
+      userId: json['user_id'],
+      userName: json['user']['name'],
+      userReviewNumber: json['user']['review_number'],
+      trends: setTrends(json['trends']),
     );
   }
 
@@ -70,7 +70,7 @@ class Review {
   static List<Rating> setRatings(Map<dynamic, dynamic> trendJson) {
     List<Rating> ratings = [];
     trendJson.forEach((key, value) {
-      ratings.add(Rating(value['s'], value['v']));
+      ratings.add(Rating(second: value['s'], value: value['v']));
     });
     ratings.sort((a, b) => a.second.compareTo(b.second));
     return ratings;

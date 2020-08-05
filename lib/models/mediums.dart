@@ -1,6 +1,11 @@
 class Movie {
-  Movie(
-      this.dateReleased, this.imdbId, this.runTime, this.title, this.posterUrl);
+  Movie({
+    this.dateReleased,
+    this.imdbId,
+    this.runTime,
+    this.title,
+    this.posterUrl,
+  });
 
   final DateTime dateReleased;
   final String imdbId;
@@ -10,11 +15,11 @@ class Movie {
 
   factory Movie.fromJson(Map<dynamic, dynamic> json) {
     return Movie(
-      DateTime.parse(json['date_released']),
-      json['imdb_id'],
-      json['runtime'],
-      json['title'],
-      json['media'][0],
+      dateReleased: DateTime.parse(json['date_released']),
+      imdbId: json['imdb_id'],
+      runTime: json['runtime'],
+      title: json['title'],
+      posterUrl: json['media'][0],
     );
   }
 }

@@ -56,34 +56,34 @@ class NumericComboLinePointChart extends StatelessWidget {
   /// Create one series with sample hard coded data.
   static List<charts.Series<Rating, int>> _createSampleData() {
     final interestData = [
-      Rating(0, 5),
-      Rating(1, 80),
-      Rating(2, 85),
-      Rating(3, 75),
+      Rating(second: 0, value: 5),
+      Rating(second: 1, value: 80),
+      Rating(second: 2, value: 85),
+      Rating(second: 3, value: 75),
     ];
     final clicheData = [
-      Rating(0, 2),
-      Rating(1, 2),
-      Rating(2, 10),
-      Rating(3, 22),
+      Rating(second: 0, value: 2),
+      Rating(second: 1, value: 2),
+      Rating(second: 2, value: 10),
+      Rating(second: 3, value: 22),
     ];
     final dumbData = [
-      Rating(0, 5),
-      Rating(1, 35),
-      Rating(2, 10),
-      Rating(3, 5),
+      Rating(second: 0, value: 5),
+      Rating(second: 1, value: 35),
+      Rating(second: 2, value: 10),
+      Rating(second: 3, value: 5),
     ];
     final wtfData = [
-      Rating(0, 2),
-      Rating(1, 2),
-      Rating(2, 22),
-      Rating(3, 2),
+      Rating(second: 0, value: 2),
+      Rating(second: 1, value: 2),
+      Rating(second: 2, value: 22),
+      Rating(second: 3, value: 2),
     ];
     final funnyData = [
-      Rating(0, 2),
-      Rating(1, 2),
-      Rating(2, 10),
-      Rating(3, 2),
+      Rating(second: 0, value: 2),
+      Rating(second: 1, value: 2),
+      Rating(second: 2, value: 10),
+      Rating(second: 3, value: 2),
     ];
 
     return [
@@ -208,34 +208,34 @@ class NumericComboLinePointChartRaw extends StatelessWidget {
   /// Create one series with sample hard coded data.
   static List<charts.Series<Rating, int>> _createSampleData() {
     final interestData = [
-      Rating(0, 5),
-      Rating(1, 80),
-      Rating(2, 85),
-      Rating(3, 75),
+      Rating(second: 0, value: 5),
+      Rating(second: 1, value: 80),
+      Rating(second: 2, value: 85),
+      Rating(second: 3, value: 75),
     ];
     final clicheData = [
-      Rating(0, 2),
-      Rating(1, 2),
-      Rating(2, 10),
-      Rating(3, 22),
+      Rating(second: 0, value: 2),
+      Rating(second: 1, value: 2),
+      Rating(second: 2, value: 10),
+      Rating(second: 3, value: 22),
     ];
     final dumbData = [
-      Rating(0, 5),
-      Rating(1, 35),
-      Rating(2, 10),
-      Rating(3, 5),
+      Rating(second: 0, value: 5),
+      Rating(second: 1, value: 35),
+      Rating(second: 2, value: 10),
+      Rating(second: 3, value: 5),
     ];
     final wtfData = [
-      Rating(0, 2),
-      Rating(1, 2),
-      Rating(2, 22),
-      Rating(3, 2),
+      Rating(second: 0, value: 2),
+      Rating(second: 1, value: 2),
+      Rating(second: 2, value: 22),
+      Rating(second: 3, value: 2),
     ];
     final funnyData = [
-      Rating(0, 2),
-      Rating(1, 2),
-      Rating(2, 10),
-      Rating(3, 2),
+      Rating(second: 0, value: 2),
+      Rating(second: 1, value: 2),
+      Rating(second: 2, value: 10),
+      Rating(second: 3, value: 2),
     ];
 
     return [
