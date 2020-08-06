@@ -36,13 +36,13 @@ class AppThemes {
 
   //Background Colors
   static const Color _lightBackgroundColor = whiteLilac;
-  static const Color _lightBackgroundSecondaryColor = Colors.white;
-  static const Color _lightBackgroundAlertColor = blackPearl;
+  // static const Color _lightBackgroundSecondaryColor = Colors.white;
+  // static const Color _lightBackgroundAlertColor = blackPearl;
   // static const Color _lightBackgroundErrorColor = Colors.red;
   // static const Color _lightBackgroundSuccessColor = Colors.green;
 
   //Text Colors
-  // static const Color _lightTextColor = Colors.black;
+  static const Color _lightTextColor = Colors.black;
   // static const Color _lightAlertTextColor = Colors.black;
   // static const Color _lightTextSecondaryColor = Colors.black;
 
@@ -60,17 +60,17 @@ class AppThemes {
   static final TextTheme _lightTextTheme = TextTheme(
     headline1: TextStyle(
         fontSize: 30.0,
-        color: Colors.black,
+        color: _lightTextColor,
         fontWeight: FontWeight.normal,
         fontFamily: font1),
     headline2: TextStyle(
         fontSize: 30.0,
-        color: Colors.black,
+        color: _lightTextColor,
         fontWeight: FontWeight.bold,
         fontFamily: font2),
     headline3: TextStyle(
         fontSize: 22.0,
-        color: Colors.black,
+        color: _lightTextColor,
         fontWeight: FontWeight.bold,
         fontFamily: font1),
     headline4:
@@ -96,9 +96,13 @@ class AppThemes {
     brightness: Brightness.light,
     fontFamily: font1,
     scaffoldBackgroundColor: _lightBackgroundColor,
-    floatingActionButtonTheme: FloatingActionButtonThemeData(
-      backgroundColor: _lightPrimaryColor,
-    ),
+    primarySwatch:
+        _lightPrimaryColor, //cant be Color on MaterialColor so it can compute different shades.
+    accentColor: _lightSecondaryColor, //prefix icon color form input on focus
+
+    // floatingActionButtonTheme: FloatingActionButtonThemeData(
+    //   backgroundColor: _lightPrimaryColor,
+    // ),
     appBarTheme: AppBarTheme(
       color: _lightPrimaryColor,
       // iconTheme: IconThemeData(color: _lightTextColor),
@@ -122,7 +126,6 @@ class AppThemes {
         ),
         buttonColor: _lightPrimaryColor,
         textTheme: ButtonTextTheme.primary),
-    buttonColor: _lightPrimaryColor,
     // unselectedWidgetColor: _lightPrimaryColor,
     // inputDecorationTheme: InputDecorationTheme(
     //   //prefixStyle: TextStyle(color: _lightIconColor),
@@ -158,31 +161,32 @@ class AppThemes {
 
   //constants color range for dark theme
   static const Color _darkPrimaryColor = Colors.blueGrey;
+  static const Color _darkSecondaryColor = Colors.blueGrey;
 
   //Background Colors
   static const Color _darkBackgroundColor = ebonyClay;
   static const Color _darkBackgroundAppBarColor = _darkPrimaryColor;
-  static const Color _darkBackgroundSecondaryColor =
-      Color.fromRGBO(0, 0, 0, .6);
-  static const Color _darkBackgroundAlertColor = Colors.black;
-  static const Color _darkBackgroundErrorColor =
-      Color.fromRGBO(255, 97, 136, 1);
-  static const Color _darkBackgroundSuccessColor =
-      Color.fromRGBO(186, 215, 97, 1);
+  // static const Color _darkBackgroundSecondaryColor =
+  //     Color.fromRGBO(0, 0, 0, .6);
+  // static const Color _darkBackgroundAlertColor = Colors.black;
+  // static const Color _darkBackgroundErrorColor =
+  //     Color.fromRGBO(255, 97, 136, 1);
+  // static const Color _darkBackgroundSuccessColor =
+  //     Color.fromRGBO(186, 215, 97, 1);
 
   // Text Colors
   static const Color _darkTextColor = Colors.white;
-  static const Color _darkAlertTextColor = Colors.black;
-  static const Color _darkTextSecondaryColor = Colors.black;
+  // static const Color _darkAlertTextColor = Colors.black;
+  // static const Color _darkTextSecondaryColor = Colors.black;
 
   // Border Color
   // static const Color _darkBorderColor = nevada;
 
   // Icon Color
-  static const Color _darkIconColor = Colors.white;
+  // static const Color _darkIconColor = Colors.white;
 
-  static const Color _darkInputFillColor = _darkBackgroundSecondaryColor;
-  static const Color _darkBorderActiveColor = _darkPrimaryColor;
+  // static const Color _darkInputFillColor = _darkBackgroundSecondaryColor;
+  // static const Color _darkBorderActiveColor = _darkPrimaryColor;
   // static const Color _darkBorderErrorColor = brinkPink;
 
   static final TextTheme _darkTextTheme = TextTheme(
@@ -221,16 +225,17 @@ class AppThemes {
     brightness: Brightness.dark,
     fontFamily: font1,
     scaffoldBackgroundColor: _darkBackgroundColor,
-    //primarySwatch: _darkPrimaryColor, //cant be Color on MaterialColor so it can compute different shades.
-    // accentColor: _darkPrimaryColor, //prefix icon color form input on focus
+    primarySwatch:
+        _darkPrimaryColor, //cant be Color on MaterialColor so it can compute different shades.
+    accentColor: _darkSecondaryColor, //prefix icon color form input on focus
 
-    floatingActionButtonTheme: FloatingActionButtonThemeData(
-      backgroundColor: _darkPrimaryColor,
-    ),
+    // floatingActionButtonTheme: FloatingActionButtonThemeData(
+    //   backgroundColor: _darkPrimaryColor,
+    // ),
     appBarTheme: AppBarTheme(
       color: _darkBackgroundAppBarColor,
-      iconTheme: IconThemeData(color: _darkTextColor),
-      textTheme: _darkTextTheme,
+      // iconTheme: IconThemeData(color: _darkTextColor),
+      // textTheme: _darkTextTheme,
     ),
     colorScheme: ColorScheme.dark(
       primary: _darkPrimaryColor,
@@ -238,13 +243,13 @@ class AppThemes {
 
       // secondary: _darkSecondaryColor,
     ),
-    snackBarTheme: SnackBarThemeData(
-        contentTextStyle: TextStyle(color: Colors.white),
-        backgroundColor: _darkBackgroundAlertColor),
-    iconTheme: IconThemeData(
-      color: Colors.white, //_darkIconColor,
-    ),
-    popupMenuTheme: PopupMenuThemeData(color: _darkBackgroundAppBarColor),
+    // snackBarTheme: SnackBarThemeData(
+    //     contentTextStyle: TextStyle(color: Colors.white),
+    //     backgroundColor: _darkBackgroundAlertColor),
+    // iconTheme: IconThemeData(
+    //   color: Colors.white, //_darkIconColor,
+    // ),
+    // popupMenuTheme: PopupMenuThemeData(color: _darkBackgroundAppBarColor),
     textTheme: _darkTextTheme,
     buttonTheme: ButtonThemeData(
         shape: RoundedRectangleBorder(
@@ -252,7 +257,7 @@ class AppThemes {
         ),
         buttonColor: _darkPrimaryColor,
         textTheme: ButtonTextTheme.primary),
-    unselectedWidgetColor: _darkPrimaryColor,
+    // unselectedWidgetColor: _darkPrimaryColor,
     // inputDecorationTheme: InputDecorationTheme(
     //   prefixStyle: TextStyle(color: _darkIconColor),
     //   //labelStyle: TextStyle(color: nevada),

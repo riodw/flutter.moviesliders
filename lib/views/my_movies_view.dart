@@ -255,7 +255,9 @@ class _MyMoviesState extends State<MyMoviesView> {
                                     Row(children: <Widget>[
                                       Container(
                                         decoration: BoxDecoration(
-                                            color: Colors.blue,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary,
                                             borderRadius: BorderRadius.all(
                                                 Radius.circular(40.0))),
                                         width: 34.0,
