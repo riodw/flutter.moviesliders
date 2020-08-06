@@ -96,9 +96,8 @@ class AppThemes {
     brightness: Brightness.light,
     fontFamily: font1,
     scaffoldBackgroundColor: _lightBackgroundColor,
-    primarySwatch:
-        _lightPrimaryColor, //cant be Color on MaterialColor so it can compute different shades.
-    accentColor: _lightSecondaryColor, //prefix icon color form input on focus
+    // primarySwatch: _lightPrimaryColor,
+    // accentColor: _lightSecondaryColor, //prefix icon color form input on focus
 
     // floatingActionButtonTheme: FloatingActionButtonThemeData(
     //   backgroundColor: _lightPrimaryColor,
@@ -225,9 +224,8 @@ class AppThemes {
     brightness: Brightness.dark,
     fontFamily: font1,
     scaffoldBackgroundColor: _darkBackgroundColor,
-    primarySwatch:
-        _darkPrimaryColor, //cant be Color on MaterialColor so it can compute different shades.
-    accentColor: _darkSecondaryColor, //prefix icon color form input on focus
+    // primarySwatch: _darkPrimaryColor,
+    // accentColor: _darkSecondaryColor, //prefix icon color form input on focus
 
     // floatingActionButtonTheme: FloatingActionButtonThemeData(
     //   backgroundColor: _darkPrimaryColor,

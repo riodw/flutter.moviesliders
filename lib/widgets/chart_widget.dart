@@ -27,7 +27,7 @@ class NumericComboLinePointChart extends StatelessWidget {
       animate: animate,
       // Configure the default renderer as a line renderer. This will be used
       // for any series that does not define a rendererIdKey.
-      defaultRenderer: charts.LineRendererConfig(),
+      // defaultRenderer: charts.LineRendererConfig(),
       // Custom renderer configuration for the point series.
       // customSeriesRenderers: [
       //   charts.PointRendererConfig(
@@ -179,7 +179,7 @@ class NumericComboLinePointChartRaw extends StatelessWidget {
       animate: animate,
       // Configure the default renderer as a line renderer. This will be used
       // for any series that does not define a rendererIdKey.
-      defaultRenderer: charts.LineRendererConfig(),
+      // defaultRenderer: charts.LineRendererConfig(),
       // Custom renderer configuration for the point series.
       // customSeriesRenderers: [
       //   charts.PointRendererConfig(
