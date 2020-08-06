@@ -24,6 +24,14 @@ class Review {
               interpretMonthInt(date.month).toString() +
               ' ' +
               date.year.toString();
+        })(),
+        userAbv = (() {
+          if (userName == null || userName == '') return 'A';
+          var parts = userName.split(' ');
+          if (parts.length > 1) {
+            return parts[0][0] + parts[1][0];
+          } else
+            return parts[0][0];
         })();
 
   final String dateReviewed;
@@ -40,6 +48,7 @@ class Review {
   final DateTime dateTimeReviewed;
   final String dateReviewedReadable;
   final String avg10;
+  final String userAbv;
   final Movie movie;
 
   factory Review.fromJson(Map<dynamic, dynamic> json) {

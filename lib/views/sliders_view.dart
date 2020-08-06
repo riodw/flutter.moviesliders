@@ -222,7 +222,19 @@ class _SlidersViewState extends State<SlidersView> {
                                   },
                                 )
                               : CupertinoButton(
-                                  child: _paused ? Text('Play') : Text('Pause'),
+                                  child: _paused
+                                      ? Text(
+                                          'Play',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .button,
+                                        )
+                                      : Text(
+                                          'Pause',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .button,
+                                        ),
                                   color: _paused
                                       ? Theme.of(context).colorScheme.primary
                                       : Theme.of(context).colorScheme.secondary,

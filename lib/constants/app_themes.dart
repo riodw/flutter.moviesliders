@@ -160,7 +160,7 @@ class AppThemes {
 
   //constants color range for dark theme
   static const Color _darkPrimaryColor = Colors.blueGrey;
-  static const Color _darkSecondaryColor = Colors.blueGrey;
+  static const Color _darkSecondaryColor = Color.fromRGBO(64, 64, 64, 1);
 
   //Background Colors
   static const Color _darkBackgroundColor = ebonyClay;
@@ -238,8 +238,7 @@ class AppThemes {
     colorScheme: ColorScheme.dark(
       primary: _darkPrimaryColor,
       primaryVariant: _darkBackgroundColor,
-
-      // secondary: _darkSecondaryColor,
+      secondary: _darkSecondaryColor,
     ),
     // snackBarTheme: SnackBarThemeData(
     //     contentTextStyle: TextStyle(color: Colors.white),

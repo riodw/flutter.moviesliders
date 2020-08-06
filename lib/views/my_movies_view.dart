@@ -264,7 +264,7 @@ class _MyMoviesState extends State<MyMoviesView> {
                                         height: 34.0,
                                         margin: EdgeInsets.only(right: 10.0),
                                         child: Center(
-                                            child: Text('RW',
+                                            child: Text(review.userAbv,
                                                 style: TextStyle(
                                                   color: Colors.white,
                                                 ))),
