@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 // import 'package:flutter/cupertino.dart';
 // charts
 import 'package:flutter_moviesliders/widgets/chart_widget.dart';
+import 'package:flutter_moviesliders/models/models.dart';
 
 /* Comparison from episode to episode
  * https://google.github.io/charts/flutter/example/scatter_plot_charts/comparison_points
@@ -10,6 +11,8 @@ import 'package:flutter_moviesliders/widgets/chart_widget.dart';
 class MovieReviewView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final Review review = ModalRoute.of(context).settings.arguments;
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Movie Review'),
@@ -20,14 +23,18 @@ class MovieReviewView extends StatelessWidget {
         Container(
           margin: EdgeInsets.only(top: 10.0, left: 15, right: 15),
           child: Text(
-            'Black Mirror: Season 4 Episode 5 (Metalhead)',
+            review.title,
             style: Theme.of(context).textTheme.headline1,
           ),
         ),
         Container(
           margin: EdgeInsets.only(top: 10.0, bottom: 10.0, left: 15, right: 15),
           child: Text(
-            '2017 - Rating: 6.9',
+            (review.type == 'movie'
+                    ? review.movie.dateReleased.year.toString()
+                    : '9999') +
+                ' - Rating: ' +
+                review.avg10.toString(),
             style: Theme.of(context).textTheme.headline4,
           ),
         ),
@@ -68,14 +75,14 @@ class MovieReviewView extends StatelessWidget {
         Container(
           margin: EdgeInsets.only(top: 8.0, left: 15, right: 15),
           child: Text(
-            'Received a rating of 69/100',
+            'Received a rating of ' + review.avg.truncate().toString() + '/100',
             style: Theme.of(context).textTheme.headline3,
           ),
         ),
         Container(
           margin: EdgeInsets.only(top: 6.0, bottom: 10.0, left: 15, right: 15),
           child: Text(
-            'Exact rating: 69.0658333',
+            'Exact rating: ' + review.avg.toString(),
             style: Theme.of(context).textTheme.bodyText2,
           ),
         ),

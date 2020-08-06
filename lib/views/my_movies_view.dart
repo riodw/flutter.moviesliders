@@ -205,6 +205,10 @@ class _MyMoviesState extends State<MyMoviesView> {
                       return Column(children: <Widget>[
                         for (Review review in reviews)
                           GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(context, '/movie_review',
+                                  arguments: review);
+                            },
                             child: Container(
                                 margin: EdgeInsets.symmetric(horizontal: 15.0),
                                 child: Column(
@@ -298,9 +302,6 @@ class _MyMoviesState extends State<MyMoviesView> {
                                     ),
                                   ],
                                 )),
-                            onTap: () {
-                              Navigator.pushNamed(context, '/movie_review');
-                            },
                           ),
                       ]);
                     }
@@ -457,6 +458,11 @@ class MovieSearch extends SearchDelegate {
               children: <Widget>[
                 for (ImdbModel suggestion in snapshot.data)
                   GestureDetector(
+                    onTap: () {
+                      // print(suggestion.id);
+                      Navigator.pushNamed(context, '/movie_info',
+                          arguments: suggestion);
+                    },
                     child: Container(
                         child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -485,11 +491,6 @@ class MovieSearch extends SearchDelegate {
                         ),
                       ],
                     )),
-                    onTap: () {
-                      // print(suggestion.id);
-                      Navigator.pushNamed(context, '/movie_info',
-                          arguments: suggestion);
-                    },
                   ),
               ],
             );
