@@ -29,289 +29,282 @@ class _MyMoviesState extends State<MyMoviesView> {
     final FirebaseUser userProvider = Provider.of<FirebaseUser>(context);
 
     return Scaffold(
-        appBar: AppBar(
-          title: Text('My Rated Movies'),
-          actions: <Widget>[
-            IconButton(
-              icon: themeProvider.isDarkModeOn
-                  ? Icon(Icons.brightness_low)
-                  : Icon(Icons.brightness_high),
-              onPressed: () {
-                var theme = themeProvider.isDarkModeOn ? 'light' : 'dark';
-                Provider.of<ThemeProvider>(context, listen: false)
-                    .updateTheme(theme);
-              },
-            ),
-            // action buttons
-            IconButton(
-              icon: Icon(Icons.more_vert),
-              onPressed: () {
-                final actionSheet = CupertinoActionSheet(
-                    // title: Text('Select Option'),
-                    // message: Text('Which option?'),
-                    actions: <Widget>[
-                      CupertinoActionSheetAction(
-                        child: Text('About MovieSliders'),
-                        onPressed: () {
-                          Navigator.pop(context);
-                          Navigator.pushNamed(context, '/about');
-                          // print('pressed: About MovieSliders');
-                        },
-                      ),
-                      CupertinoActionSheetAction(
-                        child: Text('Terms of Service'),
-                        onPressed: () {
-                          Navigator.pop(context);
-                          Navigator.pushNamed(context, '/tos');
-                          // print('pressed: Terms of Service');
-                        },
-                      ),
-                      CupertinoActionSheetAction(
-                        child: Text('Privacy'),
-                        onPressed: () {
-                          Navigator.pop(context);
-                          Navigator.pushNamed(context, '/privacy');
-                          // print('pressed: Privacy Policy');
-                        },
-                      ),
-                      CupertinoActionSheetAction(
-                        child: Text('Log Out'),
-                        onPressed: () {
-                          final AuthService _auth = AuthService();
-                          _auth.signOut();
-                        },
-                      ),
-                    ],
-                    cancelButton: CupertinoActionSheetAction(
-                      child: Text('Cancel'),
+      appBar: AppBar(
+        title: Text('My Rated Movies'),
+        actions: <Widget>[
+          IconButton(
+            icon: themeProvider.isDarkModeOn
+                ? Icon(Icons.brightness_low)
+                : Icon(Icons.brightness_high),
+            onPressed: () {
+              var theme = themeProvider.isDarkModeOn ? 'light' : 'dark';
+              Provider.of<ThemeProvider>(context, listen: false)
+                  .updateTheme(theme);
+            },
+          ),
+          // action buttons
+          IconButton(
+            icon: Icon(Icons.more_vert),
+            onPressed: () {
+              final actionSheet = CupertinoActionSheet(
+                  // title: Text('Select Option'),
+                  // message: Text('Which option?'),
+                  actions: <Widget>[
+                    CupertinoActionSheetAction(
+                      child: Text('About MovieSliders'),
                       onPressed: () {
                         Navigator.pop(context);
+                        Navigator.pushNamed(context, '/about');
+                        // print('pressed: About MovieSliders');
                       },
-                    ));
-                showCupertinoModalPopup(
-                    context: context,
-                    builder: (BuildContext context) => actionSheet);
-              },
-            ),
-          ],
-        ),
-        body: SafeArea(
-          child: ListView(
-            children: <Widget>[
-              Container(
-                  margin: EdgeInsets.only(
-                      top: 20.0, left: 25.0, right: 20.0, bottom: 10.0),
-                  child: Row(children: <Widget>[
-                    Container(
-                        margin: EdgeInsets.only(right: 20.0),
-                        decoration: BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey,
-                              blurRadius:
-                                  22.0, // has the effect of softening the shadow
-                              spreadRadius:
-                                  0, // has the effect of extending the shadow
-                              // offset: Offset(
-                              // 10.0, // horizontal, move right 10
-                              // 10.0, // vertical, move down 10
-                              // ),
-                            )
-                          ],
-                        ),
-                        child: Container(
-                          padding: EdgeInsets.all(5),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(14),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.white,
-                                blurRadius:
-                                    0, // has the effect of softening the shadow
-                                spreadRadius:
-                                    0, // has the effect of extending the shadow
-                              )
-                            ],
-                          ),
-                          child: Image.asset(
-                              'assets/images/moviesliders_icon.png',
-                              width: 60),
-                        )),
-                    Column(children: <Widget>[
-                      Text(
-                        'Movie Sliders',
-                        style: Theme.of(context).textTheme.headline1,
-                      ),
-                      Text('Data Driven Movie Reviews',
-                          style: Theme.of(context).textTheme.bodyText1)
-                    ])
-                  ])),
-              Divider(
-                color: Colors.grey[300],
-                height: 25,
-                thickness: 1,
-                indent: 0,
-                endIndent: 0,
-              ),
-              Container(
-                margin: EdgeInsets.only(
-                    top: 0.0, right: 30.0, bottom: 0, left: 30.0),
-                child: ButtonTheme(
-                  minWidth: 320.0,
-                  height: 50.0,
-                  child: RaisedButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0)),
-                    child: Container(
-                      child: Text(
-                        'New Review',
-                        style: Theme.of(context).textTheme.button,
-                        textAlign: TextAlign.center,
-                      ),
                     ),
+                    CupertinoActionSheetAction(
+                      child: Text('Terms of Service'),
+                      onPressed: () {
+                        Navigator.pop(context);
+                        Navigator.pushNamed(context, '/tos');
+                        // print('pressed: Terms of Service');
+                      },
+                    ),
+                    CupertinoActionSheetAction(
+                      child: Text('Privacy'),
+                      onPressed: () {
+                        Navigator.pop(context);
+                        Navigator.pushNamed(context, '/privacy');
+                        // print('pressed: Privacy Policy');
+                      },
+                    ),
+                    CupertinoActionSheetAction(
+                      child: Text('Log Out'),
+                      onPressed: () {
+                        final AuthService _auth = AuthService();
+                        _auth.signOut();
+                      },
+                    ),
+                  ],
+                  cancelButton: CupertinoActionSheetAction(
+                    child: Text('Cancel'),
                     onPressed: () {
-                      showSearch(
-                        context: context,
-                        delegate: MovieSearch(),
-                      );
+                      Navigator.pop(context);
                     },
+                  ));
+              showCupertinoModalPopup(
+                  context: context,
+                  builder: (BuildContext context) => actionSheet);
+            },
+          ),
+        ],
+      ),
+      body: ListView(
+        children: <Widget>[
+          Container(
+              margin: EdgeInsets.only(
+                  top: 20.0, left: 25.0, right: 20.0, bottom: 10.0),
+              child: Row(children: <Widget>[
+                Container(
+                    margin: EdgeInsets.only(right: 20.0),
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey,
+                          blurRadius:
+                              22.0, // has the effect of softening the shadow
+                          spreadRadius:
+                              0, // has the effect of extending the shadow
+                          // offset: Offset(
+                          // 10.0, // horizontal, move right 10
+                          // 10.0, // vertical, move down 10
+                          // ),
+                        )
+                      ],
+                    ),
+                    child: Container(
+                      padding: EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(14),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.white,
+                            blurRadius:
+                                0, // has the effect of softening the shadow
+                            spreadRadius:
+                                0, // has the effect of extending the shadow
+                          )
+                        ],
+                      ),
+                      child: Image.asset('assets/images/moviesliders_icon.png',
+                          width: 60),
+                    )),
+                Column(children: <Widget>[
+                  Text(
+                    'Movie Sliders',
+                    style: Theme.of(context).textTheme.headline1,
+                  ),
+                  Text('Data Driven Movie Reviews',
+                      style: Theme.of(context).textTheme.bodyText1)
+                ])
+              ])),
+          Divider(
+            color: Colors.grey[300],
+            height: 25,
+            thickness: 1,
+            indent: 0,
+            endIndent: 0,
+          ),
+          Container(
+            margin:
+                EdgeInsets.only(top: 0.0, right: 30.0, bottom: 0, left: 30.0),
+            child: ButtonTheme(
+              minWidth: 320.0,
+              height: 50.0,
+              child: RaisedButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0)),
+                child: Container(
+                  child: Text(
+                    'New Review',
+                    style: Theme.of(context).textTheme.button,
+                    textAlign: TextAlign.center,
                   ),
                 ),
+                onPressed: () {
+                  showSearch(
+                    context: context,
+                    delegate: MovieSearch(),
+                  );
+                },
               ),
-              Divider(
-                color: Colors.grey[300],
-                height: 25,
-                thickness: 1,
-                indent: 0,
-                endIndent: 0,
-              ),
-              FutureBuilder<DataSnapshot>(
-                  future: dbRef.child('reviews').once(),
-                  builder: (BuildContext context,
-                      AsyncSnapshot<DataSnapshot> snapshot) {
-                    if (snapshot.hasError) {
-                      print(snapshot.error);
-                      return Text('Error');
-                    } else if (snapshot.hasData && snapshot.data != null) {
-                      // No Reviews found
-                      if (snapshot.data.value == null)
-                        return Center(
-                          child: Text('No Reviews to show'),
-                        );
-                      List<Review> reviews = [];
-                      snapshot.data.value.forEach((key, value) {
-                        reviews.add(Review.fromJson(value));
-                      });
-                      return Column(children: <Widget>[
-                        for (Review review in reviews)
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.pushNamed(context, '/movie_review',
-                                  arguments: review);
-                            },
-                            child: Container(
-                                margin: EdgeInsets.symmetric(horizontal: 15.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Container(
-                                      margin: EdgeInsets.only(bottom: 10.0),
-                                      decoration: BoxDecoration(
-                                        border: Border(
-                                          top: BorderSide(
-                                              width: 1,
-                                              color: Colors.grey[350]),
-                                          left: BorderSide(
-                                              width: 1,
-                                              color: Colors.grey[350]),
-                                          right: BorderSide(
-                                              width: 1,
-                                              color: Colors.grey[350]),
-                                          bottom: BorderSide(
-                                              width: 1,
-                                              color: Colors.grey[350]),
-                                        ),
-                                        // color: Color(0xFFBFBFBF),
-                                      ),
-                                      height: 170.0,
-                                      child: NumericComboLinePointChartRaw
-                                          .withRatings(review.trends,
-                                              animate: false),
-                                    ),
-                                    Text(
-                                      review.title,
-                                      style:
-                                          Theme.of(context).textTheme.headline3,
-                                    ),
-                                    SizedBox(height: 5.0),
-                                    Text(
-                                      (review.type == 'movie'
-                                              ? review.movie.dateReleased.year
-                                                  .toString()
-                                              : '9999') +
-                                          ' - Rating: ' +
-                                          review.avg10.toString(),
-                                      textAlign: TextAlign.left,
-                                      style:
-                                          Theme.of(context).textTheme.headline4,
-                                    ),
-                                    SizedBox(height: 8.0),
-                                    Row(children: <Widget>[
-                                      Container(
-                                        decoration: BoxDecoration(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .primary,
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(40.0))),
-                                        width: 34.0,
-                                        height: 34.0,
-                                        margin: EdgeInsets.only(right: 10.0),
-                                        child: Center(
-                                            child: Text(review.userAbv,
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                ))),
-                                      ),
-                                      Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            Text(
-                                              review.userName,
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyText1,
-                                            ),
-                                            Text(
-                                              review.dateReviewedReadable
-                                              // + ' - asdf'
-                                              ,
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyText2,
-                                            )
-                                          ])
-                                    ]),
-                                    Divider(
-                                      color: Colors.grey[300],
-                                      height: 40,
-                                      thickness: 1,
-                                      indent: 15,
-                                      endIndent: 15,
-                                    ),
-                                  ],
-                                )),
-                          ),
-                      ]);
-                    }
-                    return Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }),
-            ],
+            ),
           ),
-        ));
+          Divider(
+            color: Colors.grey[300],
+            height: 25,
+            thickness: 1,
+            indent: 0,
+            endIndent: 0,
+          ),
+          FutureBuilder<DataSnapshot>(
+              future: dbRef.child('reviews').once(),
+              builder:
+                  (BuildContext context, AsyncSnapshot<DataSnapshot> snapshot) {
+                if (snapshot.hasError) {
+                  print(snapshot.error);
+                  return Text('Error');
+                } else if (snapshot.hasData && snapshot.data != null) {
+                  // No Reviews found
+                  if (snapshot.data.value == null)
+                    return Center(
+                      child: Text('No Reviews to show'),
+                    );
+                  List<Review> reviews = [];
+                  snapshot.data.value.forEach((key, value) {
+                    reviews.add(Review.fromJson(value));
+                  });
+                  return Column(children: <Widget>[
+                    for (Review review in reviews)
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(context, '/movie_review',
+                              arguments: review);
+                        },
+                        child: Container(
+                            margin: EdgeInsets.symmetric(horizontal: 15.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Container(
+                                  height: 170.0,
+                                  margin: EdgeInsets.only(bottom: 10.0),
+                                  decoration: BoxDecoration(
+                                    border: Border(
+                                      top: BorderSide(
+                                          width: 1, color: Colors.grey[350]),
+                                      left: BorderSide(
+                                          width: 1, color: Colors.grey[350]),
+                                      right: BorderSide(
+                                          width: 1, color: Colors.grey[350]),
+                                      bottom: BorderSide(
+                                          width: 1, color: Colors.grey[350]),
+                                    ),
+                                    // color: Color(0xFFBFBFBF),
+                                  ),
+                                  child:
+                                      NumericComboLinePointChartRaw.withRatings(
+                                          review.trends,
+                                          animate: false),
+                                ),
+                                Text(
+                                  review.title,
+                                  style: Theme.of(context).textTheme.headline3,
+                                ),
+                                SizedBox(height: 5.0),
+                                Text(
+                                  (review.type == 'movie'
+                                          ? review.movie.dateReleased.year
+                                              .toString()
+                                          : '9999') +
+                                      ' - Rating: ' +
+                                      review.avg10.toString(),
+                                  textAlign: TextAlign.left,
+                                  style: Theme.of(context).textTheme.headline4,
+                                ),
+                                SizedBox(height: 8.0),
+                                Row(children: <Widget>[
+                                  Container(
+                                    decoration: BoxDecoration(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(40.0))),
+                                    width: 34.0,
+                                    height: 34.0,
+                                    margin: EdgeInsets.only(right: 10.0),
+                                    child: Center(
+                                        child: Text(review.userAbv,
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                            ))),
+                                  ),
+                                  Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Text(
+                                          review.userName,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyText1,
+                                        ),
+                                        Text(
+                                          review.dateReviewedReadable
+                                          // + ' - asdf'
+                                          ,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyText2,
+                                        )
+                                      ])
+                                ]),
+                                Divider(
+                                  color: Colors.grey[300],
+                                  height: 40,
+                                  thickness: 1,
+                                  indent: 15,
+                                  endIndent: 15,
+                                ),
+                              ],
+                            )),
+                      ),
+                  ]);
+                }
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }),
+        ],
+      ),
+    );
   }
 }
 

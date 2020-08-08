@@ -20,6 +20,29 @@ class NumericComboLinePointChart extends StatelessWidget {
     );
   }
 
+  factory NumericComboLinePointChart.withRatings(trendsList,
+      {bool animate: true}) {
+    List<charts.Series<Rating, int>> trendSeries = [];
+
+    for (Trend trend in trendsList) {
+      var trendSeri = charts.Series<Rating, int>(
+        id: trend.rawName,
+        colorFn: (_, __) => charts.ColorUtil.fromDartColor(trend.color),
+        domainFn: (Rating rating, _) => rating.second,
+        measureFn: (Rating rating, _) => rating.value,
+        data: trend.ratings,
+      );
+
+      trendSeries.add(trendSeri);
+      // break;
+    }
+
+    return NumericComboLinePointChart(
+      trendSeries,
+      animate: animate,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return charts.LineChart(

@@ -18,8 +18,7 @@ class MovieReviewView extends StatelessWidget {
         title: Text('Movie Review'),
         actions: <Widget>[],
       ),
-      body: SafeArea(
-          child: ListView(children: <Widget>[
+      body: ListView(children: <Widget>[
         Container(
           margin: EdgeInsets.only(top: 10.0, left: 15, right: 15),
           child: Text(
@@ -40,18 +39,19 @@ class MovieReviewView extends StatelessWidget {
         ),
         Container(
             height: 200,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.4),
-                  spreadRadius: 0,
-                  blurRadius: 7,
-                  offset: Offset(0, 0), // changes position of shadow
-                ),
-              ],
-            ),
-            child: NumericComboLinePointChart.withSampleData()),
+            // decoration: BoxDecoration(
+            //   // color: Colors.white,
+            //   boxShadow: [
+            //     BoxShadow(
+            //       color: Colors.grey.withOpacity(0.4),
+            //       spreadRadius: 0,
+            //       blurRadius: 7,
+            //       offset: Offset(0, 0), // changes position of shadow
+            //     ),
+            //   ],
+            // ),
+            child: NumericComboLinePointChart.withRatings(review.trends,
+                animate: false)),
         Container(
           // margin: EdgeInsets.only(bottom: 20.0),
           child: ButtonTheme(
@@ -67,7 +67,7 @@ class MovieReviewView extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
               onPressed: () {
-                Navigator.pushNamed(context, '/chart');
+                Navigator.pushNamed(context, '/chart', arguments: review);
               },
             ),
           ),
@@ -103,9 +103,9 @@ class MovieReviewView extends StatelessWidget {
         Container(
             margin: EdgeInsets.only(bottom: 10.0, left: 15, right: 15),
             child: Image.network(
-              'https://m.media-amazon.com/images/M/MV5BYTM3YWVhMDMtNjczMy00NGEyLWJhZDctYjNhMTRkNDE0ZTI1XkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_SX1000.jpg',
+              review.movie.posterUrl,
             ))
-      ])),
+      ]),
     );
   }
 }
