@@ -200,6 +200,9 @@ class _MyMoviesState extends State<MyMoviesView> {
                   snapshot.data.value.forEach((key, value) {
                     reviews.add(Review.fromJson(value));
                   });
+                  reviews.sort((a, b) =>
+                      b.dateTimeReviewed.compareTo(a.dateTimeReviewed));
+
                   return Column(children: <Widget>[
                     for (Review review in reviews)
                       GestureDetector(
