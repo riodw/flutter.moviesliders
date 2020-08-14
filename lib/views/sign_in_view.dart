@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+// import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 // - auth
 import 'package:flutter_moviesliders/services/auth_service.dart';
@@ -51,6 +51,7 @@ class _SignInViewState extends State<SignInView> {
           child: Column(
             children: [
               Expanded(
+                flex: 1,
                 child: Container(
                   child: Align(
                     alignment: FractionalOffset(0.5, 0.0),
@@ -91,41 +92,33 @@ class _SignInViewState extends State<SignInView> {
                         )),
                   ),
                 ),
-                flex: 1,
               ),
-              Expanded(
-                child: Container(
-                    margin: EdgeInsets.only(bottom: 10.0),
+              Column(
+                children: [
+                  Text(
+                    'MovieSliders',
+                    style: TextStyle(
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
+                  ),
+                  SizedBox(
+                    height: 25,
+                  ),
+                  Container(
                     child: Text(
-                      'MovieSliders',
-                      style: TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
+                      'Peak-End Rule - People judge an experience largely based on how they felt at its peak and at its end, rather than the total sum or average of every moment of the experience.\n\nWe aim to fix that.',
+                      style: TextStyle(fontSize: 16.0, color: Colors.white),
                       textAlign: TextAlign.center,
-                    )),
-                flex: 0,
-              ),
-              Expanded(
-                child: Container(
-                  margin: EdgeInsets.only(bottom: 28.0),
-                  child: Text(
-                    'We do all the best for your future endeavors by providing the connections you need during your job seeking process.',
-                    style: TextStyle(fontSize: 16.0, color: Colors.white),
-                    textAlign: TextAlign.center,
+                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 20.0),
                   ),
-                  padding: EdgeInsets.symmetric(vertical: 18.0),
-                  constraints: BoxConstraints(
-                    maxWidth: 330.0,
+                  SizedBox(
+                    height: 45,
                   ),
-                ),
-                flex: 0,
-              ),
-              Expanded(
-                child: ButtonTheme(
-                  minWidth: 320.0,
-                  height: 50.0,
-                  child: RaisedButton(
+                  MaterialButton(
+                    height: 50.0,
+                    minWidth: 320.0,
                     textColor: Colors.blueAccent,
                     color: Colors.white,
                     shape: RoundedRectangleBorder(
@@ -133,75 +126,50 @@ class _SignInViewState extends State<SignInView> {
                     child: Container(
                       child: Text(
                         'Continue with Apple',
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
-                        textAlign: TextAlign.center,
+                        style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ),
                     onPressed: () {
                       Navigator.pushNamed(context, '/signup');
                     },
                   ),
-                ),
-                flex: 0,
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: ButtonTheme(
-                    minWidth: 320.0,
-                    height: 50.0,
-                    child:
-                        // GoogleSignInButton(onPressed: () {})
-                        RaisedButton(
-                      textColor: Colors.white,
-                      color: Colors.blueAccent,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0)),
-                      child: Container(
-                        child: Text(
-                          'Continue with Google',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      onPressed: () async {
-                        AuthService _auth = AuthService();
-                        bool status =
-                            await _auth.signInWithGoogle().then((status) {
-                          setState(() {
-                            _loading = false;
-                          });
-                          return status != null;
-                        });
-                        if (!status) {
-                          print('Could not log in');
-                          // _scaffoldKey.currentState.showSnackBar(SnackBar(
-                          //   content: Text(labels.auth.signInError),
-                          // ));
-                        }
-                      },
-                    ),
+                  SizedBox(
+                    height: 10,
                   ),
-                ),
-                flex: 0,
-              ),
-              Expanded(
-                child: ButtonTheme(
-                  minWidth: 200.0,
-                  height: 50.0,
-                  child: FlatButton(
-                    textColor: Colors.white,
-                    child: Container(
-                      child: Text(
-                        'Skip',
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
-                        textAlign: TextAlign.center,
+                  MaterialButton(
+                    height: 50.0,
+                    minWidth: 320.0,
+                    color: Colors.blueAccent,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0)),
+                    child: Text(
+                      'Continue with Google',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
                       ),
+                    ),
+                    onPressed: () async {
+                      AuthService _auth = AuthService();
+                      bool status =
+                          await _auth.signInWithGoogle().then((status) {
+                        setState(() {
+                          _loading = false;
+                        });
+                        return status != null;
+                      });
+                      if (!status) {
+                        print('Could not log in');
+                        Scaffold.of(context).showSnackBar(
+                            SnackBar(content: Text('Could not log in.')));
+                      }
+                    },
+                  ),
+                  MaterialButton(
+                    height: 50.0,
+                    minWidth: 320.0,
+                    textColor: Colors.white,
+                    child: Text(
+                      'Skip',
                     ),
                     onPressed: () async {
                       AuthService _auth = AuthService();
@@ -214,14 +182,12 @@ class _SignInViewState extends State<SignInView> {
                       });
                       if (!status) {
                         print('Could not log in');
-                        // _scaffoldKey.currentState.showSnackBar(SnackBar(
-                        //   content: Text(labels.auth.signInError),
-                        // ));
+                        Scaffold.of(context).showSnackBar(
+                            SnackBar(content: Text('Could not log in.')));
                       }
                     },
                   ),
-                ),
-                flex: 0,
+                ],
               ),
             ],
           ),

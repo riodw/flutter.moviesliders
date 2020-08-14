@@ -41,191 +41,183 @@ class MovieInfoView extends StatelessWidget {
       builder: (BuildContext context, AsyncSnapshot<OmdbModel> snapshot) {
         OmdbModel omdb;
         if (snapshot.hasError)
-          return Center(
-            child: Text('Error', style: Theme.of(context).textTheme.headline4),
+          return const Center(
+            child: Text('Error'),
           );
         else if (snapshot.data == null)
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         omdb = snapshot.data;
 
-        return Container(
-            margin: EdgeInsets.symmetric(horizontal: 15),
-            child: Column(
+        return Column(
+          // crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            const SizedBox(
+              height: 10,
+            ),
+            Container(
+              height: 260,
+              child: Image.network(
+                omdb.poster,
+                fit: BoxFit.fill,
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                SizedBox(
-                  height: 10,
+                Text(
+                  omdb.year.toString(),
+                  style: Theme.of(context).textTheme.headline5,
                 ),
-                Center(
-                    child: Container(
-                  height: 260,
-                  child: Image.network(
-                    omdb.poster,
-                    fit: BoxFit.fill,
-                  ),
-                )),
-                SizedBox(
-                  height: 20,
+                const SizedBox(
+                  width: 20,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      omdb.year.toString(),
-                      style: Theme.of(context).textTheme.headline5,
-                    ),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    Chip(
-                      label: Text(omdb.rated),
-                    ),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    Text(
-                      omdb.runtime,
-                      style: Theme.of(context).textTheme.headline5,
-                    ),
-                  ],
+                Chip(
+                  label: Text(omdb.rated),
                 ),
-                SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  width: double.infinity,
-                  child: ButtonTheme(
-                    // minWidth: 330.0,
-                    height: 50.0,
-                    child: RaisedButton(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4.0)),
-                      child: Container(
-                        child: Text(
-                          'Start Review',
-                          style: Theme.of(context).textTheme.button,
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      onPressed: () async {
-                        DatabaseReference reviewFireReference =
-                            dbRef.child('reviews').push();
-
-                        await reviewFireReference.set(<String, Object>{
-                          'date_reviewed': DateTime.now().toString(),
-                          'avg': 2,
-                          'title': imdb.title,
-                          'type': omdb.type,
-                          'link_id': omdb.imdbID,
-                          'user_id': userProvider.uid,
-                          'user': {
-                            'name': userProvider.isAnonymous
-                                ? 'Anonymous'
-                                : userProvider.displayName,
-                            'review_number': 0,
-                          },
-                          'medium': {
-                            'imdb_id': omdb.imdbID,
-                            'title': omdb.title,
-                            'runtime': omdb.runtime,
-                            'date_released': (() {
-                              final List<String> dateParsed =
-                                  omdb.released.split(' ');
-                              final int day = int.parse(dateParsed[0]);
-                              final int year = int.parse(dateParsed[2]);
-                              int month = interpretMonthString(dateParsed[1]);
-                              return DateTime.utc(year, month, day);
-                            })()
-                                .toString(),
-                            'media': imdb.media,
-                          },
-                          // the review data
-                          'trends': [],
-                        }).then((onValue) {
-                          final DatabaseReference trendsRef = dbRef
-                              .child('reviews')
-                              .child(reviewFireReference.key)
-                              .child('trends');
-
-                          final List trends = [
-                            {
-                              'name': 'Interest',
-                              'color': 'c62928',
-                              'order': 1,
-                            },
-                            {
-                              'name': 'Cliche',
-                              'color': '01e675',
-                              'order': 2,
-                            },
-                            {
-                              'name': 'Funny',
-                              'color': '2ab6f6',
-                              'order': 3,
-                            },
-                            {
-                              'name': 'Dumb',
-                              'color': 'bd00ff',
-                              'order': 4,
-                            },
-                            {
-                              'name': 'WTF',
-                              'color': 'fdff00',
-                              'order': 5,
-                            },
-                          ];
-
-                          trends.forEach((element) {
-                            DatabaseReference trend = trendsRef.push();
-                            trend.set(element).then((asdf) {
-                              DatabaseReference _ratings = trendsRef
-                                  .child(trend.key)
-                                  .child('ratings')
-                                  .push();
-                              _ratings.set(
-                                {
-                                  's': 0,
-                                  'v': 2,
-                                },
-                              );
-                            });
-                          });
-                          // change page
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => SlidersView(
-                                    title: imdb.title,
-                                    reviewKey: reviewFireReference.key,
-                                    omdb: omdb)),
-                          );
-                          // Navigator.pushNamed(context, '/sliders', arguments: {
-                          //   'title': imdb.title,
-                          //   'review_fire_id': reviewFireReference.key,
-                          //   'omdb': omdb
-                          // });
-                        }).catchError((onError) {
-                          print(onError.toString());
-                          return null;
-                        });
-                        // https://medium.com/firebase-tips-tricks/how-to-use-firebase-queries-in-flutter-361f21005467
-                        // https://pub.dev/packages/firebase_database/example#-example-tab-
-                      },
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 20,
+                const SizedBox(
+                  width: 20,
                 ),
                 Text(
-                  omdb.plot,
-                  maxLines: 19,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.bodyText1,
+                  omdb.runtime,
+                  style: Theme.of(context).textTheme.headline5,
                 ),
               ],
-            ));
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            MaterialButton(
+              minWidth: 320.0,
+              height: 50.0,
+              color: Theme.of(context).colorScheme.primary,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4.0)),
+              child: const Text(
+                'Start Review',
+              ),
+              onPressed: () async {
+                DatabaseReference reviewFireReference =
+                    dbRef.child('reviews').push();
+
+                await reviewFireReference.set(<String, Object>{
+                  'date_reviewed': DateTime.now().toString(),
+                  'avg': 2,
+                  'title': imdb.title,
+                  'type': omdb.type,
+                  'link_id': omdb.imdbID,
+                  'user_id': userProvider.uid,
+                  'user': {
+                    'name': userProvider.isAnonymous
+                        ? 'Anonymous'
+                        : userProvider.displayName,
+                    'review_number': 0,
+                  },
+                  'medium': {
+                    'imdb_id': omdb.imdbID,
+                    'title': omdb.title,
+                    'runtime': omdb.runtime,
+                    'date_released': (() {
+                      final List<String> dateParsed = omdb.released.split(' ');
+                      final int day = int.parse(dateParsed[0]);
+                      final int year = int.parse(dateParsed[2]);
+                      int month = interpretMonthString(dateParsed[1]);
+                      return DateTime.utc(year, month, day);
+                    })()
+                        .toString(),
+                    'media': imdb.media,
+                  },
+                  // the review data
+                  'trends': [],
+                }).then((onValue) {
+                  final DatabaseReference trendsRef = dbRef
+                      .child('reviews')
+                      .child(reviewFireReference.key)
+                      .child('trends');
+
+                  final List trends = [
+                    {
+                      'name': 'Interest',
+                      'color': 'c62928',
+                      'order': 1,
+                    },
+                    {
+                      'name': 'Cliche',
+                      'color': '01e675',
+                      'order': 2,
+                    },
+                    {
+                      'name': 'Funny',
+                      'color': '2ab6f6',
+                      'order': 3,
+                    },
+                    {
+                      'name': 'Dumb',
+                      'color': 'bd00ff',
+                      'order': 4,
+                    },
+                    {
+                      'name': 'WTF',
+                      'color': 'fdff00',
+                      'order': 5,
+                    },
+                  ];
+
+                  trends.forEach((element) {
+                    DatabaseReference trend = trendsRef.push();
+                    trend.set(element).then((asdf) {
+                      DatabaseReference _ratings =
+                          trendsRef.child(trend.key).child('ratings').push();
+                      _ratings.set(
+                        {
+                          's': 0,
+                          'v': 2,
+                        },
+                      );
+                    });
+                  });
+                  // change page
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => SlidersView(
+                            title: imdb.title,
+                            reviewKey: reviewFireReference.key,
+                            omdb: omdb)),
+                  );
+                  // Navigator.pushNamed(context, '/sliders', arguments: {
+                  //   'title': imdb.title,
+                  //   'review_fire_id': reviewFireReference.key,
+                  //   'omdb': omdb
+                  // });
+                }).catchError((onError) {
+                  print(onError.toString());
+                  return null;
+                });
+                // https://medium.com/firebase-tips-tricks/how-to-use-firebase-queries-in-flutter-361f21005467
+                // https://pub.dev/packages/firebase_database/example#-example-tab-
+              },
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Expanded(
+                flex: 1,
+                child: SingleChildScrollView(
+                    child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 15.0),
+                  child: Text(
+                    omdb.plot,
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ),
+                )))
+          ],
+        );
       },
     );
 

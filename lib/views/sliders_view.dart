@@ -119,8 +119,8 @@ class _SlidersViewState extends State<SlidersView> {
         _avg = _avg + _trend.rating.round();
       }
       // post updated
-      DatabaseReference ratingRef = _trend.ratingRef.push();
-      ratingRef.set(
+      // DatabaseReference ratingRef = _trend.ratingRef.push();
+      _trend.ratingRef.push().set(
         {
           's': _seconds,
           'v': _trend.rating.round(),
