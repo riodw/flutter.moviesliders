@@ -315,6 +315,36 @@ class _MyMoviesState extends State<MyMoviesView> {
   }
 }
 
+/**
+ * OmdbSearchModel
+ * OmdbSearchModel
+ * OmdbSearchModel
+ * 
+    List<OmdbSearchModel> suggestions = [];
+
+    Future<List<OmdbSearchModel>> _fetchOmbdSearch(final String query) async {
+      String urlSearch = OmdbSearchModel.urlSearch + query;
+
+      final response = await http.get(urlSearch);
+
+      if (response.statusCode != 200) return suggestions;
+
+      var omdbSearchJson = json.decode(response.body);
+      // print(omdbSearchResult);
+
+      // imdbJson = imdbJson.substring(imdbJson.indexOf('(') + 1, imdbJson.length - 1);
+      // var omdbSearchJson = json.decode(omdbSearchResult);
+      if (omdbSearchJson.containsKey('Search')) {
+        for (var word in omdbSearchJson['Search']) {
+          if (word['Poster'] != 'N/A') {
+            suggestions.add(OmdbSearchModel.fromJson(word));
+          }
+        }
+      }
+      return suggestions;
+    }
+ */
+
 final String imdbUrl = 'https://sg.media-imdb.com/suggests/';
 
 Future<List<ImdbModel>> _fetchImdb(String query) async {
@@ -351,8 +381,8 @@ class MovieSearch extends SearchDelegate {
    * https://stackoverflow.com/questions/1966503/does-imdb-provide-an-api
    * 
    * Get movie details
-   * https://sg.media-imdb.com/suggests/a/aa.json
-   * http://www.omdbapi.com/?i=tt3896198&apikey=cf1629a0
+   * https://sg.media-imdb.com/suggests/a/altered.json
+   * https://www.omdbapi.com/?apikey=cf1629a0&i=tt3896198
    */
 
   @override
@@ -455,7 +485,7 @@ class MovieSearch extends SearchDelegate {
               crossAxisCount: 3,
               childAspectRatio: .52,
               children: <Widget>[
-                for (ImdbModel suggestion in snapshot.data)
+                for (final ImdbModel suggestion in snapshot.data)
                   GestureDetector(
                     onTap: () {
                       Navigator.pop(context);
@@ -505,7 +535,6 @@ class MovieSearch extends SearchDelegate {
             children: <Widget>[
           Text(
             'Movies',
-            textAlign: TextAlign.left,
             style: Theme.of(context).textTheme.headline6,
           ),
           Flexible(child: suggestions),

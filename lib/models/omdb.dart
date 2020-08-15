@@ -1,5 +1,35 @@
+/*
+https://www.omdbapi.com/?apikey=cf1629a0&v=1&plot=full&i=tt3896198
+*/
 class OmdbModel {
-  OmdbModel(
+  static final String url =
+      'https://www.omdbapi.com/?apikey=cf1629a0&v=1&r=json';
+}
+
+// class OmdbSearchModel extends OmdbModel {
+//   static final String urlSearch = OmdbModel.url + '&type=movie&s=';
+
+//   final String title;
+//   final int year;
+//   final String id;
+//   final String type;
+//   final String poster;
+
+//   OmdbSearchModel({this.title, this.year, this.id, this.type, this.poster});
+
+//   factory OmdbSearchModel.fromJson(Map<String, dynamic> json) {
+//     return OmdbSearchModel(
+//       title: json['Title'],
+//       year: int.parse(json['Year']),
+//       id: json['imdbID'],
+//       type: json['Type'],
+//       poster: json['Poster'],
+//     );
+//   }
+// }
+
+class OmdbIdModel extends OmdbModel {
+  OmdbIdModel(
       {this.title,
       this.year,
       this.rated,
@@ -27,11 +57,7 @@ class OmdbModel {
       this.response})
       : runtimeNum = int.parse(runtime.substring(0, runtime.indexOf(' ')));
 
-/*
-https://www.omdbapi.com/?apikey=cf1629a0&v=1&plot=full&i=tt3896198
-*/
-  static final String url =
-      'https://www.omdbapi.com/?apikey=cf1629a0&v=1&plot=full';
+  static final String urlId = OmdbModel.url + '&plot=full';
 
   final String title;
   final int year;
@@ -61,9 +87,9 @@ https://www.omdbapi.com/?apikey=cf1629a0&v=1&plot=full&i=tt3896198
   // calculated values
   final int runtimeNum;
 
-  factory OmdbModel.fromJson(Map<String, dynamic> json) {
+  factory OmdbIdModel.fromJson(Map<String, dynamic> json) {
     // String temp = json['Runtime'].substring(0, json['Runtime'].indexOf(' '))
-    return OmdbModel(
+    return OmdbIdModel(
       title: json['Title'],
       year: int.parse(json['Year']),
       rated: json['Rated'],

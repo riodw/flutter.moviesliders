@@ -20,7 +20,7 @@ class SlidersView extends StatefulWidget {
 
   final String title;
   final String reviewKey;
-  final OmdbModel omdb;
+  final OmdbIdModel omdb;
 
   @override
   _SlidersViewState createState() => _SlidersViewState();

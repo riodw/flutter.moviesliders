@@ -16,14 +16,14 @@ import 'package:flutter_moviesliders/models/models.dart';
 https://www.omdbapi.com/?apikey=cf1629a0&v=1&plot=full&i=tt3896198
  */
 
-// OmdbModel
-Future<OmdbModel> _fetchOmdb(String imbdId) async {
-  final String url = OmdbModel.url + '&i=' + imbdId;
+// OmdbIdModel
+Future<OmdbIdModel> _fetchOmdb(String imbdId) async {
+  final String url = OmdbIdModel.urlId + '&i=' + imbdId;
   final response = await http.get(url);
   if (response.statusCode != 200) return null;
 
   var omdbJson = response.body;
-  return OmdbModel.fromJson(json.decode(omdbJson));
+  return OmdbIdModel.fromJson(json.decode(omdbJson));
 }
 
 class MovieInfoView extends StatelessWidget {
@@ -36,17 +36,17 @@ class MovieInfoView extends StatelessWidget {
     final FirebaseUser userProvider = Provider.of<FirebaseUser>(context);
     final ImdbModel imdb = ModalRoute.of(context).settings.arguments;
 
-    var contents = FutureBuilder<OmdbModel>(
+    var contents = FutureBuilder<OmdbIdModel>(
       future: _fetchOmdb(imdb.id),
-      builder: (BuildContext context, AsyncSnapshot<OmdbModel> snapshot) {
-        OmdbModel omdb;
+      builder: (BuildContext context, AsyncSnapshot<OmdbIdModel> snapshot) {
+        OmdbIdModel omdb;
         if (snapshot.hasError)
           return const Center(
             child: Text('Error'),
           );
         else if (snapshot.data == null)
           return const Center(
-            child: CircularProgressIndicator(),
+            child: const CircularProgressIndicator(),
           );
         omdb = snapshot.data;
 
