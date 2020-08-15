@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
-// pubs
+// Pubs
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 // Project
 import 'package:flutter_moviesliders/services/services.dart';
 import 'package:flutter_moviesliders/constants/constants.dart';
-import 'package:flutter_moviesliders/views/views.dart';
+import 'package:flutter_moviesliders/views/sign_in_view.dart';
+import 'package:flutter_moviesliders/views/my_movies_view.dart';
 
 // https://flutter.dev/docs/development/ui/interactive#managing-state
 

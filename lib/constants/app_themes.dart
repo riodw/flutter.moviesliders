@@ -57,30 +57,30 @@ class AppThemes {
   // static const Color _lightBorderErrorColor = brinkPink;
 
   //text theme for light theme
-  static final TextTheme _lightTextTheme = TextTheme(
-    headline1: TextStyle(
+  static final TextTheme _lightTextTheme = const TextTheme(
+    headline1: const TextStyle(
         fontSize: 30.0,
         color: _lightTextColor,
         fontWeight: FontWeight.normal,
         fontFamily: font1),
-    headline2: TextStyle(
+    headline2: const TextStyle(
         fontSize: 30.0,
         color: _lightTextColor,
         fontWeight: FontWeight.bold,
         fontFamily: font2),
-    headline3: TextStyle(
+    headline3: const TextStyle(
         fontSize: 22.0,
         color: _lightTextColor,
         fontWeight: FontWeight.bold,
         fontFamily: font1),
     headline4:
-        TextStyle(fontSize: 18.0, color: Colors.grey[600], fontFamily: font1),
+        const TextStyle(fontSize: 18.0, color: Colors.grey, fontFamily: font1),
     // headline5: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
     // headline6: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
     bodyText1:
-        TextStyle(fontSize: 14.0, color: Colors.black, fontFamily: font1),
+        const TextStyle(fontSize: 14.0, color: Colors.black, fontFamily: font1),
     bodyText2:
-        TextStyle(fontSize: 12.0, color: Colors.grey[600], fontFamily: font1),
+        const TextStyle(fontSize: 12.0, color: Colors.grey, fontFamily: font1),
 
     button: TextStyle(
         fontSize: 16.0,
@@ -188,7 +188,7 @@ class AppThemes {
   // static const Color _darkBorderActiveColor = _darkPrimaryColor;
   // static const Color _darkBorderErrorColor = brinkPink;
 
-  static final TextTheme _darkTextTheme = TextTheme(
+  static final TextTheme _darkTextTheme = const TextTheme(
     headline1: TextStyle(
         fontSize: 30.0,
         color: _darkTextColor,

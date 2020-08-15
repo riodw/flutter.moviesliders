@@ -1,6 +1,5 @@
-// import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-// - auth
+// Project
 import 'package:flutter_moviesliders/services/auth_service.dart';
 
 class SignInView extends StatefulWidget {
