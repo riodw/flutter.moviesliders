@@ -95,25 +95,25 @@ class _SignInViewState extends State<SignInView> {
               ),
               Column(
                 children: [
-                  Text(
+                  const Text(
                     'MovieSliders',
                     style: TextStyle(
                         fontSize: 32,
                         fontWeight: FontWeight.bold,
                         color: Colors.white),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 25,
                   ),
                   Container(
-                    child: Text(
+                    child: const Text(
                       'Peak-End Rule - People judge an experience largely based on how they felt at its peak and at its end, rather than the total sum or average of every moment of the experience.\n\nWe aim to fix that.',
                       style: TextStyle(fontSize: 16.0, color: Colors.white),
                       textAlign: TextAlign.center,
                     ),
                     padding: EdgeInsets.symmetric(horizontal: 20.0),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 45,
                   ),
                   MaterialButton(
@@ -124,16 +124,16 @@ class _SignInViewState extends State<SignInView> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.0)),
                     child: Container(
-                      child: Text(
+                      child: const Text(
                         'Continue with Apple',
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        // style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ),
                     onPressed: () {
                       Navigator.pushNamed(context, '/signup');
                     },
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   MaterialButton(
@@ -142,11 +142,11 @@ class _SignInViewState extends State<SignInView> {
                     color: Colors.blueAccent,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.0)),
-                    child: Text(
+                    child: const Text(
                       'Continue with Google',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
+                      // style: TextStyle(
+                      //   fontWeight: FontWeight.bold,
+                      // ),
                     ),
                     onPressed: () async {
                       AuthService _auth = AuthService();
@@ -168,7 +168,7 @@ class _SignInViewState extends State<SignInView> {
                     height: 50.0,
                     minWidth: 320.0,
                     textColor: Colors.white,
-                    child: Text(
+                    child: const Text(
                       'Skip',
                     ),
                     onPressed: () async {
