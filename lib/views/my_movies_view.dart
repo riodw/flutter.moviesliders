@@ -131,7 +131,7 @@ class _MyMoviesState extends State<MyMoviesView> {
                     ),
                   ],
                   cancelButton: CupertinoActionSheetAction(
-                    child: Text('Cancel'),
+                    child: const Text('Cancel'),
                     onPressed: () {
                       Navigator.pop(context);
                     },
