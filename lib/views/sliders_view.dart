@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
-// firebase
 import 'package:firebase_database/firebase_database.dart';
 // project
+// import 'package:flutter_moviesliders/constants/globals.dart';
 import 'package:flutter_moviesliders/models/models.dart';
 import 'package:flutter_moviesliders/services/services.dart';
 
@@ -13,13 +13,13 @@ class SlidersView extends StatefulWidget {
   SlidersView(
       {Key key,
       @required this.title,
-      @required this.reviewKey,
+      @required this.reviewRef,
       @required this.omdb})
       : assert(title != null && omdb != null),
         super(key: key);
 
   final String title;
-  final String reviewKey;
+  final DatabaseReference reviewRef;
   final OmdbIdModel omdb;
 
   @override
@@ -27,16 +27,18 @@ class SlidersView extends StatefulWidget {
 }
 
 class _SlidersViewState extends State<SlidersView> {
-  static final DatabaseReference dbRef = FirebaseDatabase.instance.reference();
   bool _paused = true;
   Timer _timer;
   List<Trend> _trends = [];
-  DatabaseReference _reviewRef;
   int _seconds = 0;
   int _timeSpent = 0;
   bool _reviewFinished = false;
   int _updates = 1;
-  double _avg = 2;
+  int _total = 2;
+
+  double _avg() {
+    return _total / _updates;
+  }
 
   @override
   void initState() {
@@ -47,14 +49,16 @@ class _SlidersViewState extends State<SlidersView> {
       Call dbRef.child('foo_bar').once() in initState and with a .then callback, 
       fill your elements list and call setState.
     */
-    _reviewRef = dbRef.child('reviews').child(widget.reviewKey);
 
-    _reviewRef.child('trends').once().then((DataSnapshot snapshot) {
+    widget.reviewRef.child('trends').once().then((final DataSnapshot snapshot) {
       setState(() {
         snapshot.value.forEach((key, value) {
           _trends.add(Trend(
-              value['name'], value['color'], value['order'], key.toString(),
-              ratingRef: _reviewRef
+              rawName: value['name'],
+              rawColor: value['color'],
+              order: value['order'],
+              trendKey: key.toString(),
+              ratingsRef: widget.reviewRef
                   .child('trends')
                   .child(key.toString())
                   .child('ratings')));
@@ -71,16 +75,34 @@ class _SlidersViewState extends State<SlidersView> {
   void dispose() {
     _timer?.cancel();
     // delete unstarted review
-    if (_seconds == 0) _reviewRef?.remove();
+    if (_seconds == 0) widget.reviewRef?.remove();
     super.dispose();
   }
 
-  void setAverage() {
+  void finishReview() {
     _reviewFinished = true;
     _paused = true;
     _timer?.cancel();
-    double average = _avg / _updates;
-    _reviewRef.child('avg').set(average);
+    // SET AVERAGE (avg)
+    widget.reviewRef.child('avg').set(_avg());
+
+    showDialog(
+      context: context,
+      builder: (context) => CupertinoAlertDialog(
+        title: const Text('Movie Review Done!'),
+        content: const Text(
+          'See your finished review and rating.',
+        ),
+        actions: <Widget>[
+          FlatButton(
+            child: const Text('Show me!'),
+            // GO TO SEE REVIEW RESULTS
+            onPressed: () => Navigator.pushNamedAndRemoveUntil(
+                context, '/movie_review', ModalRoute.withName('/')),
+          ),
+        ],
+      ),
+    );
   }
 
   void _updateTrends() {
@@ -88,68 +110,49 @@ class _SlidersViewState extends State<SlidersView> {
     _seconds = _seconds + 2;
     setState(() {
       _timeSpent = (_seconds.toDouble() / 60).truncate();
+
+      // check if max time hit, return out;
       if (_timeSpent >= widget.omdb.runtimeNum) {
         // if (_seconds >= 12) {
-        setAverage();
-        showDialog(
-          context: context,
-          builder: (context) => CupertinoAlertDialog(
-            title: Text('Movie Review Done!'),
-            content: Text(
-              'See your finished review and rating.',
-            ),
-            actions: <Widget>[
-              FlatButton(
-                child: Text('Show me!'),
-                onPressed: () {
-                  Navigator.pushNamedAndRemoveUntil(
-                      context, '/movie_review', ModalRoute.withName('/'));
-                },
-              ),
-            ],
-          ),
-        );
+        finishReview();
+
         return;
       }
     });
 
-    _trends.forEach((Trend _trend) {
+    _trends.forEach((final Trend trend) {
       // update average
-      if (_trend.rawName == 'Interest') {
-        _avg = _avg + _trend.rating.round();
+      if (trend.rawName == 'Interest') {
+        _total = _total + trend.rating.round();
       }
+      // how many times has been called
+      _updates++;
       // post updated
-      // DatabaseReference ratingRef = _trend.ratingRef.push();
-      _trend.ratingRef.push().set(
+      trend.ratingsRef.push().set(
         {
           's': _seconds,
-          'v': _trend.rating.round(),
+          'v': trend.rating.round(),
         },
       );
     });
-    // how many times has been called
-    _updates++;
   }
 
   Future<bool> _onWillPop() async {
     if (_seconds == 0) {
-      _reviewRef?.remove();
+      widget.reviewRef?.remove();
       Navigator.pop(context);
       return false;
     }
     // TEST IF REVIEW IS CLOSE ENOUGH TO DONE
-    if ((_timeSpent + 5) >= widget.omdb.runtimeNum) {
+    if ((_timeSpent + 7) >= widget.omdb.runtimeNum) {
       // if (_seconds > 4) {
-      setAverage();
-      // GO TO SEE REVIEW RESULTS
-      Navigator.pushNamedAndRemoveUntil(
-          context, '/movie_review', ModalRoute.withName('/'));
+      finishReview();
       return false;
     }
     return (await showDialog(
           context: context,
           builder: (context) => CupertinoAlertDialog(
-            title: Text('Are you sure?'),
+            title: const Text('Are you sure?'),
             content: Text(
               'Your review will be deleted if you\ngo back before finishing.' +
                   '\n\nYou have ' +
@@ -158,14 +161,14 @@ class _SlidersViewState extends State<SlidersView> {
             ),
             actions: <Widget>[
               FlatButton(
-                child: Text('No'),
+                child: const Text('No'),
                 onPressed: () => Navigator.pop(context),
               ),
               FlatButton(
-                child: Text('Yes'),
+                child: const Text('Yes'),
                 onPressed: () {
                   _timer?.cancel();
-                  _reviewRef?.remove();
+                  widget.reviewRef?.remove();
                   Navigator.of(context).pop(true);
                 },
               ),
@@ -191,9 +194,8 @@ class _SlidersViewState extends State<SlidersView> {
                       ? Icon(Icons.brightness_low)
                       : Icon(Icons.brightness_high),
                   onPressed: () {
-                    var theme = themeProvider.isDarkModeOn ? 'light' : 'dark';
-                    Provider.of<ThemeProvider>(context, listen: false)
-                        .updateTheme(theme);
+                    themeProvider.updateTheme(
+                        themeProvider.isDarkModeOn ? 'light' : 'dark');
                   },
                 ),
               ],
@@ -215,7 +217,7 @@ class _SlidersViewState extends State<SlidersView> {
                           width: 180,
                           child: _reviewFinished
                               ? CupertinoButton(
-                                  child: Text('DONE'),
+                                  child: const Text('DONE'),
                                   color: Theme.of(context).colorScheme.primary,
                                   onPressed: () {
                                     // GO TO SEE REVIEW RESULTS
@@ -284,7 +286,7 @@ class _SlidersViewState extends State<SlidersView> {
                                               ),
                                       ]),
                                   ])
-                            : Center(
+                            : const Center(
                                 child: const CircularProgressIndicator(),
                               )),
                   ],

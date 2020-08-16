@@ -8,10 +8,12 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 // project
 import 'package:flutter_moviesliders/constants/globals.dart';
-import 'package:flutter_moviesliders/services/services.dart';
-import 'package:flutter_moviesliders/views/views.dart';
+// import 'package:flutter_moviesliders/views/views.dart';
+import 'package:flutter_moviesliders/views/sliders_view.dart';
 import 'package:flutter_moviesliders/models/models.dart';
 
+final DatabaseReference reviewRef =
+    dbRef.child('reviews').child('not_done').push();
 /**
 https://www.omdbapi.com/?apikey=cf1629a0&v=1&plot=full&i=tt3896198
  */
@@ -22,21 +24,17 @@ Future<OmdbIdModel> _fetchOmdb(String imbdId) async {
   final response = await http.get(url);
   if (response.statusCode != 200) return null;
 
-  var omdbJson = response.body;
-  return OmdbIdModel.fromJson(json.decode(omdbJson));
+  return OmdbIdModel.fromJson(json.decode(response.body));
 }
 
 class MovieInfoView extends StatelessWidget {
-  // firebase
-  final dbRef = FirebaseDatabase.instance.reference();
-
   @override
   Widget build(BuildContext context) {
     // final ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
     final FirebaseUser userProvider = Provider.of<FirebaseUser>(context);
     final ImdbModel imdb = ModalRoute.of(context).settings.arguments;
 
-    var contents = FutureBuilder<OmdbIdModel>(
+    FutureBuilder<OmdbIdModel> contents = FutureBuilder<OmdbIdModel>(
       future: _fetchOmdb(imdb.id),
       builder: (BuildContext context, AsyncSnapshot<OmdbIdModel> snapshot) {
         OmdbIdModel omdb;
@@ -94,7 +92,7 @@ class MovieInfoView extends StatelessWidget {
             ),
             MaterialButton(
               minWidth: 320.0,
-              height: 50.0,
+              height: 45.0,
               color: Theme.of(context).colorScheme.primary,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(4.0)),
@@ -102,10 +100,7 @@ class MovieInfoView extends StatelessWidget {
                 'Start Review',
               ),
               onPressed: () async {
-                DatabaseReference reviewFireReference =
-                    dbRef.child('reviews').push();
-
-                await reviewFireReference.set(<String, Object>{
+                await reviewRef.set(<String, Object>{
                   'date_reviewed': DateTime.now().toString(),
                   'avg': 2,
                   'title': imdb.title,
@@ -126,7 +121,7 @@ class MovieInfoView extends StatelessWidget {
                       final List<String> dateParsed = omdb.released.split(' ');
                       final int day = int.parse(dateParsed[0]);
                       final int year = int.parse(dateParsed[2]);
-                      int month = interpretMonthString(dateParsed[1]);
+                      final int month = interpretMonthString(dateParsed[1]);
                       return DateTime.utc(year, month, day);
                     })()
                         .toString(),
@@ -135,11 +130,6 @@ class MovieInfoView extends StatelessWidget {
                   // the review data
                   'trends': [],
                 }).then((onValue) {
-                  final DatabaseReference trendsRef = dbRef
-                      .child('reviews')
-                      .child(reviewFireReference.key)
-                      .child('trends');
-
                   final List trends = [
                     {
                       'name': 'Interest',
@@ -168,12 +158,11 @@ class MovieInfoView extends StatelessWidget {
                     },
                   ];
 
-                  trends.forEach((element) {
-                    DatabaseReference trend = trendsRef.push();
-                    trend.set(element).then((asdf) {
-                      DatabaseReference _ratings =
-                          trendsRef.child(trend.key).child('ratings').push();
-                      _ratings.set(
+                  trends.forEach((trend) {
+                    final DatabaseReference trendRef =
+                        reviewRef.child('trends').push();
+                    trendRef.set(trend).then((asdf) {
+                      trendRef.child('ratings').push().set(
                         {
                           's': 0,
                           'v': 2,
@@ -187,14 +176,9 @@ class MovieInfoView extends StatelessWidget {
                     MaterialPageRoute(
                         builder: (context) => SlidersView(
                             title: imdb.title,
-                            reviewKey: reviewFireReference.key,
+                            reviewRef: reviewRef,
                             omdb: omdb)),
                   );
-                  // Navigator.pushNamed(context, '/sliders', arguments: {
-                  //   'title': imdb.title,
-                  //   'review_fire_id': reviewFireReference.key,
-                  //   'omdb': omdb
-                  // });
                 }).catchError((onError) {
                   print(onError.toString());
                   return null;

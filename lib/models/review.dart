@@ -27,7 +27,7 @@ class Review {
         })(),
         userAbv = (() {
           if (userName == null || userName == '') return 'A';
-          var parts = userName.split(' ');
+          final List<String> parts = userName.split(' ');
           if (parts.length > 1) {
             return parts[0][0] + parts[1][0];
           } else
@@ -70,7 +70,10 @@ class Review {
     List<Trend> trends = [];
     trendJson.forEach((key, value) {
       trends.add(Trend(
-          value['name'], value['color'], value['order'], key.toString(),
+          rawName: value['name'],
+          rawColor: value['color'],
+          order: value['order'],
+          trendKey: key.toString(),
           ratings: setRatings(value['ratings'])));
     });
     return trends;

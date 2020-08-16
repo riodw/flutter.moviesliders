@@ -1,12 +1,17 @@
-// packages
+// Packages
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
-// project
+// Project
 import 'package:flutter_moviesliders/models/models.dart';
 
 class Trend {
-  Trend(this.rawName, this.rawColor, this.order, this.trendKey,
-      {this.ratingRef, this.ratings})
+  Trend(
+      {@required this.rawName,
+      @required this.rawColor,
+      @required this.order,
+      this.trendKey,
+      this.ratingsRef,
+      this.ratings})
       : name = Text(rawName),
         color = Color(int.parse('0xff${rawColor}'));
 
@@ -16,7 +21,7 @@ class Trend {
   final String rawColor;
   final int order;
   final String trendKey;
-  DatabaseReference ratingRef;
+  DatabaseReference ratingsRef;
   List<Rating> ratings = [];
   // calculated values
   final Text name;

@@ -20,8 +20,10 @@ class ChartView extends StatelessWidget {
       body: SafeArea(
         child: Container(
             // margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
-            child: NumericComboLinePointChart.withRatings(review.trends,
-                animate: false)),
+            child: NumericComboLinePointChart.withRatings(
+          trendsList: review.trends,
+          // animate: true
+        )),
       ),
     );
   }

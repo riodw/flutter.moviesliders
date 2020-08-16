@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_list.dart';
 // Project
-// import 'package:flutter_moviesliders/services/auth_service.dart';
+import 'package:flutter_moviesliders/constants/globals.dart';
 import 'package:flutter_moviesliders/services/services.dart';
 import 'package:flutter_moviesliders/models/models.dart';
 // Widgets
@@ -22,14 +22,10 @@ class MyMoviesView extends StatefulWidget {
 }
 
 class _MyMoviesState extends State<MyMoviesView> {
-  static final Query _dbRef = FirebaseDatabase.instance
-      .reference()
-      .child('reviews')
-      .orderByChild('date_reviewed')
-      .limitToLast(10);
-  StreamSubscription<Event> _counterSubscription;
-  List<Review> _reviews = [];
-  DatabaseError _error;
+  static final Query _dbRef =
+      dbRef.child('reviews').child('done').orderByKey().limitToLast(10);
+  static List<Review> _reviews = [];
+  // DatabaseError _error;
   FirebaseList tt;
 
   @override
@@ -49,13 +45,13 @@ class _MyMoviesState extends State<MyMoviesView> {
           setState(() {
             _reviews.removeAt(pos);
           });
-          // print(pos);
         },
         onChildChanged: (pos, snapshot) {
-          // print(-3);
-          setState(() {
-            _reviews[pos] = Review.fromJson(snapshot.value);
-          });
+          // THIS WILL CAUSE PROBLEMS BECAUSE IT WILL BE CALLED EVERY 2 SECONDS BY EVERY ACTIVE REVIEW
+          print(-3);
+          // setState(() {
+          //   _reviews[pos] = Review.fromJson(snapshot.value);
+          // });
         },
         onChildMoved: (oldpos, newpos, snapshot) {
           // print(-4);
@@ -86,10 +82,10 @@ class _MyMoviesState extends State<MyMoviesView> {
                 ? const Icon(Icons.brightness_low)
                 : const Icon(Icons.brightness_high),
             onPressed: () {
-              var theme = themeProvider.isDarkModeOn ? 'light' : 'dark';
+              themeProvider
+                  .updateTheme(themeProvider.isDarkModeOn ? 'light' : 'dark');
               // Provider.of<ThemeProvider>(context, listen: false)
               //     .updateTheme(theme);
-              themeProvider.updateTheme(theme);
             },
           ),
           // action buttons
@@ -159,7 +155,7 @@ class _MyMoviesState extends State<MyMoviesView> {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(14.0),
                 boxShadow: [
-                  BoxShadow(
+                  const BoxShadow(
                     color: Colors.grey,
                     blurRadius: 22.0, // has the effect of softening the shadow
                     spreadRadius: 0, // has the effect of extending the shadow
@@ -179,15 +175,21 @@ class _MyMoviesState extends State<MyMoviesView> {
               ),
               Text('Data Driven Movie Reviews',
                   style: Theme.of(context).textTheme.bodyText1)
-            ])
+            ]),
+            const SizedBox(
+              width: 22,
+            ),
           ]),
-          const Divider(
-            color: Colors.grey,
-            height: 30,
-            thickness: 1,
-            indent: 0,
-            endIndent: 0,
+          const SizedBox(
+            height: 20,
           ),
+          // const Divider(
+          //   color: Colors.grey,
+          //   height: 30,
+          //   thickness: 1,
+          //   indent: 0,
+          //   endIndent: 0,
+          // ),
           Container(
             margin: EdgeInsets.symmetric(horizontal: 30.0),
             child: MaterialButton(
@@ -205,107 +207,119 @@ class _MyMoviesState extends State<MyMoviesView> {
               },
             ),
           ),
-          const Divider(
-            color: Colors.grey,
-            height: 30,
-            thickness: 1,
-            indent: 0,
-            endIndent: 0,
+          const SizedBox(
+            height: 22,
           ),
+          // const Divider(
+          //   color: Colors.grey,
+          //   height: 30,
+          //   thickness: 1,
+          //   indent: 0,
+          //   endIndent: 0,
+          // ),
           _reviews.length > 0
-              ? Container(
-                  margin: EdgeInsets.symmetric(horizontal: 15.0),
-                  child: Column(children: <Widget>[
-                    for (Review review in _reviews.reversed)
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.pushNamed(context, '/movie_review',
-                              arguments: review);
-                        },
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Container(
-                              height: 170.0,
-                              decoration: const BoxDecoration(
-                                border: const Border(
-                                  top: const BorderSide(
-                                      width: 1, color: Colors.grey),
-                                  left: const BorderSide(
-                                      width: 1, color: Colors.grey),
-                                  right: const BorderSide(
-                                      width: 1, color: Colors.grey),
-                                  bottom: const BorderSide(
-                                      width: 1, color: Colors.grey),
-                                ),
+              ? Column(children: <Widget>[
+                  for (Review review in _reviews.reversed)
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(context, '/movie_review',
+                            arguments: review);
+                      },
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                            height: 170.0,
+                            decoration: const BoxDecoration(
+                              border: const Border(
+                                top: const BorderSide(
+                                    width: 1, color: Colors.grey),
+                                left: const BorderSide(
+                                    width: 1, color: Colors.grey),
+                                right: const BorderSide(
+                                    width: 1, color: Colors.grey),
+                                bottom: const BorderSide(
+                                    width: 1, color: Colors.grey),
                               ),
-                              child: NumericComboLinePointChartRaw.withRatings(
-                                  review.trends,
-                                  animate: false),
                             ),
-                            const SizedBox(height: 8.0),
-                            Text(
-                              review.title,
-                              style: Theme.of(context).textTheme.headline3,
-                            ),
-                            const SizedBox(height: 5.0),
-                            Text(
-                              (review.type == 'movie'
-                                      ? review.movie.dateReleased.year
-                                          .toString()
-                                      : '9999') +
-                                  ' - Rating: ' +
-                                  review.avg10.toString(),
-                              textAlign: TextAlign.left,
-                              style: const TextStyle(
-                                  fontSize: 18.0, color: Colors.grey),
-                            ),
-                            const SizedBox(height: 8.0),
-                            Row(children: <Widget>[
-                              Container(
-                                decoration: BoxDecoration(
-                                    color:
-                                        Theme.of(context).colorScheme.primary,
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(40.0))),
-                                width: 34.0,
-                                height: 34.0,
-                                child: Center(
-                                    child: Text(review.userAbv,
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                        ))),
-                              ),
-                              const SizedBox(width: 10.0),
-                              Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text(
-                                      review.userName,
-                                      style:
-                                          Theme.of(context).textTheme.bodyText1,
+                            child: NumericComboLinePointChart.withRatings(
+                                trendsList: review.trends, animate: false),
+                          ),
+                          const SizedBox(height: 8.0),
+                          Container(
+                            margin: EdgeInsets.symmetric(horizontal: 15.0),
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    review.title,
+                                    style:
+                                        Theme.of(context).textTheme.headline3,
+                                  ),
+                                  const SizedBox(height: 5.0),
+                                  Text(
+                                    (review.type == 'movie'
+                                            ? review.movie.dateReleased.year
+                                                .toString()
+                                            : '9999') +
+                                        ' - Rating: ' +
+                                        review.avg10.toString(),
+                                    textAlign: TextAlign.left,
+                                    style: const TextStyle(
+                                        fontSize: 18.0, color: Colors.grey),
+                                  ),
+                                  const SizedBox(height: 8.0),
+                                  Row(children: <Widget>[
+                                    Container(
+                                      decoration: BoxDecoration(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .primary,
+                                          borderRadius: const BorderRadius.all(
+                                              Radius.circular(40.0))),
+                                      width: 34.0,
+                                      height: 34.0,
+                                      child: Center(
+                                          child: Text(review.userAbv,
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                              ))),
                                     ),
-                                    Text(
-                                      review.dateReviewedReadable
-                                      // + ' - asdf'
-                                      ,
-                                      style: const TextStyle(
-                                          fontSize: 12.0, color: Colors.grey),
-                                    )
-                                  ])
-                            ]),
-                            const Divider(
-                              color: Colors.black12,
-                              height: 40,
-                              thickness: 1,
-                              indent: 15,
-                              endIndent: 15,
-                            ),
-                            const SizedBox(height: 10.0),
-                          ],
-                        ),
+                                    const SizedBox(width: 10.0),
+                                    Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          Text(
+                                            review.userName,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyText1,
+                                          ),
+                                          Text(
+                                            review.dateReviewedReadable
+                                            // + ' - asdf'
+                                            ,
+                                            style: const TextStyle(
+                                                fontSize: 12.0,
+                                                color: Colors.grey),
+                                          )
+                                        ])
+                                  ]),
+                                ]),
+                          ),
+                          // const Divider(
+                          //   color: Colors.black12,
+                          //   height: 40,
+                          //   thickness: 1,
+                          //   indent: 15,
+                          //   endIndent: 15,
+                          // ),
+                          const SizedBox(height: 40.0),
+                        ],
                       ),
-                  ]))
+                    ),
+                ])
               : const Center(
                   child: const CircularProgressIndicator(),
                 )
@@ -330,10 +344,10 @@ class _MyMoviesState extends State<MyMoviesView> {
       if (response.statusCode != 200) return suggestions;
 
       var omdbSearchJson = json.decode(response.body);
-      // print(omdbSearchResult);
+      print(omdbSearchResult);
 
-      // imdbJson = imdbJson.substring(imdbJson.indexOf('(') + 1, imdbJson.length - 1);
-      // var omdbSearchJson = json.decode(omdbSearchResult);
+      imdbJson = imdbJson.substring(imdbJson.indexOf('(') + 1, imdbJson.length - 1);
+      var omdbSearchJson = json.decode(omdbSearchResult);
       if (omdbSearchJson.containsKey('Search')) {
         for (var word in omdbSearchJson['Search']) {
           if (word['Poster'] != 'N/A') {
@@ -356,12 +370,11 @@ Future<List<ImdbModel>> _fetchImdb(String query) async {
 
   if (response.statusCode != 200) return suggestions;
 
-  var imdbJson = response.body;
+  String imdbJson = response.body;
 
   imdbJson = imdbJson.substring(imdbJson.indexOf('(') + 1, imdbJson.length - 1);
-  var imdb = json.decode(imdbJson);
 
-  for (var word in imdb['d']) {
+  for (dynamic word in json.decode(imdbJson)['d']) {
     if (word['q'] != null &&
         word['q'] == 'feature' &&
         word['i'] != null &&

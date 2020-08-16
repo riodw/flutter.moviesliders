@@ -1,3 +1,7 @@
+import 'package:firebase_database/firebase_database.dart';
+
+final DatabaseReference dbRef = FirebaseDatabase.instance.reference();
+
 String interpretMonthInt(int month) {
   switch (month) {
     case 1:

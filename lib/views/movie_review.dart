@@ -50,8 +50,10 @@ class MovieReviewView extends StatelessWidget {
             //     ),
             //   ],
             // ),
-            child: NumericComboLinePointChart.withRatings(review.trends,
-                animate: false)),
+            child: NumericComboLinePointChart.withRatings(
+              trendsList: review.trends,
+              // animate: false
+            )),
         Container(
           // margin: EdgeInsets.only(bottom: 20.0),
           child: ButtonTheme(
