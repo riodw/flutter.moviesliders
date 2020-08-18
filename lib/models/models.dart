@@ -1,6 +1,6 @@
-export 'imdb.dart';
-export 'omdb.dart';
-export 'review.dart';
-export 'mediums.dart';
-export 'trend.dart';
-export 'rating.dart';
+export 'imdb_models.dart';
+export 'omdb_models.dart';
+export 'review_models.dart';
+export 'mediums_models.dart';
+export 'trend_models.dart';
+export 'rating_models.dart';

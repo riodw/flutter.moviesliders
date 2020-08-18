@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
-import 'package:flutter_moviesliders/models/trend.dart';
-import 'package:flutter_moviesliders/models/rating.dart';
+import 'package:flutter_moviesliders/models/trend_models.dart';
+import 'package:flutter_moviesliders/models/rating_models.dart';
 
 class NumericComboLinePointChart extends StatelessWidget {
   final List<charts.Series> seriesList;
