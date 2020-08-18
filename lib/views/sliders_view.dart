@@ -13,12 +13,14 @@ class SlidersView extends StatefulWidget {
   SlidersView(
       {Key key,
       @required this.title,
+      @required this.reviewNotDoneRef,
       @required this.reviewRef,
       @required this.omdb})
       : assert(title != null && omdb != null),
         super(key: key);
 
   final String title;
+  final DatabaseReference reviewNotDoneRef;
   final DatabaseReference reviewRef;
   final OmdbIdModel omdb;
 
@@ -50,7 +52,10 @@ class _SlidersViewState extends State<SlidersView> {
       fill your elements list and call setState.
     */
 
-    widget.reviewRef.child('trends').once().then((final DataSnapshot snapshot) {
+    widget.reviewNotDoneRef
+        .child('trends')
+        .once()
+        .then((final DataSnapshot snapshot) {
       setState(() {
         snapshot.value.forEach((key, value) {
           _trends.add(Trend(
@@ -58,7 +63,7 @@ class _SlidersViewState extends State<SlidersView> {
               rawColor: value['color'],
               order: value['order'],
               trendKey: key.toString(),
-              ratingsRef: widget.reviewRef
+              ratingsRef: widget.reviewNotDoneRef
                   .child('trends')
                   .child(key.toString())
                   .child('ratings')));
@@ -75,16 +80,20 @@ class _SlidersViewState extends State<SlidersView> {
   void dispose() {
     _timer?.cancel();
     // delete unstarted review
-    if (_seconds == 0) widget.reviewRef?.remove();
+    if (_seconds == 0) widget.reviewNotDoneRef?.remove();
     super.dispose();
   }
 
-  void finishReview() {
+  void _finishReview() {
     _reviewFinished = true;
     _paused = true;
     _timer?.cancel();
-    // SET AVERAGE (avg)
-    widget.reviewRef.child('avg').set(_avg());
+    // Set average (avg)
+    widget.reviewNotDoneRef.child('avg').set(_avg());
+    // TODO: MOVE REVIEW TO 'done'
+
+    widget.reviewRef.child('done').push().set(widget.reviewNotDoneRef.once());
+    widget.reviewNotDoneRef?.remove();
 
     showDialog(
       context: context,
@@ -114,7 +123,7 @@ class _SlidersViewState extends State<SlidersView> {
       // check if max time hit, return out;
       if (_timeSpent >= widget.omdb.runtimeNum) {
         // if (_seconds >= 12) {
-        finishReview();
+        _finishReview();
 
         return;
       }
@@ -139,14 +148,14 @@ class _SlidersViewState extends State<SlidersView> {
 
   Future<bool> _onWillPop() async {
     if (_seconds == 0) {
-      widget.reviewRef?.remove();
+      widget.reviewNotDoneRef?.remove();
       Navigator.pop(context);
       return false;
     }
     // TEST IF REVIEW IS CLOSE ENOUGH TO DONE
     if ((_timeSpent + 7) >= widget.omdb.runtimeNum) {
       // if (_seconds > 4) {
-      finishReview();
+      _finishReview();
       return false;
     }
     return (await showDialog(
@@ -168,7 +177,7 @@ class _SlidersViewState extends State<SlidersView> {
                 child: const Text('Yes'),
                 onPressed: () {
                   _timer?.cancel();
-                  widget.reviewRef?.remove();
+                  widget.reviewNotDoneRef?.remove();
                   Navigator.of(context).pop(true);
                 },
               ),

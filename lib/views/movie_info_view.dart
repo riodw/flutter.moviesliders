@@ -12,8 +12,8 @@ import 'package:flutter_moviesliders/constants/globals.dart';
 import 'package:flutter_moviesliders/views/sliders_view.dart';
 import 'package:flutter_moviesliders/models/models.dart';
 
-final DatabaseReference reviewRef =
-    dbRef.child('reviews').child('not_done').push();
+final DatabaseReference reviewRef = dbRef.child('reviews');
+final DatabaseReference reviewNotDoneRef = reviewRef.child('not_done').push();
 /**
 https://www.omdbapi.com/?apikey=cf1629a0&v=1&plot=full&i=tt3896198
  */
@@ -100,7 +100,7 @@ class MovieInfoView extends StatelessWidget {
                 'Start Review',
               ),
               onPressed: () async {
-                await reviewRef.set(<String, Object>{
+                await reviewNotDoneRef.set(<String, Object>{
                   'date_reviewed': DateTime.now().toString(),
                   'avg': 2,
                   'title': imdb.title,
@@ -160,7 +160,7 @@ class MovieInfoView extends StatelessWidget {
 
                   trends.forEach((trend) {
                     final DatabaseReference trendRef =
-                        reviewRef.child('trends').push();
+                        reviewNotDoneRef.child('trends').push();
                     trendRef.set(trend).then((asdf) {
                       trendRef.child('ratings').push().set(
                         {
@@ -177,6 +177,7 @@ class MovieInfoView extends StatelessWidget {
                         builder: (context) => SlidersView(
                             title: imdb.title,
                             reviewRef: reviewRef,
+                            reviewNotDoneRef: reviewNotDoneRef,
                             omdb: omdb)),
                   );
                 }).catchError((onError) {
