@@ -509,17 +509,20 @@ class MovieSearch extends SearchDelegate {
                         child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Container(
+                        Image.network(
+                          suggestion.media[0],
                           height: 180,
-                          decoration: BoxDecoration(
-                              // color: Colors.yellow,
-                              image: DecorationImage(
-                            fit: BoxFit.fitWidth,
-                            alignment: FractionalOffset.topCenter,
-                            image: NetworkImage(
-                              suggestion.media[0],
-                            ),
-                          )),
+                          loadingBuilder:
+                              (BuildContext context, Object child, progress) {
+                            return progress == null
+                                ? child
+                                : const CircularProgressIndicator();
+                          },
+                          errorBuilder: (BuildContext context, Object exception,
+                              StackTrace stackTrace) {
+                            return const Center(child: Text('Image Not Found'));
+                          },
+                          fit: BoxFit.fill,
                         ),
                         Text(
                           suggestion.title,

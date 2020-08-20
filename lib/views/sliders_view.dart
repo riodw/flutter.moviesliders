@@ -90,9 +90,9 @@ class _SlidersViewState extends State<SlidersView> {
     _timer?.cancel();
     // Set average (avg)
     widget.reviewNotDoneRef.child('avg').set(_avg());
-    // TODO: MOVE REVIEW TO 'done'
-
+    // move review to 'done'
     widget.reviewRef.child('done').push().set(widget.reviewNotDoneRef.once());
+    // remove original
     widget.reviewNotDoneRef?.remove();
 
     showDialog(
@@ -256,9 +256,14 @@ class _SlidersViewState extends State<SlidersView> {
                                   },
                                 ),
                         ),
-                        Chip(
-                          label: Text(_timeSpent.toString() + ' min'),
-                        ),
+                        _paused
+                            ? Chip(
+                                label: Text(_timeSpent.toString() + ' min'),
+                              )
+                            : Chip(
+                                backgroundColor: Colors.green,
+                                label: Text(_timeSpent.toString() + ' min'),
+                              ),
                       ],
                     ),
                     Expanded(

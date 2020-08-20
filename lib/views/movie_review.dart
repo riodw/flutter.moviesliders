@@ -103,10 +103,22 @@ class MovieReviewView extends StatelessWidget {
               style: Theme.of(context).textTheme.headline2,
             )),
         Container(
-            margin: EdgeInsets.only(bottom: 10.0, left: 15, right: 15),
-            child: Image.network(
-              review.movie.posterUrl,
-            ))
+          margin: EdgeInsets.only(bottom: 10.0, left: 15, right: 15),
+          child: Image.network(
+            review.movie.posterUrl,
+            height: 260,
+            loadingBuilder: (BuildContext context, Object child, progress) {
+              return progress == null
+                  ? child
+                  : const CircularProgressIndicator();
+            },
+            errorBuilder: (BuildContext context, Object exception,
+                StackTrace stackTrace) {
+              return const Center(child: Text('Image Not Found'));
+            },
+            fit: BoxFit.fill,
+          ),
+        )
       ]),
     );
   }

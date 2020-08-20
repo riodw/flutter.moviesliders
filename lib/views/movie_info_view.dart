@@ -55,10 +55,20 @@ class MovieInfoView extends StatelessWidget {
             const SizedBox(
               height: 10,
             ),
-            Container(
-              height: 260,
+            SizedBox(
+              height: 261,
               child: Image.network(
                 omdb.poster,
+                height: 260,
+                loadingBuilder: (BuildContext context, Object child, progress) {
+                  return progress == null
+                      ? child
+                      : const CircularProgressIndicator();
+                },
+                errorBuilder: (BuildContext context, Object exception,
+                    StackTrace stackTrace) {
+                  return const Center(child: Text('Image Not Found'));
+                },
                 fit: BoxFit.fill,
               ),
             ),
