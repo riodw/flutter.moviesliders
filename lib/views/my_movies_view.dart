@@ -166,7 +166,7 @@ class _MyMoviesState extends State<MyMoviesView> {
                   Image.asset('assets/images/moviesliders_icon.png', width: 60),
             ),
             const SizedBox(
-              width: 20,
+              width: 15,
             ),
             Column(children: <Widget>[
               Text(
@@ -176,9 +176,9 @@ class _MyMoviesState extends State<MyMoviesView> {
               Text('Data Driven Movie Reviews',
                   style: Theme.of(context).textTheme.bodyText1)
             ]),
-            const SizedBox(
-              width: 22,
-            ),
+            // const SizedBox(
+            //   width: 22,
+            // ),
           ]),
           const SizedBox(
             height: 20,
@@ -493,10 +493,10 @@ class MovieSearch extends SearchDelegate {
             return GridView.count(
               primary: true,
               // padding: const EdgeInsets.only(b: 20),
-              crossAxisSpacing: 8,
-              mainAxisSpacing: 8,
+              crossAxisSpacing: 4,
+              mainAxisSpacing: 4,
               crossAxisCount: 3,
-              childAspectRatio: .52,
+              childAspectRatio: .48,
               children: <Widget>[
                 for (final ImdbModel suggestion in snapshot.data)
                   GestureDetector(

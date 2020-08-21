@@ -211,9 +211,7 @@ class _SlidersViewState extends State<SlidersView> {
             ),
             body: SafeArea(
               child: Container(
-                margin: const EdgeInsets.only(top: 10.0
-                    // , bottom: 10.0
-                    ),
+                margin: const EdgeInsets.only(top: 10.0, bottom: 3.0),
                 child: Column(
                   children: <Widget>[
                     Row(
@@ -224,15 +222,24 @@ class _SlidersViewState extends State<SlidersView> {
                         ),
                         Container(
                           width: 180,
+                          height: 45,
                           child: _reviewFinished
-                              ? CupertinoButton(
-                                  child: const Text('DONE'),
+                              ? MaterialButton(
                                   color: Theme.of(context).colorScheme.primary,
                                   onPressed: () {
                                     // GO TO SEE REVIEW RESULTS
                                   },
+                                  child: const Text('DONE'),
                                 )
-                              : CupertinoButton(
+                              : MaterialButton(
+                                  color: _paused
+                                      ? Theme.of(context).colorScheme.primary
+                                      : Theme.of(context).colorScheme.secondary,
+                                  onPressed: () {
+                                    setState(() {
+                                      _paused = !_paused;
+                                    });
+                                  },
                                   child: _paused
                                       ? Text(
                                           'Play',
@@ -246,14 +253,6 @@ class _SlidersViewState extends State<SlidersView> {
                                               .textTheme
                                               .button,
                                         ),
-                                  color: _paused
-                                      ? Theme.of(context).colorScheme.primary
-                                      : Theme.of(context).colorScheme.secondary,
-                                  onPressed: () {
-                                    setState(() {
-                                      _paused = !_paused;
-                                    });
-                                  },
                                 ),
                         ),
                         _paused

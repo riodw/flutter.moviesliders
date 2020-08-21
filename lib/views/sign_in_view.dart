@@ -51,44 +51,24 @@ class _SignInViewState extends State<SignInView> {
             children: [
               Expanded(
                 flex: 1,
-                child: Container(
-                  child: Align(
-                    alignment: FractionalOffset(0.5, 0.0),
-                    child: Container(
-                        margin: EdgeInsets.only(top: 100.0),
-                        decoration: BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black,
-                              blurRadius:
-                                  22.0, // has the effect of softening the shadow
-                              spreadRadius:
-                                  1, // has the effect of extending the shadow
-                              // offset: Offset(
-                              // 10.0, // horizontal, move right 10
-                              // 10.0, // vertical, move down 10
-                              // ),
-                            )
-                          ],
-                        ),
-                        child: Container(
-                          padding: EdgeInsets.all(5),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(14),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.white,
-                                blurRadius:
-                                    0, // has the effect of softening the shadow
-                                spreadRadius:
-                                    0, // has the effect of extending the shadow
-                              )
-                            ],
-                          ),
-                          child: Image.asset(
-                              'assets/images/moviesliders_icon.png',
-                              width: 70),
-                        )),
+                child: Center(
+                  child: Container(
+                    padding: EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(14.0),
+                      boxShadow: [
+                        const BoxShadow(
+                          color: Colors.grey,
+                          blurRadius:
+                              22.0, // has the effect of softening the shadow
+                          spreadRadius:
+                              0, // has the effect of extending the shadow
+                        )
+                      ],
+                    ),
+                    child: Image.asset('assets/images/moviesliders_icon.png',
+                        width: 60),
                   ),
                 ),
               ),

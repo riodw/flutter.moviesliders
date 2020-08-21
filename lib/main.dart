@@ -36,19 +36,30 @@ class MyApp extends StatelessWidget {
       return AuthWidgetBuilder(builder:
           (BuildContext context, AsyncSnapshot<FirebaseUser> userSnapshot) {
         return MaterialApp(
-          navigatorObservers: [
-            FirebaseAnalyticsObserver(analytics: FirebaseAnalytics()),
-          ],
-          debugShowCheckedModeBanner: false,
-          // project
-          routes: Routes.routes,
-          theme: AppThemes.lightTheme,
-          darkTheme: AppThemes.darkTheme,
-          themeMode:
-              themeProviderRef.isDarkModeOn ? ThemeMode.dark : ThemeMode.light,
-          home:
-              (userSnapshot?.data?.uid != null) ? MyMoviesView() : SignInView(),
-        );
+            navigatorObservers: [
+              FirebaseAnalyticsObserver(analytics: FirebaseAnalytics()),
+            ],
+            debugShowCheckedModeBanner: false,
+            // project
+            routes: Routes.routes,
+            theme: AppThemes.lightTheme,
+            darkTheme: AppThemes.darkTheme,
+            themeMode: themeProviderRef.isDarkModeOn
+                ? ThemeMode.dark
+                : ThemeMode.light,
+            home: (userSnapshot?.data?.uid != null)
+                ? MyMoviesView()
+                : SignInView(),
+            builder: (BuildContext context, Widget child) {
+              final MediaQueryData data = MediaQuery.of(context);
+              return MediaQuery(
+                data: data.copyWith(
+                    textScaleFactor: data.textScaleFactor > 2.0
+                        ? 1.46
+                        : data.textScaleFactor),
+                child: child,
+              );
+            });
       });
     });
   }
