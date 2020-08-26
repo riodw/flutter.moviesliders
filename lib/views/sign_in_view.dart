@@ -7,10 +7,7 @@ class SignInView extends StatefulWidget {
 }
 
 class _SignInViewState extends State<SignInView> {
-  bool _loading = false;
-  // will delete
-  Color gradientStart = Colors.transparent;
-  Color gradientEnd = Colors.black;
+  // bool _loading = false;
 
   @override
   void initState() {
@@ -26,19 +23,12 @@ class _SignInViewState extends State<SignInView> {
             return LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [gradientStart, gradientEnd],
+              colors: [Colors.transparent, Colors.black],
             ).createShader(Rect.fromLTRB(0, 0, rect.width, rect.height - 20));
           },
           blendMode: BlendMode.darken,
           child: Container(
             decoration: BoxDecoration(
-              // color: Colors.redAccent,
-              // gradient: LinearGradient(
-              //     colors: [gradientStart, gradientEnd],
-              //     begin: FractionalOffset(0, 0),
-              //     end: FractionalOffset(0, 1),
-              //     stops: [0.0, 1.0],
-              //     tileMode: TileMode.clamp),
               image: DecorationImage(
                 image: ExactAssetImage('assets/images/home-2.jpg'),
                 fit: BoxFit.cover,

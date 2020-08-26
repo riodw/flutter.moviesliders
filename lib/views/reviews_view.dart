@@ -176,20 +176,10 @@ class _MyMoviesState extends State<MyMoviesView> {
               Text('Data Driven Movie Reviews',
                   style: Theme.of(context).textTheme.bodyText1)
             ]),
-            // const SizedBox(
-            //   width: 22,
-            // ),
           ]),
           const SizedBox(
             height: 20,
           ),
-          // const Divider(
-          //   color: Colors.grey,
-          //   height: 30,
-          //   thickness: 1,
-          //   indent: 0,
-          //   endIndent: 0,
-          // ),
           Container(
             margin: EdgeInsets.symmetric(horizontal: 30.0),
             child: MaterialButton(
@@ -210,13 +200,6 @@ class _MyMoviesState extends State<MyMoviesView> {
           const SizedBox(
             height: 22,
           ),
-          // const Divider(
-          //   color: Colors.grey,
-          //   height: 30,
-          //   thickness: 1,
-          //   indent: 0,
-          //   endIndent: 0,
-          // ),
           _reviews.length > 0
               ? Column(children: <Widget>[
                   for (Review review in _reviews.reversed)
