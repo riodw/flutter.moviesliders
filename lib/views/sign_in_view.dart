@@ -1,3 +1,4 @@
+// Pub
 import 'package:flutter/material.dart';
 // Project
 import 'package:flutter_moviesliders/services/auth_service.dart';
@@ -7,7 +8,7 @@ class SignInView extends StatefulWidget {
 }
 
 class _SignInViewState extends State<SignInView> {
-  // bool _loading = false;
+  static bool _loading = false;
 
   @override
   void initState() {

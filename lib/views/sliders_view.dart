@@ -1,11 +1,10 @@
 import 'dart:async';
-// packages
+// Pub
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_database/firebase_database.dart';
-// project
-// import 'package:flutter_moviesliders/constants/globals.dart';
+// Project
 import 'package:flutter_moviesliders/models/models.dart';
 import 'package:flutter_moviesliders/services/services.dart';
 

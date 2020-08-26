@@ -1,14 +1,13 @@
 import 'dart:convert';
-// packages
+// Pub
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-// project
+// Project
 import 'package:flutter_moviesliders/constants/globals.dart';
-// import 'package:flutter_moviesliders/views/views.dart';
 import 'package:flutter_moviesliders/views/sliders_view.dart';
 import 'package:flutter_moviesliders/models/models.dart';
 

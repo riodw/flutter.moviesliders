@@ -47,8 +47,7 @@ class _MyMoviesState extends State<MyMoviesView> {
           });
         },
         onChildChanged: (pos, snapshot) {
-          // THIS WILL CAUSE PROBLEMS BECAUSE IT WILL BE CALLED EVERY 2 SECONDS BY EVERY ACTIVE REVIEW
-          print(-3);
+          // print(-3);
           // setState(() {
           //   _reviews[pos] = Review.fromJson(snapshot.value);
           // });

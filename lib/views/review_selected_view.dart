@@ -1,6 +1,6 @@
+// Pub
 import 'package:flutter/material.dart';
-// import 'package:flutter/cupertino.dart';
-// charts
+// Project
 import 'package:flutter_moviesliders/widgets/chart_widget.dart';
 import 'package:flutter_moviesliders/models/models.dart';
 
