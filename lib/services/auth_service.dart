@@ -1,14 +1,13 @@
+// Pub
 import 'package:flutter/material.dart';
-//
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-// import 'package:flutter_moviesliders/models/models.dart';
 
 class AuthService extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   // Firebase user one-time fetch
-  Future<FirebaseUser> get getUser => _auth.currentUser();
+  // Future<FirebaseUser> get getUser => _auth.currentUser();
 
   // Firebase user a realtime stream
   Stream<FirebaseUser> get user => _auth.onAuthStateChanged;

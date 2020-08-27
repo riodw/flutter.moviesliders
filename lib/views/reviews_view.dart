@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_list.dart';
 // Project
@@ -26,7 +27,7 @@ class _MyMoviesState extends State<MyMoviesView> {
       dbRef.child('reviews').child('done').orderByKey().limitToLast(10);
   static List<Review> _reviews = [];
   // DatabaseError _error;
-  FirebaseList tt;
+  static FirebaseList tt;
 
   @override
   void initState() {
@@ -70,7 +71,7 @@ class _MyMoviesState extends State<MyMoviesView> {
   Widget build(BuildContext context) {
     final ThemeProvider themeProvider =
         Provider.of<ThemeProvider>(context, listen: false);
-    // final FirebaseUser userProvider = Provider.of<FirebaseUser>(context);
+    final FirebaseUser userProvider = Provider.of<FirebaseUser>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -119,15 +120,21 @@ class _MyMoviesState extends State<MyMoviesView> {
                         // print('pressed: Privacy Policy');
                       },
                     ),
-                    CupertinoActionSheetAction(
-                      child: const Text('Log Out'),
-                      onPressed: () {
-                        final AuthService _auth = AuthService();
-                        setState(() {
-                          _auth.signOut();
-                        });
-                      },
-                    ),
+                    userProvider.isAnonymous
+                        ? CupertinoActionSheetAction(
+                            child: const Text('Sign In'),
+                            onPressed: () {},
+                          )
+                        : CupertinoActionSheetAction(
+                            child: const Text('Log Out'),
+                            isDestructiveAction: true,
+                            onPressed: () {
+                              final AuthService _auth = AuthService();
+                              setState(() {
+                                _auth.signOut();
+                              });
+                            },
+                          ),
                   ],
                   cancelButton: CupertinoActionSheetAction(
                     child: const Text('Cancel'),
