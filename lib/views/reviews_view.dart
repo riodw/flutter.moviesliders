@@ -33,7 +33,7 @@ class _ReviewsView extends State<ReviewsView> {
   void changeReviewFilter() {
     reviewsList?.cancelSubscriptions();
 
-    print(widget.user);
+    _reviews = [];
 
     if (myReviewsOnly)
       reviewsList = FirebaseList(
@@ -97,7 +97,6 @@ class _ReviewsView extends State<ReviewsView> {
   @override
   void initState() {
     super.initState();
-
     changeReviewFilter();
   }
 
@@ -111,7 +110,6 @@ class _ReviewsView extends State<ReviewsView> {
   Widget build(BuildContext context) {
     final ThemeProvider themeProvider =
         Provider.of<ThemeProvider>(context, listen: false);
-    // final FirebaseUser userProvider = Provider.of<FirebaseUser>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -137,11 +135,22 @@ class _ReviewsView extends State<ReviewsView> {
                   // message: Text('Which option?'),
                   actions: <Widget>[
                     CupertinoActionSheetAction(
+                      child: myReviewsOnly
+                          ? const Text('Show All Reviews')
+                          : const Text('Show Only My Reviews'),
+                      onPressed: () async {
+                        setState(() {
+                          myReviewsOnly = !myReviewsOnly;
+                          changeReviewFilter();
+                          Navigator.pop(context);
+                        });
+                      },
+                    ),
+                    CupertinoActionSheetAction(
                       child: const Text('About MovieSliders'),
                       onPressed: () {
                         Navigator.pop(context);
                         Navigator.pushNamed(context, '/about');
-                        // print('pressed: About MovieSliders');
                       },
                     ),
                     CupertinoActionSheetAction(
@@ -149,7 +158,6 @@ class _ReviewsView extends State<ReviewsView> {
                       onPressed: () {
                         Navigator.pop(context);
                         Navigator.pushNamed(context, '/tos');
-                        // print('pressed: Terms of Service');
                       },
                     ),
                     CupertinoActionSheetAction(
@@ -157,7 +165,6 @@ class _ReviewsView extends State<ReviewsView> {
                       onPressed: () {
                         Navigator.pop(context);
                         Navigator.pushNamed(context, '/privacy');
-                        // print('pressed: Privacy Policy');
                       },
                     ),
                     widget.user.isAnonymous
