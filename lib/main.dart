@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
                 ? ThemeMode.dark
                 : ThemeMode.light,
             home: (userSnapshot?.data?.uid != null)
-                ? MyMoviesView()
+                ? ReviewsView()
                 : SignInView(),
             builder: (BuildContext context, Widget child) {
               final MediaQueryData data = MediaQuery.of(context);

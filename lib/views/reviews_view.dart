@@ -15,26 +15,31 @@ import 'package:flutter_moviesliders/models/models.dart';
 // Widgets
 import 'package:flutter_moviesliders/widgets/chart_widget.dart';
 
-class MyMoviesView extends StatefulWidget {
-  MyMoviesView({Key key}) : super(key: key);
+class ReviewsView extends StatefulWidget {
+  ReviewsView({Key key}) : super(key: key);
 
   @override
-  _MyMoviesState createState() => _MyMoviesState();
+  _ReviewsView createState() => _ReviewsView();
 }
 
-class _MyMoviesState extends State<MyMoviesView> {
-  static final Query _dbRefReviewsAll =
-      dbRef.child('reviews').child('done').orderByKey().limitToLast(10);
-  static final Query _dbRefReviewsMy = dbRef.child('reviews').child('done');
+class _ReviewsView extends State<ReviewsView> {
+  static final Query _dbRefReviews = dbRef.child('reviews').child('done');
   static List<Review> _reviews = [];
-  // DatabaseError _error;
   static FirebaseList reviewsList;
   static bool myReviewsOnly = true;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   void changeReviewFilter() {
+    reviewsList?.cancelSubscriptions();
+
+    print(_auth.currentUser().);
+
     if (myReviewsOnly)
       reviewsList = FirebaseList(
-          query: _dbRefReviewsAll,
+          query: _dbRefReviews
+              .orderByChild('user_id')
+              .equalTo('value')
+              .limitToLast(10),
           onChildAdded: (pos, snapshot) {
             // print(-1);
             setState(() {
@@ -61,7 +66,7 @@ class _MyMoviesState extends State<MyMoviesView> {
           });
     else
       reviewsList = FirebaseList(
-          query: _dbRefReviewsAll,
+          query: _dbRefReviews.orderByKey().limitToLast(10),
           onChildAdded: (pos, snapshot) {
             // print(-1);
             setState(() {
@@ -98,14 +103,14 @@ class _MyMoviesState extends State<MyMoviesView> {
   @override
   void dispose() {
     super.dispose();
-    reviewsList.cancelSubscriptions();
+    reviewsList?.cancelSubscriptions();
   }
 
   @override
   Widget build(BuildContext context) {
     final ThemeProvider themeProvider =
         Provider.of<ThemeProvider>(context, listen: false);
-    final FirebaseUser userProvider = Provider.of<FirebaseUser>(context);
+    // final FirebaseUser userProvider = Provider.of<FirebaseUser>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -154,21 +159,21 @@ class _MyMoviesState extends State<MyMoviesView> {
                         // print('pressed: Privacy Policy');
                       },
                     ),
-                    userProvider.isAnonymous
-                        ? CupertinoActionSheetAction(
-                            child: const Text('Sign In'),
-                            onPressed: () {},
-                          )
-                        : CupertinoActionSheetAction(
-                            child: const Text('Log Out'),
-                            isDestructiveAction: true,
-                            onPressed: () {
-                              final AuthService _auth = AuthService();
-                              setState(() {
-                                _auth.signOut();
-                              });
-                            },
-                          ),
+                    // userProvider.isAnonymous
+                    //     ? CupertinoActionSheetAction(
+                    //         child: const Text('Sign In'),
+                    //         onPressed: () {},
+                    //       )
+                    //     : CupertinoActionSheetAction(
+                    //         child: const Text('Log Out'),
+                    //         isDestructiveAction: true,
+                    //         onPressed: () {
+                    //           final AuthService _auth = AuthService();
+                    //           setState(() {
+                    //             _auth.signOut();
+                    //           });
+                    //         },
+                    //       ),
                   ],
                   cancelButton: CupertinoActionSheetAction(
                     child: const Text('Cancel'),

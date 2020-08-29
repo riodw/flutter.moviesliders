@@ -16,7 +16,7 @@ class Routes {
 
   static final routes = <String, WidgetBuilder>{
     signin: (context) => SignInView(),
-    myMovies: (context) => MyMoviesView(),
+    myMovies: (context) => ReviewsView(),
     movieReview: (context) => MovieReviewView(),
     chart: (context) => ChartView(),
     // sliders: (context) => SlidersView(),

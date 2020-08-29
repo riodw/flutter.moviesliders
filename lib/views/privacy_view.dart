@@ -68,7 +68,7 @@ class _PrivacyView extends State<PrivacyView> {
                             builder: (context) => CupertinoAlertDialog(
                               title: const Text('Are you Sure?'),
                               content: const Text(
-                                'Deleting your account is not reversable.',
+                                'Deleting your account is irreversible.',
                               ),
                               actions: <Widget>[
                                 FlatButton(
