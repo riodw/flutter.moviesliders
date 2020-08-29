@@ -6,11 +6,11 @@ import 'package:flutter_moviesliders/models/trend_models.dart';
 import 'package:flutter_moviesliders/models/rating_models.dart';
 
 class NumericComboLinePointChart extends StatelessWidget {
-  final List<charts.Series> seriesList;
-  final bool animate;
-
   NumericComboLinePointChart(
       {@required this.seriesList, @required this.animate});
+
+  final List<charts.Series> seriesList;
+  final bool animate;
 
   /// Creates a [LineChart] with sample data and no transition.
   /*
