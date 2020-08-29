@@ -3,17 +3,8 @@ import 'package:flutter/material.dart';
 // Project
 import 'package:flutter_moviesliders/services/auth_service.dart';
 
-class SignInView extends StatefulWidget {
-  _SignInViewState createState() => _SignInViewState();
-}
-
-class _SignInViewState extends State<SignInView> {
-  static bool _loading = false;
-
-  @override
-  void initState() {
-    super.initState();
-  }
+class SignInView extends StatelessWidget {
+  // static bool _loading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +12,7 @@ class _SignInViewState extends State<SignInView> {
       child: Stack(children: <Widget>[
         ShaderMask(
           shaderCallback: (rect) {
-            return LinearGradient(
+            return const LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [Colors.transparent, Colors.black],
@@ -29,7 +20,7 @@ class _SignInViewState extends State<SignInView> {
           },
           blendMode: BlendMode.darken,
           child: Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               image: DecorationImage(
                 image: ExactAssetImage('assets/images/home-2.jpg'),
                 fit: BoxFit.cover,
@@ -44,7 +35,7 @@ class _SignInViewState extends State<SignInView> {
                 flex: 1,
                 child: Center(
                   child: Container(
-                    padding: EdgeInsets.all(5),
+                    padding: const EdgeInsets.all(5),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(14.0),
@@ -67,7 +58,7 @@ class _SignInViewState extends State<SignInView> {
                 children: [
                   const Text(
                     'MovieSliders',
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 32,
                         fontWeight: FontWeight.bold,
                         color: Colors.white),
@@ -78,7 +69,8 @@ class _SignInViewState extends State<SignInView> {
                   Container(
                     child: const Text(
                       'Peak-End Rule - People judge an experience largely based on how they felt at its peak and at its end, rather than the total sum or average of every moment of the experience.\n\nWe aim to fix that.',
-                      style: TextStyle(fontSize: 16.0, color: Colors.white),
+                      style:
+                          const TextStyle(fontSize: 16.0, color: Colors.white),
                       textAlign: TextAlign.center,
                     ),
                     padding: EdgeInsets.symmetric(horizontal: 20.0),
@@ -93,14 +85,24 @@ class _SignInViewState extends State<SignInView> {
                     color: Colors.white,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.0)),
-                    child: Container(
-                      child: const Text(
-                        'Continue with Apple',
-                        // style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
+                    child: const Text(
+                      'Continue with Apple',
+                      // style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/signup');
+                    onPressed: () async {
+                      final AuthService _auth = AuthService();
+                      bool status =
+                          await _auth.signInWithGoogle().then((status) {
+                        // setState(() {
+                        //   _loading = false;
+                        // });
+                        return status != null;
+                      });
+                      if (!status) {
+                        print('Could not log in');
+                        Scaffold.of(context).showSnackBar(
+                            SnackBar(content: const Text('Could not log in.')));
+                      }
                     },
                   ),
                   const SizedBox(
@@ -119,18 +121,18 @@ class _SignInViewState extends State<SignInView> {
                       // ),
                     ),
                     onPressed: () async {
-                      AuthService _auth = AuthService();
+                      final AuthService _auth = AuthService();
                       bool status =
                           await _auth.signInWithGoogle().then((status) {
-                        setState(() {
-                          _loading = false;
-                        });
+                        // setState(() {
+                        //   _loading = false;
+                        // });
                         return status != null;
                       });
                       if (!status) {
                         print('Could not log in');
                         Scaffold.of(context).showSnackBar(
-                            SnackBar(content: Text('Could not log in.')));
+                            SnackBar(content: const Text('Could not log in.')));
                       }
                     },
                   ),
@@ -142,18 +144,18 @@ class _SignInViewState extends State<SignInView> {
                       'Skip',
                     ),
                     onPressed: () async {
-                      AuthService _auth = AuthService();
+                      final AuthService _auth = AuthService();
                       bool status =
                           await _auth.signInAnonymously().then((status) {
-                        setState(() {
-                          _loading = false;
-                        });
+                        // setState(() {
+                        //   _loading = false;
+                        // });
                         return status != null;
                       });
                       if (!status) {
                         print('Could not log in');
                         Scaffold.of(context).showSnackBar(
-                            SnackBar(content: Text('Could not log in.')));
+                            SnackBar(content: const Text('Could not log in.')));
                       }
                     },
                   ),

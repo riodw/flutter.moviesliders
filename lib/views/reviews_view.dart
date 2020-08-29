@@ -23,48 +23,82 @@ class MyMoviesView extends StatefulWidget {
 }
 
 class _MyMoviesState extends State<MyMoviesView> {
-  static final Query _dbRef =
+  static final Query _dbRefReviewsAll =
       dbRef.child('reviews').child('done').orderByKey().limitToLast(10);
+  static final Query _dbRefReviewsMy = dbRef.child('reviews').child('done');
   static List<Review> _reviews = [];
   // DatabaseError _error;
-  static FirebaseList tt;
+  static FirebaseList reviewsList;
+  static bool myReviewsOnly = true;
+
+  void changeReviewFilter() {
+    if (myReviewsOnly)
+      reviewsList = FirebaseList(
+          query: _dbRefReviewsAll,
+          onChildAdded: (pos, snapshot) {
+            // print(-1);
+            setState(() {
+              _reviews.insert(pos, Review.fromJson(snapshot.value));
+            });
+          },
+          onChildRemoved: (pos, snapshot) {
+            // print(-2);
+            setState(() {
+              _reviews.removeAt(pos);
+            });
+          },
+          onChildChanged: (pos, snapshot) {
+            // print(-3);
+            // setState(() {
+            //   _reviews[pos] = Review.fromJson(snapshot.value);
+            // });
+          },
+          onChildMoved: (oldpos, newpos, snapshot) {
+            // print(-4);
+          },
+          onValue: (snapshot) {
+            // print(-5);
+          });
+    else
+      reviewsList = FirebaseList(
+          query: _dbRefReviewsAll,
+          onChildAdded: (pos, snapshot) {
+            // print(-1);
+            setState(() {
+              _reviews.insert(pos, Review.fromJson(snapshot.value));
+            });
+          },
+          onChildRemoved: (pos, snapshot) {
+            // print(-2);
+            setState(() {
+              _reviews.removeAt(pos);
+            });
+          },
+          onChildChanged: (pos, snapshot) {
+            // print(-3);
+            // setState(() {
+            //   _reviews[pos] = Review.fromJson(snapshot.value);
+            // });
+          },
+          onChildMoved: (oldpos, newpos, snapshot) {
+            // print(-4);
+          },
+          onValue: (snapshot) {
+            // print(-5);
+          });
+  }
 
   @override
   void initState() {
     super.initState();
 
-    tt = FirebaseList(
-        query: _dbRef,
-        onChildAdded: (pos, snapshot) {
-          // print(-1);
-          setState(() {
-            _reviews.insert(pos, Review.fromJson(snapshot.value));
-          });
-        },
-        onChildRemoved: (pos, snapshot) {
-          // print(-2);
-          setState(() {
-            _reviews.removeAt(pos);
-          });
-        },
-        onChildChanged: (pos, snapshot) {
-          // print(-3);
-          // setState(() {
-          //   _reviews[pos] = Review.fromJson(snapshot.value);
-          // });
-        },
-        onChildMoved: (oldpos, newpos, snapshot) {
-          // print(-4);
-        },
-        onValue: (snapshot) {
-          // print(-5);
-        });
+    changeReviewFilter();
   }
 
   @override
   void dispose() {
     super.dispose();
-    tt.cancelSubscriptions();
+    reviewsList.cancelSubscriptions();
   }
 
   @override
