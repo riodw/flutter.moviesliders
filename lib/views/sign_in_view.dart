@@ -99,7 +99,7 @@ class SignInView extends StatelessWidget {
                         return status != null;
                       });
                       if (!status) {
-                        print('Could not log in');
+                        // print('Could not log in');
                         Scaffold.of(context).showSnackBar(
                             SnackBar(content: const Text('Could not log in.')));
                       }
@@ -130,7 +130,7 @@ class SignInView extends StatelessWidget {
                         return status != null;
                       });
                       if (!status) {
-                        print('Could not log in');
+                        // print('Could not log in');
                         Scaffold.of(context).showSnackBar(
                             SnackBar(content: const Text('Could not log in.')));
                       }
@@ -153,7 +153,7 @@ class SignInView extends StatelessWidget {
                         return status != null;
                       });
                       if (!status) {
-                        print('Could not log in');
+                        // print('Could not log in');
                         Scaffold.of(context).showSnackBar(
                             SnackBar(content: const Text('Could not log in.')));
                       }

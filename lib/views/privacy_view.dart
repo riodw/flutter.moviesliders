@@ -1,6 +1,7 @@
 // Pub
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -91,7 +92,6 @@ class _PrivacyView extends State<PrivacyView> {
                                         .equalTo(userProvider.uid)
                                         .once()
                                         .then((final DataSnapshot snapshot) {
-                                      print(userProvider.uid);
                                       snapshot.value?.forEach((key, value) {
                                         _dbRef
                                             .child('done')
@@ -107,7 +107,6 @@ class _PrivacyView extends State<PrivacyView> {
                                         .equalTo(userProvider.uid)
                                         .once()
                                         .then((final DataSnapshot snapshot) {
-                                      print(userProvider.uid);
                                       snapshot.value?.forEach((key, value) {
                                         _dbRef
                                             .child('not_done')
@@ -117,7 +116,14 @@ class _PrivacyView extends State<PrivacyView> {
                                     });
 
                                     // DELETE USER
-                                    userProvider.delete();
+                                    try {
+                                      await userProvider.delete();
+                                      return 0;
+                                    } on PlatformException catch (error) {
+                                      print(error);
+                                      await FirebaseAuth.instance.signOut();
+                                      return error;
+                                    }
                                   },
                                 ),
                                 FlatButton(

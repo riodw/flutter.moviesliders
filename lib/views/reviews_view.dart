@@ -16,7 +16,9 @@ import 'package:flutter_moviesliders/models/models.dart';
 import 'package:flutter_moviesliders/widgets/chart_widget.dart';
 
 class ReviewsView extends StatefulWidget {
-  ReviewsView({Key key}) : super(key: key);
+  ReviewsView({Key key, @required this.user}) : super(key: key);
+
+  final FirebaseUser user;
 
   @override
   _ReviewsView createState() => _ReviewsView();
@@ -27,18 +29,17 @@ class _ReviewsView extends State<ReviewsView> {
   static List<Review> _reviews = [];
   static FirebaseList reviewsList;
   static bool myReviewsOnly = true;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   void changeReviewFilter() {
     reviewsList?.cancelSubscriptions();
 
-    print(_auth.currentUser().);
+    print(widget.user);
 
     if (myReviewsOnly)
       reviewsList = FirebaseList(
           query: _dbRefReviews
               .orderByChild('user_id')
-              .equalTo('value')
+              .equalTo(widget.user.uid)
               .limitToLast(10),
           onChildAdded: (pos, snapshot) {
             // print(-1);
@@ -159,21 +160,21 @@ class _ReviewsView extends State<ReviewsView> {
                         // print('pressed: Privacy Policy');
                       },
                     ),
-                    // userProvider.isAnonymous
-                    //     ? CupertinoActionSheetAction(
-                    //         child: const Text('Sign In'),
-                    //         onPressed: () {},
-                    //       )
-                    //     : CupertinoActionSheetAction(
-                    //         child: const Text('Log Out'),
-                    //         isDestructiveAction: true,
-                    //         onPressed: () {
-                    //           final AuthService _auth = AuthService();
-                    //           setState(() {
-                    //             _auth.signOut();
-                    //           });
-                    //         },
-                    //       ),
+                    widget.user.isAnonymous
+                        ? CupertinoActionSheetAction(
+                            child: const Text('Sign In'),
+                            onPressed: () {},
+                          )
+                        : CupertinoActionSheetAction(
+                            child: const Text('Log Out'),
+                            isDestructiveAction: true,
+                            onPressed: () {
+                              final AuthService _auth = AuthService();
+                              setState(() {
+                                _auth.signOut();
+                              });
+                            },
+                          ),
                   ],
                   cancelButton: CupertinoActionSheetAction(
                     child: const Text('Cancel'),
