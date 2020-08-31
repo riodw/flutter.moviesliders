@@ -357,8 +357,20 @@ class _ReviewsView extends State<ReviewsView> {
                     ),
                 ])
               : const Center(
-                  child: const CircularProgressIndicator(),
-                )
+                  child: const Text('No Reviews Here. Try Making A New One!'),
+                ),
+          const Divider(
+            color: Colors.grey,
+            height: 26,
+            thickness: 1,
+            indent: 20,
+            endIndent: 20,
+          ),
+          Center(
+            child: myReviewsOnly
+                ? const Text('Showing Only Your Reviews.')
+                : const Text('Showing All Reviews.'),
+          )
         ],
       ),
     );
