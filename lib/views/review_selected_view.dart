@@ -15,19 +15,25 @@ class MovieReviewView extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Movie Review'),
-        actions: <Widget>[],
+        title: const Text('Movie Review'),
+        // actions: <Widget>[],
       ),
       body: ListView(children: <Widget>[
+        const SizedBox(
+          height: 10,
+        ),
         Container(
-          margin: EdgeInsets.only(top: 10.0, left: 15, right: 15),
+          margin: const EdgeInsets.symmetric(horizontal: 15),
           child: Text(
             review.title,
             style: Theme.of(context).textTheme.headline1,
           ),
         ),
+        const SizedBox(
+          height: 10,
+        ),
         Container(
-          margin: EdgeInsets.only(top: 10.0, bottom: 10.0, left: 15, right: 15),
+          margin: const EdgeInsets.symmetric(horizontal: 15),
           child: Text(
             (review.type == 'movie'
                     ? review.movie.dateReleased.year.toString()
@@ -54,70 +60,73 @@ class MovieReviewView extends StatelessWidget {
               trendsList: review.trends,
               // animate: false
             )),
-        Container(
-          // margin: EdgeInsets.only(bottom: 20.0),
-          child: ButtonTheme(
-            // minWidth: 200.0,
-            height: 50.0,
-            child: FlatButton(
-              // textColor: Colors.white,
-              child: Text(
-                'View Full Graph',
-                style: TextStyle(
-                  decoration: TextDecoration.underline,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              onPressed: () {
-                Navigator.pushNamed(context, '/chart', arguments: review);
-              },
-            ),
+        FlatButton(
+          // textColor: Colors.white,
+          child: const Text(
+            'View Full Graph',
+            style: TextStyle(
+                decoration: TextDecoration.underline, color: Colors.black),
           ),
+          onPressed: () {
+            Navigator.pushNamed(context, '/chart', arguments: review);
+          },
+        ),
+        const SizedBox(
+          height: 10,
         ),
         Container(
-          margin: EdgeInsets.only(top: 8.0, left: 15, right: 15),
+          margin: const EdgeInsets.symmetric(horizontal: 15),
           child: Text(
             'Received a rating of ' + review.avg.truncate().toString() + '/100',
             style: Theme.of(context).textTheme.headline3,
           ),
         ),
+        const SizedBox(
+          height: 10,
+        ),
         Container(
-          margin: EdgeInsets.only(top: 6.0, bottom: 10.0, left: 15, right: 15),
+          margin: const EdgeInsets.symmetric(horizontal: 15),
           child: Text(
             'Exact rating: ' + review.avg.toString(),
             style: Theme.of(context).textTheme.bodyText2,
           ),
         ),
-        Divider(
-          color: Colors.grey[300],
-          height: 35,
-          thickness: 2,
+        const Divider(
+          color: Colors.grey,
+          height: 40,
+          thickness: 1,
           indent: 30,
           endIndent: 30,
         ),
         Container(
-            margin:
-                EdgeInsets.only(top: 6.0, bottom: 10.0, left: 15, right: 15),
+            margin: const EdgeInsets.symmetric(horizontal: 15),
             child: Text(
               'Review',
               style: Theme.of(context).textTheme.headline2,
             )),
+        const SizedBox(
+          height: 10,
+        ),
         Container(
-          margin: EdgeInsets.only(bottom: 10.0, left: 15, right: 15),
+          margin: const EdgeInsets.symmetric(horizontal: 15),
           child: Image.network(
             review.movie.posterUrl,
-            loadingBuilder: (BuildContext context, Object child, progress) {
+            loadingBuilder: (final BuildContext context, final Object child,
+                final progress) {
               return progress == null
                   ? child
-                  : const CircularProgressIndicator();
+                  : const Center(child: const CircularProgressIndicator());
             },
-            errorBuilder: (BuildContext context, Object exception,
-                StackTrace stackTrace) {
-              return const Center(child: Text('Image Not Found'));
+            errorBuilder: (final BuildContext context, final Object exception,
+                final StackTrace stackTrace) {
+              return const Center(child: const Text('Image Not Found'));
             },
-            fit: BoxFit.fill,
+            // fit: BoxFit.fill,
           ),
-        )
+        ),
+        const SizedBox(
+          height: 10,
+        ),
       ]),
     );
   }

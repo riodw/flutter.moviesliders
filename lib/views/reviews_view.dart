@@ -30,6 +30,18 @@ class _ReviewsView extends State<ReviewsView> {
   static FirebaseList reviewsList;
   static bool myReviewsOnly = true;
 
+  @override
+  void initState() {
+    super.initState();
+    changeReviewFilter();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    reviewsList?.cancelSubscriptions();
+  }
+
   void changeReviewFilter() {
     reviewsList?.cancelSubscriptions();
 
@@ -94,16 +106,9 @@ class _ReviewsView extends State<ReviewsView> {
           });
   }
 
-  @override
-  void initState() {
-    super.initState();
-    changeReviewFilter();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    reviewsList?.cancelSubscriptions();
+  static List<Review> orderedReviews() {
+    _reviews.sort((a, b) => b.dateTimeReviewed.compareTo(a.dateTimeReviewed));
+    return _reviews;
   }
 
   @override
@@ -255,7 +260,7 @@ class _ReviewsView extends State<ReviewsView> {
           ),
           _reviews.length > 0
               ? Column(children: <Widget>[
-                  for (Review review in _reviews.reversed)
+                  for (Review review in orderedReviews())
                     GestureDetector(
                       onTap: () {
                         Navigator.pushNamed(context, '/movie_review',

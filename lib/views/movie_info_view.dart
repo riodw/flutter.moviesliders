@@ -62,7 +62,7 @@ class MovieInfoView extends StatelessWidget {
                 loadingBuilder: (BuildContext context, Object child, progress) {
                   return progress == null
                       ? child
-                      : const CircularProgressIndicator();
+                      : const Center(child: const CircularProgressIndicator());
                 },
                 errorBuilder: (BuildContext context, Object exception,
                     StackTrace stackTrace) {
