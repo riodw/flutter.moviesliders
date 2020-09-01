@@ -208,7 +208,7 @@ class _ReviewsView extends State<ReviewsView> {
           ),
           Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
             Container(
-              padding: EdgeInsets.all(5),
+              padding: const EdgeInsets.all(5),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(14.0),
@@ -239,7 +239,7 @@ class _ReviewsView extends State<ReviewsView> {
             height: 20,
           ),
           Container(
-            margin: EdgeInsets.symmetric(horizontal: 30.0),
+            margin: const EdgeInsets.symmetric(horizontal: 30.0),
             child: MaterialButton(
               height: 45.0,
               color: Theme.of(context).colorScheme.primary,
@@ -288,7 +288,8 @@ class _ReviewsView extends State<ReviewsView> {
                           ),
                           const SizedBox(height: 8.0),
                           Container(
-                            margin: EdgeInsets.symmetric(horizontal: 15.0),
+                            margin:
+                                const EdgeInsets.symmetric(horizontal: 15.0),
                             child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
@@ -361,8 +362,15 @@ class _ReviewsView extends State<ReviewsView> {
                       ),
                     ),
                 ])
-              : const Center(
-                  child: const Text('No Reviews Here. Try Making A New One!'),
+              : Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 15.0),
+                  child: Center(
+                    child: Text(
+                      'No Reviews Here.\nTry Making A New One!',
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.headline4,
+                    ),
+                  ),
                 ),
           const Divider(
             color: Colors.grey,
@@ -373,9 +381,10 @@ class _ReviewsView extends State<ReviewsView> {
           ),
           Center(
             child: myReviewsOnly
-                ? const Text('Showing Only Your Reviews.')
-                : const Text('Showing All Reviews.'),
-          )
+                ? const Text('Showing Only Your Reviews')
+                : const Text('Showing All Reviews'),
+          ),
+          const Center(child: const Text('Limited to 10'))
         ],
       ),
     );
@@ -545,7 +554,6 @@ class MovieSearch extends SearchDelegate {
               );
             return GridView.count(
               primary: true,
-              // padding: const EdgeInsets.only(b: 20),
               crossAxisSpacing: 4,
               mainAxisSpacing: 4,
               crossAxisCount: 3,
