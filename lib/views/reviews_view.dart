@@ -350,13 +350,6 @@ class _ReviewsView extends State<ReviewsView> {
                                   ]),
                                 ]),
                           ),
-                          // const Divider(
-                          //   color: Colors.black12,
-                          //   height: 40,
-                          //   thickness: 1,
-                          //   indent: 15,
-                          //   endIndent: 15,
-                          // ),
                           const SizedBox(height: 40.0),
                         ],
                       ),
@@ -366,7 +359,7 @@ class _ReviewsView extends State<ReviewsView> {
                   margin: const EdgeInsets.symmetric(horizontal: 15.0),
                   child: Center(
                     child: Text(
-                      'No Reviews Here.\nTry Making A New One!',
+                      'No Reviews Here\nTry Making A New One!',
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.headline4,
                     ),
