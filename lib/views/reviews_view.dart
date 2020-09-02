@@ -116,6 +116,11 @@ class _ReviewsView extends State<ReviewsView> {
     final ThemeProvider themeProvider =
         Provider.of<ThemeProvider>(context, listen: false);
 
+    // final ConnectivityService connectivityProvider =
+    //     Provider.of<ConnectivityService>(context, listen: true);
+
+    // print(connectivityProvider.isConnected);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('My Rated Movies'),

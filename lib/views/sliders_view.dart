@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_offline/flutter_offline.dart';
 import 'package:firebase_database/firebase_database.dart';
 // Project
 import 'package:flutter_moviesliders/models/models.dart';
@@ -209,101 +210,127 @@ class _SlidersViewState extends State<SlidersView> {
               ],
             ),
             body: SafeArea(
-              child: Container(
-                margin: const EdgeInsets.only(top: 10.0, bottom: 3.0),
-                child: Column(
-                  children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              child: OfflineBuilder(
+                  connectivityBuilder: (
+                    BuildContext context,
+                    ConnectivityResult connectivity,
+                    Widget child,
+                  ) {
+                    final bool connected =
+                        connectivity != ConnectivityResult.none;
+
+                    if (!connected) {
+                      _paused = true;
+                    }
+
+                    return connected
+                        ? child
+                        : Center(
+                            child: Text('OFFLINE',
+                                style: Theme.of(context).textTheme.headline1),
+                          );
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.only(top: 10.0, bottom: 3.0),
+                    child: Column(
                       children: <Widget>[
-                        Chip(
-                          label: Text(widget.omdb.runtime),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            Chip(
+                              label: Text(widget.omdb.runtime),
+                            ),
+                            Container(
+                              width: 180,
+                              height: 45,
+                              child: _reviewFinished
+                                  ? MaterialButton(
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
+                                      onPressed: () {
+                                        // GO TO SEE REVIEW RESULTS
+                                      },
+                                      child: const Text('DONE'),
+                                    )
+                                  : MaterialButton(
+                                      color: _paused
+                                          ? Theme.of(context)
+                                              .colorScheme
+                                              .primary
+                                          : Theme.of(context)
+                                              .colorScheme
+                                              .secondary,
+                                      onPressed: () {
+                                        setState(() {
+                                          _paused = !_paused;
+                                        });
+                                      },
+                                      child: _paused
+                                          ? Text(
+                                              'Play',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .button,
+                                            )
+                                          : Text(
+                                              'Pause',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .button,
+                                            ),
+                                    ),
+                            ),
+                            _paused
+                                ? Chip(
+                                    label: Text(_timeSpent.toString() + ' min'),
+                                  )
+                                : Chip(
+                                    backgroundColor: Colors.green,
+                                    label: Text(_timeSpent.toString() + ' min'),
+                                  ),
+                          ],
                         ),
-                        Container(
-                          width: 180,
-                          height: 45,
-                          child: _reviewFinished
-                              ? MaterialButton(
-                                  color: Theme.of(context).colorScheme.primary,
-                                  onPressed: () {
-                                    // GO TO SEE REVIEW RESULTS
-                                  },
-                                  child: const Text('DONE'),
-                                )
-                              : MaterialButton(
-                                  color: _paused
-                                      ? Theme.of(context).colorScheme.primary
-                                      : Theme.of(context).colorScheme.secondary,
-                                  onPressed: () {
-                                    setState(() {
-                                      _paused = !_paused;
-                                    });
-                                  },
-                                  child: _paused
-                                      ? Text(
-                                          'Play',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .button,
-                                        )
-                                      : Text(
-                                          'Pause',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .button,
-                                        ),
-                                ),
-                        ),
-                        _paused
-                            ? Chip(
-                                label: Text(_timeSpent.toString() + ' min'),
-                              )
-                            : Chip(
-                                backgroundColor: Colors.green,
-                                label: Text(_timeSpent.toString() + ' min'),
-                              ),
+                        Expanded(
+                            // SLIDERS
+                            child: _trends.length > 0
+                                ? Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                        for (Trend _trend in _trends)
+                                          Column(children: <Widget>[
+                                            Expanded(
+                                                child: RotatedBox(
+                                              quarterTurns: -1,
+                                              child: CupertinoSlider(
+                                                  value: _trend.rating,
+                                                  activeColor: _paused
+                                                      ? Colors.grey
+                                                      : _trend.color,
+                                                  min: Trend.minRating,
+                                                  max: Trend.maxRating,
+                                                  onChanged: (newRating) {
+                                                    setState(() => _trend
+                                                        .rating = newRating);
+                                                  }),
+                                            )),
+                                            _paused
+                                                ? _trend.name
+                                                : Text(
+                                                    _trend.rating
+                                                        .round()
+                                                        .toString(),
+                                                  ),
+                                          ]),
+                                      ])
+                                : const Center(
+                                    child: const CircularProgressIndicator(),
+                                  )),
                       ],
                     ),
-                    Expanded(
-                        // SLIDERS
-                        child: _trends.length > 0
-                            ? Row(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                    for (Trend _trend in _trends)
-                                      Column(children: <Widget>[
-                                        Expanded(
-                                            child: RotatedBox(
-                                          quarterTurns: -1,
-                                          child: CupertinoSlider(
-                                              value: _trend.rating,
-                                              activeColor: _paused
-                                                  ? Colors.grey
-                                                  : _trend.color,
-                                              min: Trend.minRating,
-                                              max: Trend.maxRating,
-                                              onChanged: (newRating) {
-                                                setState(() =>
-                                                    _trend.rating = newRating);
-                                              }),
-                                        )),
-                                        _paused
-                                            ? _trend.name
-                                            : Text(
-                                                _trend.rating
-                                                    .round()
-                                                    .toString(),
-                                              ),
-                                      ]),
-                                  ])
-                            : const Center(
-                                child: const CircularProgressIndicator(),
-                              )),
-                  ],
-                ),
-              ),
+                  )),
             )));
   }
 }

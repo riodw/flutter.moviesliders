@@ -1,3 +1,4 @@
+import 'package:charts_flutter/flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 // Pubs
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // https://pub.dev/documentation/provider/latest/provider/Consumer-class.html
+
     return Consumer<ThemeProvider>(builder: (_, themeProviderRef, __) {
       return AuthWidgetBuilder(builder:
           (BuildContext context, AsyncSnapshot<FirebaseUser> userSnapshot) {
@@ -40,7 +42,6 @@ class MyApp extends StatelessWidget {
               FirebaseAnalyticsObserver(analytics: FirebaseAnalytics()),
             ],
             debugShowCheckedModeBanner: false,
-            // project
             routes: Routes.routes,
             theme: AppThemes.lightTheme,
             darkTheme: AppThemes.darkTheme,
@@ -53,12 +54,42 @@ class MyApp extends StatelessWidget {
             builder: (BuildContext context, Widget child) {
               final MediaQueryData data = MediaQuery.of(context);
               return MediaQuery(
-                data: data.copyWith(
-                    textScaleFactor: data.textScaleFactor > 2.0
-                        ? 1.46
-                        : data.textScaleFactor),
-                child: child,
-              );
+                  data: data.copyWith(
+                      textScaleFactor: data.textScaleFactor > 2.0
+                          ? 1.46
+                          : data.textScaleFactor),
+                  child: child
+                  // OfflineBuilder(
+                  //     connectivityBuilder: (
+                  //       BuildContext context,
+                  //       ConnectivityResult connectivity,
+                  //       Widget child,
+                  //     ) {
+                  //       final bool connected =
+                  //           connectivity != ConnectivityResult.none;
+
+                  //       return Stack(
+                  //         // textDirection: TextDirection.ltr,
+                  //         fit: StackFit.expand,
+                  //         children: [
+                  //           child,
+                  //           !connected
+                  //               ? Container()
+                  //               : Positioned(
+                  //                   // height: 24.0,
+                  //                   top: 0.0,
+                  //                   bottom: 0,
+                  //                   left: 0.0,
+                  //                   right: 0.0,
+                  //                   child: Center(
+                  //                     child: Text('OFFLINE'),
+                  //                   ),
+                  //                 ),
+                  //         ],
+                  //       );
+                  //     },
+                  //     child: child),
+                  );
             });
       });
     });

@@ -36,15 +36,15 @@ dependencies:
   # flutter_auth_buttons: ^0.8.0
   google_sign_in: ^4.5.1
   # firebase real-time database
-  firebase_database: "^3.1.6"
+  firebase_database: ^3.1.6
   # dependency for the FlutterFire plugin for Google Analytics
   firebase_analytics: ^5.0.2
   # Charts
   charts_flutter: ^0.9.0
   # auto_size_text 2.1.0
-  # Flutter Offline
+  # Connectivity
   flutter_offline: ^0.3.0
-
+  # connectivity:
 
 dev_dependencies:
   flutter_test:
