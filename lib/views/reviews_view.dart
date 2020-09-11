@@ -124,19 +124,27 @@ class _ReviewsView extends State<ReviewsView> {
     final ThemeProvider themeProvider =
         Provider.of<ThemeProvider>(context, listen: false);
 
-    ConnectivityStatus connectionStatus =
+    final ConnectivityStatus connectionStatus =
         Provider.of<ConnectivityStatus>(context, listen: true);
-
-    // print(connectionStatus);
 
     // CHECK CONNECTION
     if (connectionStatus == ConnectivityStatus.WiFi ||
         connectionStatus == ConnectivityStatus.Cellular) {
       inet = true;
       _scaffoldKey.currentState.hideCurrentSnackBar();
+      _scaffoldKey.currentState.removeCurrentSnackBar();
+      // WidgetsBinding.instance.addPostFrameCallback(
+      //     (_) => _scaffoldKey.currentState.hideCurrentSnackBar());
+      // WidgetsBinding.instance.addPostFrameCallback(
+      //     (_) => _scaffoldKey.currentState.removeCurrentSnackBar());
     } else if (connectionStatus == ConnectivityStatus.Offline) {
       inet = false;
-      _scaffoldKey.currentState.showSnackBar(snackBar);
+      print(connectionStatus);
+      WidgetsBinding.instance.addPostFrameCallback(
+          (_) => _scaffoldKey.currentState.showSnackBar(snackBar));
+      // _scaffoldKey.currentState.showSnackBar(snackBar);
+    } else {
+      inet = false;
     }
 
     return Scaffold(
