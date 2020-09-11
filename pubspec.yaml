@@ -43,8 +43,7 @@ dependencies:
   charts_flutter: ^0.9.0
   # auto_size_text 2.1.0
   # Connectivity
-  flutter_offline: ^0.3.0
-  # connectivity:
+  connectivity:
 
 dev_dependencies:
   flutter_test:

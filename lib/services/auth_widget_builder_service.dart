@@ -13,7 +13,7 @@ class AuthWidgetBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authService = Provider.of<AuthService>(context, listen: false);
+    final authService = Provider.of<AuthService>(context, listen: true);
 
     return StreamBuilder<FirebaseUser>(
       stream: authService.user,

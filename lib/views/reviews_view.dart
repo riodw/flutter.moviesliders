@@ -29,6 +29,7 @@ class _ReviewsView extends State<ReviewsView> {
   static List<Review> _reviews = [];
   static FirebaseList reviewsList;
   static bool myReviewsOnly = true;
+  static bool inet = true;
 
   @override
   void initState() {
@@ -111,17 +112,35 @@ class _ReviewsView extends State<ReviewsView> {
     return _reviews;
   }
 
+  static final _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  static final SnackBar snackBar = SnackBar(
+    content: Text('No Connection'),
+    duration: Duration(days: 365),
+  );
+
   @override
   Widget build(BuildContext context) {
     final ThemeProvider themeProvider =
         Provider.of<ThemeProvider>(context, listen: false);
 
-    // final ConnectivityService connectivityProvider =
-    //     Provider.of<ConnectivityService>(context, listen: true);
+    ConnectivityStatus connectionStatus =
+        Provider.of<ConnectivityStatus>(context, listen: true);
 
-    // print(connectivityProvider.isConnected);
+    // print(connectionStatus);
+
+    // CHECK CONNECTION
+    if (connectionStatus == ConnectivityStatus.WiFi ||
+        connectionStatus == ConnectivityStatus.Cellular) {
+      inet = true;
+      _scaffoldKey.currentState.hideCurrentSnackBar();
+    } else if (connectionStatus == ConnectivityStatus.Offline) {
+      inet = false;
+      _scaffoldKey.currentState.showSnackBar(snackBar);
+    }
 
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: const Text('My Rated Movies'),
         actions: <Widget>[
@@ -132,14 +151,13 @@ class _ReviewsView extends State<ReviewsView> {
             onPressed: () {
               themeProvider
                   .updateTheme(themeProvider.isDarkModeOn ? 'light' : 'dark');
-              // Provider.of<ThemeProvider>(context, listen: false)
-              //     .updateTheme(theme);
             },
           ),
           // action buttons
           IconButton(
             icon: Icon(Icons.more_vert),
             onPressed: () {
+              if (!inet) return;
               final actionSheet = CupertinoActionSheet(
                   // title: Text('Select Option'),
                   // message: Text('Which option?'),
@@ -253,6 +271,7 @@ class _ReviewsView extends State<ReviewsView> {
                 'New Review',
               ),
               onPressed: () async {
+                if (!inet) return;
                 await showSearch(
                   context: context,
                   delegate: MovieSearch(),

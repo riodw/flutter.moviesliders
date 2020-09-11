@@ -1,4 +1,5 @@
 export 'theme_provider.dart';
 // export 'language_provider.dart';
 export 'auth_service.dart';
-export 'auth_widget_builder.dart';
+export 'auth_widget_builder_service.dart';
+export 'connectivity_service.dart';
