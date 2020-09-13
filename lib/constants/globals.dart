@@ -1,4 +1,12 @@
+import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
+
+bool iNet = true;
+
+final SnackBar snackBar = SnackBar(
+  content: Text('No Connection'),
+  duration: Duration(days: 365),
+);
 
 final DatabaseReference dbRef = FirebaseDatabase.instance.reference();
 

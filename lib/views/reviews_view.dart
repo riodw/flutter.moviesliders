@@ -15,6 +15,31 @@ import 'package:flutter_moviesliders/models/models.dart';
 // Widgets
 import 'package:flutter_moviesliders/widgets/chart_widget.dart';
 
+// display Offline
+void displayInet(connectionStatus, {GlobalKey<ScaffoldState> scaffoldKey}) {
+  // CHECK CONNECTION
+  if (connectionStatus == ConnectivityStatus.WiFi ||
+      connectionStatus == ConnectivityStatus.Cellular) {
+    iNet = true;
+    if (scaffoldKey != null) {
+      scaffoldKey.currentState.hideCurrentSnackBar();
+      scaffoldKey.currentState.removeCurrentSnackBar();
+    }
+    // WidgetsBinding.instance.addPostFrameCallback(
+    //     (_) => _scaffoldKey.currentState.hideCurrentSnackBar());
+    // WidgetsBinding.instance.addPostFrameCallback(
+    //     (_) => _scaffoldKey.currentState.removeCurrentSnackBar());
+  } else if (connectionStatus == ConnectivityStatus.Offline) {
+    iNet = false;
+    print(connectionStatus);
+    if (scaffoldKey != null)
+      WidgetsBinding.instance.addPostFrameCallback(
+          (_) => scaffoldKey.currentState.showSnackBar(snackBar));
+    // _scaffoldKey.currentState.showSnackBar(snackBar);
+  } else
+    iNet = false;
+}
+
 class ReviewsView extends StatefulWidget {
   ReviewsView({Key key, @required this.user}) : super(key: key);
 
@@ -29,7 +54,9 @@ class _ReviewsView extends State<ReviewsView> {
   static List<Review> _reviews = [];
   static FirebaseList reviewsList;
   static bool myReviewsOnly = true;
-  static bool inet = true;
+  // reference to scaffold
+  static final GlobalKey<ScaffoldState> _scaffoldKey =
+      GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -112,13 +139,6 @@ class _ReviewsView extends State<ReviewsView> {
     return _reviews;
   }
 
-  static final _scaffoldKey = GlobalKey<ScaffoldState>();
-
-  static final SnackBar snackBar = SnackBar(
-    content: Text('No Connection'),
-    duration: Duration(days: 365),
-  );
-
   @override
   Widget build(BuildContext context) {
     final ThemeProvider themeProvider =
@@ -127,25 +147,8 @@ class _ReviewsView extends State<ReviewsView> {
     final ConnectivityStatus connectionStatus =
         Provider.of<ConnectivityStatus>(context, listen: true);
 
-    // CHECK CONNECTION
-    if (connectionStatus == ConnectivityStatus.WiFi ||
-        connectionStatus == ConnectivityStatus.Cellular) {
-      inet = true;
-      _scaffoldKey.currentState.hideCurrentSnackBar();
-      _scaffoldKey.currentState.removeCurrentSnackBar();
-      // WidgetsBinding.instance.addPostFrameCallback(
-      //     (_) => _scaffoldKey.currentState.hideCurrentSnackBar());
-      // WidgetsBinding.instance.addPostFrameCallback(
-      //     (_) => _scaffoldKey.currentState.removeCurrentSnackBar());
-    } else if (connectionStatus == ConnectivityStatus.Offline) {
-      inet = false;
-      print(connectionStatus);
-      WidgetsBinding.instance.addPostFrameCallback(
-          (_) => _scaffoldKey.currentState.showSnackBar(snackBar));
-      // _scaffoldKey.currentState.showSnackBar(snackBar);
-    } else {
-      inet = false;
-    }
+    // Check iNet
+    displayInet(connectionStatus, scaffoldKey: _scaffoldKey);
 
     return Scaffold(
       key: _scaffoldKey,
@@ -165,7 +168,7 @@ class _ReviewsView extends State<ReviewsView> {
           IconButton(
             icon: Icon(Icons.more_vert),
             onPressed: () {
-              if (!inet) return;
+              if (!iNet) return;
               final actionSheet = CupertinoActionSheet(
                   // title: Text('Select Option'),
                   // message: Text('Which option?'),
@@ -279,7 +282,7 @@ class _ReviewsView extends State<ReviewsView> {
                 'New Review',
               ),
               onPressed: () async {
-                if (!inet) return;
+                if (!iNet) return;
                 await showSearch(
                   context: context,
                   delegate: MovieSearch(),
@@ -529,7 +532,17 @@ class MovieSearch extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    if (query.length < 4) {
+    final ConnectivityStatus connectionStatus =
+        Provider.of<ConnectivityStatus>(context, listen: true);
+
+    // Check iNet
+    displayInet(connectionStatus);
+
+    if (!iNet)
+      return const SafeArea(
+          child: const Center(child: const Text('No Connection.')));
+
+    if (query.length < 4)
       return SafeArea(
           child: Center(
         child: Column(
@@ -547,7 +560,6 @@ class MovieSearch extends SearchDelegate {
           ],
         ),
       ));
-    }
 
     // https://stackoverflow.com/questions/57250986/the-argument-type-futurewidget-cant-be-assigned-to-the-parameter-type-widg
     // https://stackoverflow.com/questions/49781657/adjust-gridview-child-height-according-to-the-dynamic-content-in-flutter
@@ -598,8 +610,9 @@ class MovieSearch extends SearchDelegate {
                         Image.network(
                           suggestion.media[0],
                           height: 180,
-                          loadingBuilder:
-                              (BuildContext context, Object child, progress) {
+                          loadingBuilder: (final BuildContext context,
+                              final Object child,
+                              final ImageChunkEvent progress) {
                             return progress == null
                                 ? child
                                 : const CircularProgressIndicator();
