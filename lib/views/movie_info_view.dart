@@ -8,6 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 // Project
 import 'package:flutter_moviesliders/constants/globals.dart';
+import 'package:flutter_moviesliders/services/services.dart';
 import 'package:flutter_moviesliders/views/sliders_view.dart';
 import 'package:flutter_moviesliders/models/models.dart';
 
@@ -27,11 +28,21 @@ Future<OmdbIdModel> _fetchOmdb(String imbdId) async {
 }
 
 class MovieInfoView extends StatelessWidget {
+  // reference to scaffold
+  static final GlobalKey<ScaffoldState> _scaffoldKey2 =
+      GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
+    final ImdbModel imdb = ModalRoute.of(context).settings.arguments;
+    // providers
     // final ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
     final FirebaseUser userProvider = Provider.of<FirebaseUser>(context);
-    final ImdbModel imdb = ModalRoute.of(context).settings.arguments;
+    final ConnectivityStatus connectionStatus =
+        Provider.of<ConnectivityStatus>(context, listen: true);
+
+    // Check iNet
+    displayInet(connectionStatus, scaffoldKey: _scaffoldKey2);
 
     FutureBuilder<OmdbIdModel> contents = FutureBuilder<OmdbIdModel>(
       future: _fetchOmdb(imdb.id),
@@ -55,22 +66,23 @@ class MovieInfoView extends StatelessWidget {
               height: 10,
             ),
             SizedBox(
-              height: 261,
-              child: Image.network(
-                omdb.poster,
-                height: 260,
-                loadingBuilder: (BuildContext context, Object child, progress) {
-                  return progress == null
-                      ? child
-                      : const Center(child: const CircularProgressIndicator());
-                },
-                errorBuilder: (BuildContext context, Object exception,
-                    StackTrace stackTrace) {
-                  return const Center(child: Text('Image Not Found'));
-                },
-                fit: BoxFit.fill,
-              ),
-            ),
+                height: 261,
+                child: Image.network(
+                  omdb.poster,
+                  height: 260,
+                  loadingBuilder:
+                      (BuildContext context, Object child, progress) {
+                    return progress == null
+                        ? child
+                        : const Center(
+                            child: const CircularProgressIndicator());
+                  },
+                  errorBuilder: (BuildContext context, Object exception,
+                      StackTrace stackTrace) {
+                    return const Center(child: Text('Image Not Found'));
+                  },
+                  fit: BoxFit.fill,
+                )),
             const SizedBox(
               height: 20,
             ),
@@ -109,6 +121,8 @@ class MovieInfoView extends StatelessWidget {
                 'Start Review',
               ),
               onPressed: () async {
+                if (!iNet) return;
+
                 await reviewNotDoneRef.set(<String, Object>{
                   'date_reviewed': DateTime.now().toString(),
                   'avg': 2,
@@ -216,12 +230,17 @@ class MovieInfoView extends StatelessWidget {
     );
 
     return Scaffold(
+        key: _scaffoldKey2,
         appBar: AppBar(
           title: Text(imdb.title),
           actions: <Widget>[],
         ),
         body: SafeArea(
-          child: contents,
+          child: iNet
+              ? contents
+              : const Center(
+                  child: const Text('No Connection'),
+                ),
         ));
   }
 }

@@ -1,5 +1,8 @@
+// Pub
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
+// Project
+import 'package:flutter_moviesliders/services/connectivity_service.dart';
 
 bool iNet = true;
 
@@ -7,6 +10,37 @@ final SnackBar snackBar = SnackBar(
   content: Text('No Connection'),
   duration: Duration(days: 365),
 );
+
+// display Offline
+void displayInet(connectionStatus, {GlobalKey<ScaffoldState> scaffoldKey}) {
+  // CHECK CONNECTION
+  if (connectionStatus == ConnectivityStatus.WiFi ||
+      connectionStatus == ConnectivityStatus.Cellular) {
+    iNet = true;
+    if (scaffoldKey != null) {
+      if (scaffoldKey.currentState != null) {
+        scaffoldKey.currentState.hideCurrentSnackBar();
+        scaffoldKey.currentState.removeCurrentSnackBar();
+      } else {
+        WidgetsBinding.instance.addPostFrameCallback(
+            (_) => scaffoldKey.currentState.hideCurrentSnackBar());
+        WidgetsBinding.instance.addPostFrameCallback(
+            (_) => scaffoldKey.currentState.removeCurrentSnackBar());
+      }
+    }
+  } else if (connectionStatus == ConnectivityStatus.Offline) {
+    iNet = false;
+    print(connectionStatus);
+    if (scaffoldKey != null) {
+      if (scaffoldKey.currentState != null)
+        scaffoldKey.currentState.showSnackBar(snackBar);
+      else
+        WidgetsBinding.instance.addPostFrameCallback(
+            (_) => scaffoldKey.currentState.showSnackBar(snackBar));
+    }
+  } else
+    iNet = false;
+}
 
 final DatabaseReference dbRef = FirebaseDatabase.instance.reference();
 

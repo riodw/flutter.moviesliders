@@ -15,31 +15,6 @@ import 'package:flutter_moviesliders/models/models.dart';
 // Widgets
 import 'package:flutter_moviesliders/widgets/chart_widget.dart';
 
-// display Offline
-void displayInet(connectionStatus, {GlobalKey<ScaffoldState> scaffoldKey}) {
-  // CHECK CONNECTION
-  if (connectionStatus == ConnectivityStatus.WiFi ||
-      connectionStatus == ConnectivityStatus.Cellular) {
-    iNet = true;
-    if (scaffoldKey != null) {
-      scaffoldKey.currentState.hideCurrentSnackBar();
-      scaffoldKey.currentState.removeCurrentSnackBar();
-    }
-    // WidgetsBinding.instance.addPostFrameCallback(
-    //     (_) => _scaffoldKey.currentState.hideCurrentSnackBar());
-    // WidgetsBinding.instance.addPostFrameCallback(
-    //     (_) => _scaffoldKey.currentState.removeCurrentSnackBar());
-  } else if (connectionStatus == ConnectivityStatus.Offline) {
-    iNet = false;
-    print(connectionStatus);
-    if (scaffoldKey != null)
-      WidgetsBinding.instance.addPostFrameCallback(
-          (_) => scaffoldKey.currentState.showSnackBar(snackBar));
-    // _scaffoldKey.currentState.showSnackBar(snackBar);
-  } else
-    iNet = false;
-}
-
 class ReviewsView extends StatefulWidget {
   ReviewsView({Key key, @required this.user}) : super(key: key);
 
@@ -599,6 +574,7 @@ class MovieSearch extends SearchDelegate {
                 for (final ImdbModel suggestion in snapshot.data)
                   GestureDetector(
                     onTap: () {
+                      if (!iNet) return;
                       Navigator.pop(context);
                       Navigator.pushNamed(context, '/movie_info',
                           arguments: suggestion);
