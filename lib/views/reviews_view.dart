@@ -123,7 +123,11 @@ class _ReviewsView extends State<ReviewsView> {
         Provider.of<ConnectivityStatus>(context, listen: true);
 
     // Check iNet
-    displayInet(connectionStatus, scaffoldKey: _scaffoldKey);
+    displayInet(connectionStatus, scaffoldKey: _scaffoldKey).then((value) {
+      if (iNet)
+        WidgetsBinding.instance.addPostFrameCallback(
+            (_) => _scaffoldKey.currentState.hideCurrentSnackBar());
+    });
 
     return Scaffold(
       key: _scaffoldKey,
@@ -272,7 +276,9 @@ class _ReviewsView extends State<ReviewsView> {
               ? Column(children: <Widget>[
                   for (Review review in orderedReviews())
                     GestureDetector(
-                      onTap: () {
+                      onTap: () async {
+                        await testConnection();
+                        if (!iNet) return;
                         Navigator.pushNamed(context, '/movie_review',
                             arguments: review);
                       },
@@ -431,6 +437,11 @@ Future<List<ImdbModel>> _fetchImdb(String query) async {
 
   final String urlSearch =
       imdbUrl + query.substring(0, 1) + '/' + query + '.json';
+
+  await testConnection();
+
+  if (!iNet) return suggestions;
+
   final response = await http.get(urlSearch);
 
   if (response.statusCode != 200) return suggestions;
@@ -511,7 +522,13 @@ class MovieSearch extends SearchDelegate {
         Provider.of<ConnectivityStatus>(context, listen: true);
 
     // Check iNet
-    displayInet(connectionStatus);
+    // displayInet(connectionStatus).then((value) {
+    //   if (iNet) {
+    //     _scaffoldKey.currentState.removeCurrentSnackBar();
+    //   }
+    // });
+
+    testConnection();
 
     if (!iNet)
       return const SafeArea(
@@ -573,7 +590,8 @@ class MovieSearch extends SearchDelegate {
               children: <Widget>[
                 for (final ImdbModel suggestion in snapshot.data)
                   GestureDetector(
-                    onTap: () {
+                    onTap: () async {
+                      await testConnection();
                       if (!iNet) return;
                       Navigator.pop(context);
                       Navigator.pushNamed(context, '/movie_info',
@@ -595,7 +613,8 @@ class MovieSearch extends SearchDelegate {
                           },
                           errorBuilder: (BuildContext context, Object exception,
                               StackTrace stackTrace) {
-                            return const Center(child: Text('Image Not Found'));
+                            return const Center(
+                                child: const Text('Image Not Found'));
                           },
                           fit: BoxFit.fill,
                         ),

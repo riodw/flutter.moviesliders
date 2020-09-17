@@ -1,4 +1,6 @@
+import 'dart:io';
 // Pub
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 // Project
@@ -9,10 +11,29 @@ bool iNet = true;
 final SnackBar snackBar = SnackBar(
   content: Text('No Connection'),
   duration: Duration(days: 365),
+  // action: SnackBarAction(
+  //     label: 'Recheck',
+  //     onPressed: () {
+  //       print(iNet);
+  //       if (iNet) scaffoldKey.currentState.removeCurrentSnackBar();
+  //     }),
 );
 
+Future<bool> testConnection() async {
+  try {
+    final result = await InternetAddress.lookup('example.com');
+    if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+      iNet = true;
+    }
+  } on SocketException catch (_) {
+    iNet = false;
+  }
+  return iNet;
+}
+
 // display Offline
-void displayInet(connectionStatus, {GlobalKey<ScaffoldState> scaffoldKey}) {
+Future<bool> displayInet(connectionStatus,
+    {GlobalKey<ScaffoldState> scaffoldKey}) async {
   // CHECK CONNECTION
   if (connectionStatus == ConnectivityStatus.WiFi ||
       connectionStatus == ConnectivityStatus.Cellular) {
@@ -40,6 +61,8 @@ void displayInet(connectionStatus, {GlobalKey<ScaffoldState> scaffoldKey}) {
     }
   } else
     iNet = false;
+
+  return iNet;
 }
 
 final DatabaseReference dbRef = FirebaseDatabase.instance.reference();

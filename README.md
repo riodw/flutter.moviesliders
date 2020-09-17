@@ -21,3 +21,6 @@ Category: Entertainment
 2. The app must also include a mechanism to revoke social network credentials and disable data access between the app and social network from within the app.
 
 3. You must provide access to information about how and where the data will be used.
+
+https://stackoverflow.com/questions/49648022/check-whether-there-is-an-internet-connection-available-on-flutter-app
+https://stackoverflow.com/questions/55060998/how-to-continuously-check-internet-connect-or-not-on-flutter

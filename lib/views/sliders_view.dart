@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_database/firebase_database.dart';
 // Project
+import 'package:flutter_moviesliders/constants/globals.dart';
 import 'package:flutter_moviesliders/models/models.dart';
 import 'package:flutter_moviesliders/services/services.dart';
 
@@ -36,6 +37,10 @@ class _SlidersViewState extends State<SlidersView> {
   bool _reviewFinished = false;
   int _updates = 1;
   int _total = 2;
+
+  // reference to scaffold
+  static final GlobalKey<ScaffoldState> _scaffoldKey =
+      GlobalKey<ScaffoldState>();
 
   double _avg() {
     return _total / _updates;
@@ -103,17 +108,20 @@ class _SlidersViewState extends State<SlidersView> {
         ),
         actions: <Widget>[
           FlatButton(
-            child: const Text('Show me!'),
-            // GO TO SEE REVIEW RESULTS
-            onPressed: () => Navigator.pushNamedAndRemoveUntil(
-                context, '/movie_review', ModalRoute.withName('/')),
-          ),
+              child: const Text('Show me!'),
+              // GO TO SEE REVIEW RESULTS
+              onPressed: () {
+                Navigator.pushNamedAndRemoveUntil(
+                    context, '/movie_review', ModalRoute.withName('/'));
+              }),
         ],
       ),
     );
   }
 
+  // Post Updates
   void _updateTrends() {
+    if (!iNet) return;
     if (_paused || _trends.length == 0) return;
     _seconds = _seconds + 2;
     setState(() {
@@ -169,9 +177,10 @@ class _SlidersViewState extends State<SlidersView> {
             ),
             actions: <Widget>[
               FlatButton(
-                child: const Text('No'),
-                onPressed: () => Navigator.pop(context),
-              ),
+                  child: const Text('No'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  }),
               FlatButton(
                 child: const Text('Yes'),
                 onPressed: () {
@@ -188,18 +197,22 @@ class _SlidersViewState extends State<SlidersView> {
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context);
+    final ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
 
-    ConnectivityStatus connectionStatus =
-        Provider.of<ConnectivityStatus>(context);
+    final ConnectivityStatus connectionStatus =
+        Provider.of<ConnectivityStatus>(context, listen: true);
 
-    print(1);
-    print(connectionStatus);
-    print(2);
+    // Check iNet
+    displayInet(connectionStatus, scaffoldKey: _scaffoldKey);
+    // _scaffoldKey.currentState.hideCurrentSnackBar();
+    // _scaffoldKey.currentState.removeCurrentSnackBar();
+
+    if (!iNet) _paused = true;
 
     return WillPopScope(
         onWillPop: _onWillPop,
         child: Scaffold(
+          key: _scaffoldKey,
           appBar: AppBar(
             title: Text(widget.title),
             actions: <Widget>[
@@ -233,7 +246,7 @@ class _SlidersViewState extends State<SlidersView> {
                           ? MaterialButton(
                               color: Theme.of(context).colorScheme.primary,
                               onPressed: () {
-                                // GO TO SEE REVIEW RESULTS
+                                // TODO: GO TO SEE REVIEW RESULTS
                               },
                               child: const Text('DONE'),
                             )
@@ -242,6 +255,10 @@ class _SlidersViewState extends State<SlidersView> {
                                   ? Theme.of(context).colorScheme.primary
                                   : Theme.of(context).colorScheme.secondary,
                               onPressed: () {
+                                if (!iNet) {
+                                  _paused = true;
+                                  return;
+                                }
                                 setState(() {
                                   _paused = !_paused;
                                 });
@@ -287,8 +304,9 @@ class _SlidersViewState extends State<SlidersView> {
                                           min: Trend.minRating,
                                           max: Trend.maxRating,
                                           onChanged: (newRating) {
-                                            setState(() =>
-                                                _trend.rating = newRating);
+                                            setState(() {
+                                              _trend.rating = newRating;
+                                            });
                                           }),
                                     )),
                                     _paused

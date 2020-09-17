@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:convert';
 // Pub
 import 'package:flutter/material.dart';
@@ -21,15 +22,25 @@ https://www.omdbapi.com/?apikey=cf1629a0&v=1&plot=full&i=tt3896198
 // OmdbIdModel
 Future<OmdbIdModel> _fetchOmdb(String imbdId) async {
   final String url = OmdbIdModel.urlId + '&i=' + imbdId;
-  final response = await http.get(url);
-  if (response.statusCode != 200) return null;
 
-  return OmdbIdModel.fromJson(json.decode(response.body));
+  try {
+    final result = await InternetAddress.lookup('example.com');
+    if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+      print('mvie_info - connected');
+      // get movie info
+      final response = await http.get(url);
+      if (response.statusCode != 200) return null;
+      return OmdbIdModel.fromJson(json.decode(response.body));
+    }
+  } on SocketException catch (_) {
+    print('mvie_info - not connected');
+  }
+  return null;
 }
 
 class MovieInfoView extends StatelessWidget {
   // reference to scaffold
-  static final GlobalKey<ScaffoldState> _scaffoldKey2 =
+  static final GlobalKey<ScaffoldState> _scaffoldKey =
       GlobalKey<ScaffoldState>();
 
   @override
@@ -42,7 +53,7 @@ class MovieInfoView extends StatelessWidget {
         Provider.of<ConnectivityStatus>(context, listen: true);
 
     // Check iNet
-    displayInet(connectionStatus, scaffoldKey: _scaffoldKey2);
+    displayInet(connectionStatus, scaffoldKey: _scaffoldKey);
 
     FutureBuilder<OmdbIdModel> contents = FutureBuilder<OmdbIdModel>(
       future: _fetchOmdb(imdb.id),
@@ -230,7 +241,7 @@ class MovieInfoView extends StatelessWidget {
     );
 
     return Scaffold(
-        key: _scaffoldKey2,
+        key: _scaffoldKey,
         appBar: AppBar(
           title: Text(imdb.title),
           actions: <Widget>[],
