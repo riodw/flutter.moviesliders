@@ -90,7 +90,7 @@ class MovieInfoView extends StatelessWidget {
                   },
                   errorBuilder: (BuildContext context, Object exception,
                       StackTrace stackTrace) {
-                    return const Center(child: Text('Image Not Found'));
+                    return const Center(child: const Text('Image Not Found'));
                   },
                   fit: BoxFit.fill,
                 )),
@@ -132,6 +132,7 @@ class MovieInfoView extends StatelessWidget {
                 'Start Review',
               ),
               onPressed: () async {
+                await testConnection();
                 if (!iNet) return;
 
                 await reviewNotDoneRef.set(<String, Object>{

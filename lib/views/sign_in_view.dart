@@ -1,10 +1,15 @@
 // Pub
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 // Project
+import 'package:flutter_moviesliders/constants/globals.dart';
+import 'package:flutter_moviesliders/services/services.dart';
 import 'package:flutter_moviesliders/services/auth_service.dart';
 
 class SignInView extends StatelessWidget {
-  // static bool _loading = false;
+  // reference to scaffold
+  static final GlobalKey<ScaffoldState> _scaffoldKey =
+      GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
@@ -90,6 +95,9 @@ class SignInView extends StatelessWidget {
                       // style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     onPressed: () async {
+                      await testConnection();
+                      if (!iNet) return;
+
                       final AuthService _auth = AuthService();
                       bool status =
                           await _auth.signInWithGoogle().then((status) {
@@ -121,6 +129,9 @@ class SignInView extends StatelessWidget {
                       // ),
                     ),
                     onPressed: () async {
+                      await testConnection();
+                      if (!iNet) return;
+
                       final AuthService _auth = AuthService();
                       bool status =
                           await _auth.signInWithGoogle().then((status) {
@@ -144,6 +155,9 @@ class SignInView extends StatelessWidget {
                       'Skip',
                     ),
                     onPressed: () async {
+                      await testConnection();
+                      if (!iNet) return;
+
                       final AuthService _auth = AuthService();
                       bool status =
                           await _auth.signInAnonymously().then((status) {

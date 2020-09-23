@@ -123,11 +123,7 @@ class _ReviewsView extends State<ReviewsView> {
         Provider.of<ConnectivityStatus>(context, listen: true);
 
     // Check iNet
-    displayInet(connectionStatus, scaffoldKey: _scaffoldKey).then((value) {
-      if (iNet)
-        WidgetsBinding.instance.addPostFrameCallback(
-            (_) => _scaffoldKey.currentState.hideCurrentSnackBar());
-    });
+    displayInet(connectionStatus, scaffoldKey: _scaffoldKey);
 
     return Scaffold(
       key: _scaffoldKey,
@@ -157,6 +153,9 @@ class _ReviewsView extends State<ReviewsView> {
                           ? const Text('Show All Reviews')
                           : const Text('Show Only My Reviews'),
                       onPressed: () async {
+                        await testConnection();
+                        if (!iNet) return;
+
                         setState(() {
                           myReviewsOnly = !myReviewsOnly;
                           changeReviewFilter();
@@ -188,7 +187,10 @@ class _ReviewsView extends State<ReviewsView> {
                     widget.user.isAnonymous
                         ? CupertinoActionSheetAction(
                             child: const Text('Sign In'),
-                            onPressed: () {},
+                            onPressed: () async {
+                              await testConnection();
+                              if (!iNet) return;
+                            },
                           )
                         : CupertinoActionSheetAction(
                             child: const Text('Log Out'),
@@ -438,7 +440,7 @@ Future<List<ImdbModel>> _fetchImdb(String query) async {
   final String urlSearch =
       imdbUrl + query.substring(0, 1) + '/' + query + '.json';
 
-  await testConnection();
+  // await testConnection();
 
   if (!iNet) return suggestions;
 

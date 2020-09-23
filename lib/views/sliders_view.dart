@@ -110,7 +110,10 @@ class _SlidersViewState extends State<SlidersView> {
           FlatButton(
               child: const Text('Show me!'),
               // GO TO SEE REVIEW RESULTS
-              onPressed: () {
+              onPressed: () async {
+                await testConnection();
+                if (!iNet) return;
+
                 Navigator.pushNamedAndRemoveUntil(
                     context, '/movie_review', ModalRoute.withName('/'));
               }),
@@ -204,8 +207,6 @@ class _SlidersViewState extends State<SlidersView> {
 
     // Check iNet
     displayInet(connectionStatus, scaffoldKey: _scaffoldKey);
-    // _scaffoldKey.currentState.hideCurrentSnackBar();
-    // _scaffoldKey.currentState.removeCurrentSnackBar();
 
     if (!iNet) _paused = true;
 
@@ -245,7 +246,9 @@ class _SlidersViewState extends State<SlidersView> {
                       child: _reviewFinished
                           ? MaterialButton(
                               color: Theme.of(context).colorScheme.primary,
-                              onPressed: () {
+                              onPressed: () async {
+                                await testConnection();
+                                if (!iNet) return;
                                 // TODO: GO TO SEE REVIEW RESULTS
                               },
                               child: const Text('DONE'),
