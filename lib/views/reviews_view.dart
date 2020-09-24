@@ -115,15 +115,15 @@ class _ReviewsView extends State<ReviewsView> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(final BuildContext context) {
+    // providers
     final ThemeProvider themeProvider =
         Provider.of<ThemeProvider>(context, listen: false);
-
     final ConnectivityStatus connectionStatus =
         Provider.of<ConnectivityStatus>(context, listen: true);
 
-    // Check iNet
-    displayInet(connectionStatus, scaffoldKey: _scaffoldKey);
+    // display snackbar if !iNet
+    displayInet(connectionStatus, _scaffoldKey.currentState);
 
     return Scaffold(
       key: _scaffoldKey,
@@ -211,7 +211,7 @@ class _ReviewsView extends State<ReviewsView> {
                   ));
               showCupertinoModalPopup(
                   context: context,
-                  builder: (BuildContext context) => actionSheet);
+                  builder: (final BuildContext context) => actionSheet);
             },
           ),
         ],
@@ -480,7 +480,7 @@ class MovieSearch extends SearchDelegate {
   String get searchFieldLabel => 'Search Movies';
 
   @override
-  ThemeData appBarTheme(BuildContext context) {
+  ThemeData appBarTheme(final BuildContext context) {
     final ThemeData theme = Theme.of(context);
     return theme.copyWith(
       primaryColor: theme.primaryColor,
@@ -491,7 +491,7 @@ class MovieSearch extends SearchDelegate {
   }
 
   @override
-  List<Widget> buildActions(BuildContext context) {
+  List<Widget> buildActions(final BuildContext context) {
     return [
       IconButton(
         icon: Icon(Icons.clear),
@@ -503,7 +503,7 @@ class MovieSearch extends SearchDelegate {
   }
 
   @override
-  Widget buildLeading(BuildContext context) {
+  Widget buildLeading(final BuildContext context) {
     return IconButton(
       icon: Icon(Icons.arrow_back),
       onPressed: () {
@@ -513,13 +513,13 @@ class MovieSearch extends SearchDelegate {
   }
 
   @override
-  Widget buildResults(BuildContext context) {
+  Widget buildResults(final BuildContext context) {
     print('build Results');
     return null;
   }
 
   @override
-  Widget buildSuggestions(BuildContext context) {
+  Widget buildSuggestions(final BuildContext context) {
     final ConnectivityStatus connectionStatus =
         Provider.of<ConnectivityStatus>(context, listen: true);
 
@@ -559,8 +559,8 @@ class MovieSearch extends SearchDelegate {
     // https://stackoverflow.com/questions/49781657/adjust-gridview-child-height-according-to-the-dynamic-content-in-flutter
     var suggestions = FutureBuilder<List<ImdbModel>>(
         future: _fetchImdb(query),
-        builder:
-            (BuildContext context, AsyncSnapshot<List<ImdbModel>> snapshot) {
+        builder: (final BuildContext context,
+            final AsyncSnapshot<List<ImdbModel>> snapshot) {
           if (snapshot.hasError)
             return Center(
               child: const Text('Error'),
@@ -613,8 +613,9 @@ class MovieSearch extends SearchDelegate {
                                 ? child
                                 : const CircularProgressIndicator();
                           },
-                          errorBuilder: (BuildContext context, Object exception,
-                              StackTrace stackTrace) {
+                          errorBuilder: (final BuildContext context,
+                              final Object exception,
+                              final StackTrace stackTrace) {
                             return const Center(
                                 child: const Text('Image Not Found'));
                           },

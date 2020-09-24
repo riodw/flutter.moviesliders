@@ -31,38 +31,25 @@ Future<bool> testConnection() async {
   return iNet;
 }
 
-// display Offline
-Future<bool> displayInet(connectionStatus,
-    {GlobalKey<ScaffoldState> scaffoldKey}) async {
-  // CHECK CONNECTION
-  if (connectionStatus == ConnectivityStatus.WiFi ||
-      connectionStatus == ConnectivityStatus.Cellular) {
-    iNet = true;
-    if (scaffoldKey != null) {
-      if (scaffoldKey.currentState != null) {
-        scaffoldKey.currentState.hideCurrentSnackBar();
-        scaffoldKey.currentState.removeCurrentSnackBar();
-      } else {
-        WidgetsBinding.instance.addPostFrameCallback(
-            (_) => scaffoldKey.currentState.hideCurrentSnackBar());
-        WidgetsBinding.instance.addPostFrameCallback(
-            (_) => scaffoldKey.currentState.removeCurrentSnackBar());
-      }
-    }
-  } else if (connectionStatus == ConnectivityStatus.Offline) {
-    iNet = false;
-    print(connectionStatus);
-    if (scaffoldKey != null) {
-      if (scaffoldKey.currentState != null)
-        scaffoldKey.currentState.showSnackBar(snackBar);
-      else
-        WidgetsBinding.instance.addPostFrameCallback(
-            (_) => scaffoldKey.currentState.showSnackBar(snackBar));
-    }
-  } else
-    iNet = false;
+int called = 0;
 
-  return iNet;
+// display Offline
+void displayInet(connectionStatus, final ScaffoldState scaffoldKeyState) {
+  if (scaffoldKeyState == null) return null;
+
+  // CHECK CONNECTION
+  Future.delayed(const Duration(seconds: 1)).then((value) {
+    testConnection().then((value) {
+      if (!iNet) {
+        called++;
+        scaffoldKeyState.showSnackBar(snackBar);
+      } else {
+        for (; called > 0; called--) {
+          scaffoldKeyState.removeCurrentSnackBar();
+        }
+      }
+    });
+  });
 }
 
 final DatabaseReference dbRef = FirebaseDatabase.instance.reference();

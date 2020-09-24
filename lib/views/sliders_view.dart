@@ -199,14 +199,14 @@ class _SlidersViewState extends State<SlidersView> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(final BuildContext context) {
+    // providers
     final ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
-
     final ConnectivityStatus connectionStatus =
         Provider.of<ConnectivityStatus>(context, listen: true);
 
     // Check iNet
-    displayInet(connectionStatus, scaffoldKey: _scaffoldKey);
+    displayInet(connectionStatus, _scaffoldKey.currentState);
 
     if (!iNet) _paused = true;
 

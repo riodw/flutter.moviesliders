@@ -23,17 +23,13 @@ https://www.omdbapi.com/?apikey=cf1629a0&v=1&plot=full&i=tt3896198
 Future<OmdbIdModel> _fetchOmdb(String imbdId) async {
   final String url = OmdbIdModel.urlId + '&i=' + imbdId;
 
-  try {
-    final result = await InternetAddress.lookup('example.com');
-    if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-      print('mvie_info - connected');
-      // get movie info
-      final response = await http.get(url);
-      if (response.statusCode != 200) return null;
-      return OmdbIdModel.fromJson(json.decode(response.body));
-    }
-  } on SocketException catch (_) {
-    print('mvie_info - not connected');
+  await testConnection();
+
+  if (iNet) {
+    // get movie info
+    final response = await http.get(url);
+    if (response.statusCode != 200) return null;
+    return OmdbIdModel.fromJson(json.decode(response.body));
   }
   return null;
 }
@@ -44,7 +40,7 @@ class MovieInfoView extends StatelessWidget {
       GlobalKey<ScaffoldState>();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(final BuildContext context) {
     final ImdbModel imdb = ModalRoute.of(context).settings.arguments;
     // providers
     // final ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
@@ -53,15 +49,16 @@ class MovieInfoView extends StatelessWidget {
         Provider.of<ConnectivityStatus>(context, listen: true);
 
     // Check iNet
-    displayInet(connectionStatus, scaffoldKey: _scaffoldKey);
+    displayInet(connectionStatus, _scaffoldKey.currentState);
 
     FutureBuilder<OmdbIdModel> contents = FutureBuilder<OmdbIdModel>(
       future: _fetchOmdb(imdb.id),
-      builder: (BuildContext context, AsyncSnapshot<OmdbIdModel> snapshot) {
+      builder: (final BuildContext context,
+          final AsyncSnapshot<OmdbIdModel> snapshot) {
         OmdbIdModel omdb;
         if (snapshot.hasError)
           return const Center(
-            child: Text('Error'),
+            child: const Text('Error'),
           );
         else if (snapshot.data == null)
           return const Center(
@@ -81,15 +78,15 @@ class MovieInfoView extends StatelessWidget {
                 child: Image.network(
                   omdb.poster,
                   height: 260,
-                  loadingBuilder:
-                      (BuildContext context, Object child, progress) {
+                  loadingBuilder: (final BuildContext context,
+                      final Object child, final ImageChunkEvent progress) {
                     return progress == null
                         ? child
                         : const Center(
                             child: const CircularProgressIndicator());
                   },
-                  errorBuilder: (BuildContext context, Object exception,
-                      StackTrace stackTrace) {
+                  errorBuilder: (final BuildContext context,
+                      final Object exception, final StackTrace stackTrace) {
                     return const Center(child: const Text('Image Not Found'));
                   },
                   fit: BoxFit.fill,
