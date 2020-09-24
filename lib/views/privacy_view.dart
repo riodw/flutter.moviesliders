@@ -19,7 +19,7 @@ class _PrivacyView extends State<PrivacyView> {
   bool _deleting = false;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(final BuildContext context) {
     // final themeProvider = Provider.of<ThemeProvider>(context);
     final FirebaseUser userProvider = Provider.of<FirebaseUser>(context);
 

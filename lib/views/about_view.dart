@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class AboutView extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(final BuildContext context) {
     // final themeProvider = Provider.of<ThemeProvider>(context);
 
     return Scaffold(

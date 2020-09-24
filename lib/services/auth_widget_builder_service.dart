@@ -12,12 +12,13 @@ class AuthWidgetBuilder extends StatelessWidget {
   final Widget Function(BuildContext, AsyncSnapshot<FirebaseUser>) builder;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(final BuildContext context) {
     final authService = Provider.of<AuthService>(context, listen: true);
 
     return StreamBuilder<FirebaseUser>(
       stream: authService.user,
-      builder: (BuildContext context, AsyncSnapshot<FirebaseUser> snapshot) {
+      builder: (final BuildContext context,
+          final AsyncSnapshot<FirebaseUser> snapshot) {
         final FirebaseUser user = snapshot.data;
         if (user != null) {
           /*

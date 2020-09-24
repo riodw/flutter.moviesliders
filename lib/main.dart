@@ -33,12 +33,12 @@ class MyApp extends StatelessWidget {
   const MyApp({Key key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(final BuildContext context) {
     // https://pub.dev/documentation/provider/latest/provider/Consumer-class.html
 
     return Consumer<ThemeProvider>(builder: (_, themeProviderRef, __) {
-      return AuthWidgetBuilder(builder:
-          (BuildContext context, AsyncSnapshot<FirebaseUser> userSnapshot) {
+      return AuthWidgetBuilder(builder: (final BuildContext context,
+          final AsyncSnapshot<FirebaseUser> userSnapshot) {
         return StreamProvider<ConnectivityStatus>(
           create: (context) =>
               ConnectivityService().connectionStatusController.stream,
@@ -56,7 +56,7 @@ class MyApp extends StatelessWidget {
               home: (userSnapshot?.data?.uid != null)
                   ? ReviewsView(user: userSnapshot.data)
                   : SignInView(),
-              builder: (BuildContext context, Widget child) {
+              builder: (final BuildContext context, final Widget child) {
                 final MediaQueryData data = MediaQuery.of(context);
                 return MediaQuery(
                     data: data.copyWith(

@@ -10,7 +10,7 @@ import 'package:flutter_moviesliders/models/models.dart';
 
 class ChartView extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(final BuildContext context) {
     final Review review = ModalRoute.of(context).settings.arguments;
 
     return Scaffold(

@@ -12,7 +12,7 @@ class SignInView extends StatelessWidget {
       GlobalKey<ScaffoldState>();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(final BuildContext context) {
     return Material(
       child: Stack(children: <Widget>[
         ShaderMask(

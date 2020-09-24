@@ -49,7 +49,7 @@ class NumericComboLinePointChart extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(final BuildContext context) {
     return charts.LineChart(
       seriesList,
       animate: animate,
