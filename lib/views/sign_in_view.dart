@@ -26,8 +26,8 @@ class SignInView extends StatelessWidget {
           blendMode: BlendMode.darken,
           child: Container(
             decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: ExactAssetImage('assets/images/home-2.jpg'),
+              image: const DecorationImage(
+                image: const ExactAssetImage('assets/images/home-2.jpg'),
                 fit: BoxFit.cover,
               ),
             ),
