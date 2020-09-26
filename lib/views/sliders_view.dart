@@ -84,7 +84,7 @@ class _SlidersViewState extends State<SlidersView> {
   void dispose() {
     _timer?.cancel();
     // delete unstarted review
-    if (_seconds == 0) widget.reviewNotDoneRef?.remove();
+    if (_seconds == 0) widget.reviewNotDoneRef.remove();
     super.dispose();
   }
 
@@ -188,7 +188,9 @@ class _SlidersViewState extends State<SlidersView> {
                 child: const Text('Yes'),
                 onPressed: () {
                   _timer?.cancel();
-                  widget.reviewNotDoneRef?.remove();
+                  widget.reviewNotDoneRef
+                      ?.remove()
+                      .catchError((onError) => print(onError));
                   Navigator.of(context).pop(true);
                 },
               ),

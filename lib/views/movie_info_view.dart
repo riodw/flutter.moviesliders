@@ -132,7 +132,7 @@ class MovieInfoView extends StatelessWidget {
                 await testConnection();
                 if (!iNet) return;
 
-                await reviewNotDoneRef.set(<String, Object>{
+                final data = <String, Object>{
                   'date_reviewed': DateTime.now().toString(),
                   'avg': 2,
                   'title': imdb.title,
@@ -161,7 +161,9 @@ class MovieInfoView extends StatelessWidget {
                   },
                   // the review data
                   'trends': [],
-                }).then((onValue) {
+                };
+
+                await reviewNotDoneRef.set(data).then((onValue) {
                   final List trends = [
                     {
                       'name': 'Interest',
