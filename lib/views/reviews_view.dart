@@ -223,22 +223,22 @@ class _ReviewsView extends State<ReviewsView> {
           ),
           Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
             Container(
-              // padding: const EdgeInsets.all(5),
+              padding: const EdgeInsets.all(2),
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(8.0),
+                borderRadius: BorderRadius.circular(12),
                 boxShadow: [
                   const BoxShadow(
-                    color: Colors.grey,
-                    blurRadius: 20, // has the effect of softening the shadow
+                    color: Colors.black54,
+                    blurRadius: 16, // has the effect of softening the shadow
                     spreadRadius: 0, // has the effect of extending the shadow
                   )
                 ],
               ),
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(8.0),
+                borderRadius: BorderRadius.circular(10),
                 child: Image.asset('Logo/flutter.moviesliders.logo.png',
-                    width: 60),
+                    width: 50),
               ),
             ),
             const SizedBox(
@@ -257,11 +257,11 @@ class _ReviewsView extends State<ReviewsView> {
             height: 20,
           ),
           Container(
-            margin: const EdgeInsets.symmetric(horizontal: 30.0),
+            margin: const EdgeInsets.symmetric(horizontal: 30),
             child: MaterialButton(
-              height: 45.0,
+              height: 45,
               color: Theme.of(context).colorScheme.primary,
-              minWidth: 320.0,
+              minWidth: 320,
               child: const Text(
                 'New Review',
               ),

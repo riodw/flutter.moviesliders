@@ -100,20 +100,21 @@ class _PrivacyView extends State<PrivacyView> {
                                       });
                                     });
 
+                                    //// --- Can't run because access to /reviews/not_done is denied
                                     // REMOVE ALL FROM 'not_done'
-                                    await _dbRef
-                                        .child('not_done')
-                                        .orderByChild('user_id')
-                                        .equalTo(userProvider.uid)
-                                        .once()
-                                        .then((final DataSnapshot snapshot) {
-                                      snapshot.value?.forEach((key, value) {
-                                        _dbRef
-                                            .child('not_done')
-                                            .child(key)
-                                            .remove();
-                                      });
-                                    });
+                                    // await _dbRef
+                                    //     .child('not_done')
+                                    //     .orderByChild('user_id')
+                                    //     .equalTo(userProvider.uid)
+                                    //     .once()
+                                    //     .then((final DataSnapshot snapshot) {
+                                    //   snapshot.value?.forEach((key, value) {
+                                    //     _dbRef
+                                    //         .child('not_done')
+                                    //         .child(key)
+                                    //         .remove();
+                                    //   });
+                                    // });
 
                                     // DELETE USER
                                     try {
