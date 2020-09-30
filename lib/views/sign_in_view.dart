@@ -54,8 +54,11 @@ class SignInView extends StatelessWidget {
                         )
                       ],
                     ),
-                    child:
-                        Image.asset('Logo/flutter.moviesliders.png', width: 60),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8.0),
+                      child: Image.asset('Logo/flutter.moviesliders.logo.png',
+                          width: 60),
+                    ),
                   ),
                 ),
               ),

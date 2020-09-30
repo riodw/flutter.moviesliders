@@ -53,7 +53,7 @@ dev_dependencies:
 flutter_icons: # https://pub.dev/packages/flutter_launcher_icons
   android: true
   ios: true
-  image_path: "Logo/flutter.moviesliders.png"
+  image_path: "Logo/flutter.moviesliders.logo.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -66,7 +66,7 @@ flutter:
   uses-material-design: true
   # To add assets to your application, add an assets section, like this:
   assets:
-    - Logo/flutter.moviesliders.png
+    - Logo/flutter.moviesliders.logo.png
     - assets/images/home-1.jpg
     - assets/images/home-2.jpg
   # An image asset can refer to one or more resolution-specific "variants", see

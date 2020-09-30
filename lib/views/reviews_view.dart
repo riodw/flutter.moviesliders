@@ -223,19 +223,23 @@ class _ReviewsView extends State<ReviewsView> {
           ),
           Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
             Container(
-              padding: const EdgeInsets.all(5),
+              // padding: const EdgeInsets.all(5),
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(14.0),
+                borderRadius: BorderRadius.circular(8.0),
                 boxShadow: [
                   const BoxShadow(
                     color: Colors.grey,
-                    blurRadius: 22.0, // has the effect of softening the shadow
+                    blurRadius: 20, // has the effect of softening the shadow
                     spreadRadius: 0, // has the effect of extending the shadow
                   )
                 ],
               ),
-              child: Image.asset('Logo/flutter.moviesliders.png', width: 60),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8.0),
+                child: Image.asset('Logo/flutter.moviesliders.logo.png',
+                    width: 60),
+              ),
             ),
             const SizedBox(
               width: 15,
