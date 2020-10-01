@@ -238,7 +238,7 @@ class _ReviewsView extends State<ReviewsView> {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
                 child: Image.asset('Logo/flutter.moviesliders.logo.png',
-                    width: 50),
+                    width: 52),
               ),
             ),
             const SizedBox(
