@@ -40,7 +40,7 @@ class SignInView extends StatelessWidget {
                 flex: 1,
                 child: Center(
                   child: Container(
-                    padding: const EdgeInsets.all(5),
+                    padding: const EdgeInsets.all(4),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(14.0),
@@ -57,7 +57,7 @@ class SignInView extends StatelessWidget {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(8.0),
                       child: Image.asset('Logo/flutter.moviesliders.logo.png',
-                          width: 60),
+                          width: 69),
                     ),
                   ),
                 ),
