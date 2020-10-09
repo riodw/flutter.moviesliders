@@ -15,21 +15,12 @@ class SignInView extends StatelessWidget {
   Widget build(final BuildContext context) {
     return Material(
       child: Stack(children: <Widget>[
-        ShaderMask(
-          shaderCallback: (rect) {
-            return const LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [Colors.transparent, Colors.black],
-            ).createShader(Rect.fromLTRB(0, 0, rect.width, rect.height - 20));
-          },
-          blendMode: BlendMode.darken,
-          child: Container(
-            decoration: const BoxDecoration(
-              image: const DecorationImage(
-                image: const ExactAssetImage('assets/images/home-2.jpg'),
-                fit: BoxFit.cover,
-              ),
+        Container(
+          decoration: const BoxDecoration(
+            image: const DecorationImage(
+              image: const ExactAssetImage(
+                  'assets/images/flutter.moviesliders.launchimage.jpg'),
+              fit: BoxFit.cover,
             ),
           ),
         ),
@@ -101,19 +92,19 @@ class SignInView extends StatelessWidget {
                       await testConnection();
                       if (!iNet) return;
 
-                      final AuthService _auth = AuthService();
-                      bool status =
-                          await _auth.signInWithGoogle().then((status) {
-                        // setState(() {
-                        //   _loading = false;
-                        // });
-                        return status != null;
-                      });
-                      if (!status) {
-                        // print('Could not log in');
-                        Scaffold.of(context).showSnackBar(
-                            SnackBar(content: const Text('Could not log in.')));
-                      }
+                      // final AuthService _auth = AuthService();
+                      // bool status =
+                      //     await _auth.signInWithGoogle().then((status) {
+                      //   // setState(() {
+                      //   //   _loading = false;
+                      //   // });
+                      //   return status != null;
+                      // });
+                      // if (!status) {
+                      //   // print('Could not log in');
+                      //   Scaffold.of(context).showSnackBar(
+                      //       SnackBar(content: const Text('Could not log in.')));
+                      // }
                     },
                   ),
                   const SizedBox(

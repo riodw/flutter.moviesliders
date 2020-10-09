@@ -67,9 +67,9 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - Logo/flutter.moviesliders.logo.png
-    - assets/images/home-1.jpg
-    - assets/images/home-2.jpg
-    - assets/images/flutter.moviesliders.launchimage.png
+    # - assets/images/home-1.jpg
+    # - assets/images/home-2.jpg
+    - assets/images/flutter.moviesliders.launchimage.jpg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
   # For details regarding adding assets from package dependencies, see
