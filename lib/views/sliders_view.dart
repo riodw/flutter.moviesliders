@@ -37,6 +37,8 @@ class _SlidersViewState extends State<SlidersView> {
   bool _reviewFinished = false;
   int _updates = 1;
   int _total = 2;
+  // ref to finished review
+  DatabaseReference reviewDoneRef;
 
   // reference to scaffold
   static final GlobalKey<ScaffoldState> _scaffoldKey =
@@ -92,8 +94,10 @@ class _SlidersViewState extends State<SlidersView> {
     _timer?.cancel();
     // Set average (avg)
     widget.reviewNotDoneRef.child('avg').set(_avg());
+    // update ref to finished review
+    reviewDoneRef = widget.reviewRef.child('done').push();
     // move review to 'done'
-    widget.reviewRef.child('done').push().set(widget.reviewNotDoneRef.once());
+    reviewDoneRef.set(widget.reviewNotDoneRef.once());
     // remove original
     widget.reviewNotDoneRef?.remove();
 
@@ -187,7 +191,7 @@ class _SlidersViewState extends State<SlidersView> {
                 onPressed: () {
                   _timer?.cancel();
                   widget.reviewNotDoneRef
-                      ?.remove()
+                      .remove()
                       .catchError((onError) => print(onError));
                   Navigator.of(context).pop(true);
                 },
@@ -251,10 +255,11 @@ class _SlidersViewState extends State<SlidersView> {
                                 await testConnection();
                                 if (!iNet) return;
                                 // TODO: GO TO SEE  REVIEW RESULTS
-                                // Navigator.pushNamedAndRemoveUntil(
-                                //     context,
-                                //     '/review_selected',
-                                //     ModalRoute.withName('/'));
+                                Navigator.pushNamedAndRemoveUntil(
+                                    context,
+                                    '/review_selected',
+                                    ModalRoute.withName('/'),
+                                    arguments: reviewDoneRef);
                                 // go to review_selected_view
                               },
                             )
