@@ -83,8 +83,6 @@ class _SlidersViewState extends State<SlidersView> {
   @override
   void dispose() {
     _timer?.cancel();
-    // delete unstarted review
-    if (_seconds == 0) widget.reviewNotDoneRef.remove();
     super.dispose();
   }
 
@@ -115,7 +113,7 @@ class _SlidersViewState extends State<SlidersView> {
                 if (!iNet) return;
 
                 Navigator.pushNamedAndRemoveUntil(
-                    context, '/movie_review', ModalRoute.withName('/'));
+                    context, '/review_selected', ModalRoute.withName('/'));
               }),
         ],
       ),
@@ -158,7 +156,7 @@ class _SlidersViewState extends State<SlidersView> {
 
   Future<bool> _onWillPop() async {
     if (_seconds == 0) {
-      widget.reviewNotDoneRef?.remove();
+      widget.reviewNotDoneRef.remove();
       Navigator.pop(context);
       return false;
     }
@@ -248,12 +246,17 @@ class _SlidersViewState extends State<SlidersView> {
                       child: _reviewFinished
                           ? MaterialButton(
                               color: Theme.of(context).colorScheme.primary,
+                              child: const Text('DONE'),
                               onPressed: () async {
                                 await testConnection();
                                 if (!iNet) return;
-                                // TODO: GO TO SEE REVIEW RESULTS
+                                // TODO: GO TO SEE  REVIEW RESULTS
+                                // Navigator.pushNamedAndRemoveUntil(
+                                //     context,
+                                //     '/review_selected',
+                                //     ModalRoute.withName('/'));
+                                // go to review_selected_view
                               },
-                              child: const Text('DONE'),
                             )
                           : MaterialButton(
                               color: _paused

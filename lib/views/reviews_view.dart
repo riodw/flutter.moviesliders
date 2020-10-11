@@ -284,7 +284,7 @@ class _ReviewsView extends State<ReviewsView> {
                       onTap: () async {
                         await testConnection();
                         if (!iNet) return;
-                        Navigator.pushNamed(context, '/movie_review',
+                        Navigator.pushNamed(context, '/review_selected',
                             arguments: review);
                       },
                       child: Column(
@@ -603,39 +603,40 @@ class MovieSearch extends SearchDelegate {
                           arguments: suggestion);
                     },
                     child: Container(
+                        color: Colors.red,
                         child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Image.network(
-                          suggestion.media[0],
-                          height: 180,
-                          loadingBuilder: (final BuildContext context,
-                              final Object child,
-                              final ImageChunkEvent progress) {
-                            return progress == null
-                                ? child
-                                : const CircularProgressIndicator();
-                          },
-                          errorBuilder: (final BuildContext context,
-                              final Object exception,
-                              final StackTrace stackTrace) {
-                            return const Center(
-                                child: const Text('Image Not Found'));
-                          },
-                          fit: BoxFit.fill,
-                        ),
-                        Text(
-                          suggestion.title,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.bodyText1,
-                        ),
-                        Text(
-                          suggestion.year.toString(),
-                          style: Theme.of(context).textTheme.bodyText2,
-                        ),
-                      ],
-                    )),
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Image.network(
+                              suggestion.media[0],
+                              height: 180,
+                              loadingBuilder: (final BuildContext context,
+                                  final Object child,
+                                  final ImageChunkEvent progress) {
+                                return progress == null
+                                    ? child
+                                    : const CircularProgressIndicator();
+                              },
+                              errorBuilder: (final BuildContext context,
+                                  final Object exception,
+                                  final StackTrace stackTrace) {
+                                return const Center(
+                                    child: const Text('Image Not Found'));
+                              },
+                              fit: BoxFit.fill,
+                            ),
+                            Text(
+                              suggestion.title,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: Theme.of(context).textTheme.bodyText1,
+                            ),
+                            Text(
+                              suggestion.year.toString(),
+                              style: Theme.of(context).textTheme.bodyText2,
+                            ),
+                          ],
+                        )),
                   ),
               ],
             );

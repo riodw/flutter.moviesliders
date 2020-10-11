@@ -8,7 +8,7 @@ import 'package:flutter_moviesliders/models/models.dart';
  * https://google.github.io/charts/flutter/example/scatter_plot_charts/comparison_points
 */
 
-class MovieReviewView extends StatelessWidget {
+class ReviewSelectedView extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final Review review = ModalRoute.of(context).settings.arguments;

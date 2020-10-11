@@ -12,7 +12,6 @@ class AuthService extends ChangeNotifier {
   // Firebase user a realtime stream
   Stream<FirebaseUser> get user => _auth.onAuthStateChanged;
 
-  // TODO
   // Future<bool> isAdmin() async {
   //   bool _isAdmin = false;
   //   await _auth.currentUser().then((user) async {
