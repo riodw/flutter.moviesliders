@@ -19,18 +19,21 @@ class ChartView extends StatelessWidget {
         actions: <Widget>[],
       ),
       body: SafeArea(
-        child: Expanded(
-            flex: 1,
-            child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Container(
-                    width: MediaQuery.of(context).size.width * 1.5,
-                    padding: EdgeInsets.only(left: 3, bottom: 9),
-                    child: NumericComboLinePointChart.withRatings(
-                      trendsList: review.trends,
-                      // animate: true
-                    )))),
-      ),
+          child: Row(
+        children: <Widget>[
+          Expanded(
+              flex: 1,
+              child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Container(
+                      width: MediaQuery.of(context).size.width * 1.5,
+                      padding: EdgeInsets.only(left: 3, bottom: 9),
+                      child: NumericComboLinePointChart.withRatings(
+                        trendsList: review.trends,
+                        // animate: true
+                      )))),
+        ],
+      )),
     );
   }
 }
