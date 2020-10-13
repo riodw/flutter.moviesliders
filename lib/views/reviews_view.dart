@@ -437,11 +437,13 @@ class _ReviewsView extends State<ReviewsView> {
 
 final String imdbUrl = 'https://sg.media-imdb.com/suggests/';
 
-Future<List<ImdbModel>> _fetchImdb(String query) async {
+Future<List<ImdbModel>> _fetchImdb(final String query) async {
   List<ImdbModel> suggestions = [];
 
   final String urlSearch =
-      imdbUrl + query.substring(0, 1) + '/' + query + '.json';
+      imdbUrl + (query.substring(0, 1) + '/' + query).toLowerCase() + '.json';
+
+  print(urlSearch);
 
   // await testConnection();
 
@@ -603,40 +605,40 @@ class MovieSearch extends SearchDelegate {
                           arguments: suggestion);
                     },
                     child: Container(
-                        color: Colors.red,
+                        // color: Colors.red,
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Image.network(
-                              suggestion.media[0],
-                              height: 180,
-                              loadingBuilder: (final BuildContext context,
-                                  final Object child,
-                                  final ImageChunkEvent progress) {
-                                return progress == null
-                                    ? child
-                                    : const CircularProgressIndicator();
-                              },
-                              errorBuilder: (final BuildContext context,
-                                  final Object exception,
-                                  final StackTrace stackTrace) {
-                                return const Center(
-                                    child: const Text('Image Not Found'));
-                              },
-                              fit: BoxFit.fill,
-                            ),
-                            Text(
-                              suggestion.title,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: Theme.of(context).textTheme.bodyText1,
-                            ),
-                            Text(
-                              suggestion.year.toString(),
-                              style: Theme.of(context).textTheme.bodyText2,
-                            ),
-                          ],
-                        )),
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Image.network(
+                          suggestion.media[0],
+                          // height: 180,
+                          loadingBuilder: (final BuildContext context,
+                              final Object child,
+                              final ImageChunkEvent progress) {
+                            return progress == null
+                                ? child
+                                : const CircularProgressIndicator();
+                          },
+                          errorBuilder: (final BuildContext context,
+                              final Object exception,
+                              final StackTrace stackTrace) {
+                            return const Center(
+                                child: const Text('Image Not Found'));
+                          },
+                          fit: BoxFit.fill,
+                        ),
+                        Text(
+                          suggestion.title,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
+                        Text(
+                          suggestion.year.toString(),
+                          style: Theme.of(context).textTheme.bodyText2,
+                        ),
+                      ],
+                    )),
                   ),
               ],
             );
