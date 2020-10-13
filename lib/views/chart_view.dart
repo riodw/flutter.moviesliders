@@ -15,7 +15,7 @@ class ChartView extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Black Mirror: Season 4 Episode 5 (Metalhead)'),
+        title: Text(review.title),
         actions: <Widget>[],
       ),
       body: SafeArea(

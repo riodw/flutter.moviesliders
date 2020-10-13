@@ -37,8 +37,8 @@ class _SlidersViewState extends State<SlidersView> {
   bool _reviewFinished = false;
   int _updates = 1;
   int _total = 2;
-  // ref to finished review
-  DatabaseReference reviewDoneRef;
+  // Review - to be passed to review_selected_view on complete
+  Review review;
 
   // reference to scaffold
   static final GlobalKey<ScaffoldState> _scaffoldKey =
@@ -88,18 +88,28 @@ class _SlidersViewState extends State<SlidersView> {
     super.dispose();
   }
 
-  void _finishReview() {
-    _reviewFinished = true;
-    _paused = true;
-    _timer?.cancel();
-    // Set average (avg)
-    widget.reviewNotDoneRef.child('avg').set(_avg());
-    // update ref to finished review
-    reviewDoneRef = widget.reviewRef.child('done').push();
-    // move review to 'done'
-    reviewDoneRef.set(widget.reviewNotDoneRef.once());
-    // remove original
-    widget.reviewNotDoneRef?.remove();
+  void _finishReview(bool save) async {
+    Review review;
+
+    if (save) {
+      _timer?.cancel();
+
+      setState(() {
+        _reviewFinished = true;
+        _paused = true;
+      });
+
+      // Set average (avg)
+      widget.reviewNotDoneRef.child('avg').set(_avg());
+      // get all data once to pass to review_selected_view
+      final DataSnapshot reviewSnapshot = await widget.reviewNotDoneRef.once();
+      // get Review instance from JSON
+      review = Review.fromJson(reviewSnapshot.value);
+      // move review to 'done'
+      widget.reviewRef.child('done').push().set(reviewSnapshot);
+      // remove original
+      widget.reviewNotDoneRef.remove();
+    }
 
     showDialog(
       context: context,
@@ -115,9 +125,10 @@ class _SlidersViewState extends State<SlidersView> {
               onPressed: () async {
                 await testConnection();
                 if (!iNet) return;
-
+                // GO TO SEE REVIEW RESULTS
                 Navigator.pushNamedAndRemoveUntil(
-                    context, '/review_selected', ModalRoute.withName('/'));
+                    context, '/review_selected', ModalRoute.withName('/'),
+                    arguments: review);
               }),
         ],
       ),
@@ -132,11 +143,10 @@ class _SlidersViewState extends State<SlidersView> {
     setState(() {
       _timeSpent = (_seconds.toDouble() / 60).truncate();
 
-      // check if max time hit, return out;
+      // check if max time hit; and return out;
       if (_timeSpent >= widget.omdb.runtimeNum) {
         // if (_seconds >= 12) {
-        _finishReview();
-
+        _finishReview(true);
         return;
       }
     });
@@ -167,7 +177,7 @@ class _SlidersViewState extends State<SlidersView> {
     // TEST IF REVIEW IS CLOSE ENOUGH TO DONE
     if ((_timeSpent + 7) >= widget.omdb.runtimeNum) {
       // if (_seconds > 4) {
-      _finishReview();
+      _finishReview(true);
       return false;
     }
     return (await showDialog(
@@ -254,13 +264,8 @@ class _SlidersViewState extends State<SlidersView> {
                               onPressed: () async {
                                 await testConnection();
                                 if (!iNet) return;
-                                // TODO: GO TO SEE  REVIEW RESULTS
-                                Navigator.pushNamedAndRemoveUntil(
-                                    context,
-                                    '/review_selected',
-                                    ModalRoute.withName('/'),
-                                    arguments: reviewDoneRef);
-                                // go to review_selected_view
+                                // show finished modal
+                                _finishReview(false);
                               },
                             )
                           : MaterialButton(
@@ -277,13 +282,11 @@ class _SlidersViewState extends State<SlidersView> {
                                 });
                               },
                               child: _paused
-                                  ? Text(
+                                  ? const Text(
                                       'Play',
-                                      style: Theme.of(context).textTheme.button,
                                     )
-                                  : Text(
+                                  : const Text(
                                       'Pause',
-                                      style: Theme.of(context).textTheme.button,
                                     ),
                             ),
                     ),
