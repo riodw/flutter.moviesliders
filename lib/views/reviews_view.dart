@@ -440,13 +440,12 @@ final String imdbUrl = 'https://sg.media-imdb.com/suggests/';
 Future<List<ImdbModel>> _fetchImdb(final String query) async {
   List<ImdbModel> suggestions = [];
 
+  if (!iNet) return suggestions;
+
   final String urlSearch =
       imdbUrl + (query.substring(0, 1) + '/' + query).toLowerCase() + '.json';
 
-  // await testConnection();
-
-  if (!iNet) return suggestions;
-
+  // get search
   final response = await http.get(urlSearch);
 
   if (response.statusCode != 200) return suggestions;
