@@ -443,8 +443,6 @@ Future<List<ImdbModel>> _fetchImdb(final String query) async {
   final String urlSearch =
       imdbUrl + (query.substring(0, 1) + '/' + query).toLowerCase() + '.json';
 
-  print(urlSearch);
-
   // await testConnection();
 
   if (!iNet) return suggestions;
