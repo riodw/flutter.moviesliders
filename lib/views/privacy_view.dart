@@ -25,7 +25,7 @@ class _PrivacyView extends State<PrivacyView> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Movie Sliders'),
+        title: const Text('Movie Sliders'),
         actions: <Widget>[],
       ),
       body: SafeArea(

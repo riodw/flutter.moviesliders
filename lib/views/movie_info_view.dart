@@ -74,23 +74,23 @@ class MovieInfoView extends StatelessWidget {
               height: 10,
             ),
             SizedBox(
-                height: 261,
-                child: Image.network(
-                  omdb.poster,
-                  height: 260,
-                  loadingBuilder: (final BuildContext context,
-                      final Object child, final ImageChunkEvent progress) {
-                    return progress == null
-                        ? child
-                        : const Center(
-                            child: const CircularProgressIndicator());
-                  },
-                  errorBuilder: (final BuildContext context,
-                      final Object exception, final StackTrace stackTrace) {
-                    return const Center(child: const Text('Image Not Found'));
-                  },
-                  fit: BoxFit.fill,
-                )),
+              height: 261,
+              child: Image.network(
+                omdb.poster,
+                height: 260,
+                loadingBuilder: (final BuildContext context, final Object child,
+                    final ImageChunkEvent progress) {
+                  return progress == null
+                      ? child
+                      : const Center(child: const CircularProgressIndicator());
+                },
+                errorBuilder: (final BuildContext context,
+                    final Object exception, final StackTrace stackTrace) {
+                  return const Center(child: const Text('Image Not Found'));
+                },
+                fit: BoxFit.fill,
+              ),
+            ),
             const SizedBox(
               height: 20,
             ),
@@ -192,27 +192,32 @@ class MovieInfoView extends StatelessWidget {
                     },
                   ];
 
-                  trends.forEach((trend) {
-                    final DatabaseReference trendRef =
-                        reviewNotDoneRef.child('trends').push();
-                    trendRef.set(trend).then((asdf) {
-                      trendRef.child('ratings').push().set(
-                        {
-                          's': 0,
-                          'v': 2,
+                  trends.forEach(
+                    (trend) {
+                      final DatabaseReference trendRef =
+                          reviewNotDoneRef.child('trends').push();
+                      trendRef.set(trend).then(
+                        (asdf) {
+                          trendRef.child('ratings').push().set(
+                            {
+                              's': 0,
+                              'v': 2,
+                            },
+                          );
                         },
                       );
-                    });
-                  });
+                    },
+                  );
                   // change page
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => SlidersView(
-                            title: imdb.title,
-                            reviewRef: reviewRef,
-                            reviewNotDoneRef: reviewNotDoneRef,
-                            omdb: omdb)),
+                      builder: (context) => SlidersView(
+                          title: imdb.title,
+                          reviewRef: reviewRef,
+                          reviewNotDoneRef: reviewNotDoneRef,
+                          omdb: omdb),
+                    ),
                   );
                 }).catchError((onError) {
                   print(onError.toString());
@@ -226,32 +231,35 @@ class MovieInfoView extends StatelessWidget {
               height: 20,
             ),
             Expanded(
-                flex: 1,
-                child: SingleChildScrollView(
-                    child: Container(
+              flex: 1,
+              child: SingleChildScrollView(
+                child: Container(
                   margin: EdgeInsets.symmetric(horizontal: 15.0),
                   child: Text(
                     omdb.plot,
                     style: Theme.of(context).textTheme.bodyText1,
                   ),
-                )))
+                ),
+              ),
+            ),
           ],
         );
       },
     );
 
     return Scaffold(
-        key: _scaffoldKey,
-        appBar: AppBar(
-          title: Text(imdb.title),
-          actions: <Widget>[],
-        ),
-        body: SafeArea(
-          child: iNet
-              ? contents
-              : const Center(
-                  child: const Text('No Connection'),
-                ),
-        ));
+      key: _scaffoldKey,
+      appBar: AppBar(
+        title: Text(imdb.title),
+        actions: <Widget>[],
+      ),
+      body: SafeArea(
+        child: iNet
+            ? contents
+            : const Center(
+                child: const Text('No Connection'),
+              ),
+      ),
+    );
   }
 }

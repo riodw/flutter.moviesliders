@@ -8,7 +8,7 @@ class TermsOfServiceView extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('TOS for MovieSliders'),
+        title: const Text('TOS for MovieSliders'),
         actions: <Widget>[],
       ),
       body: SafeArea(
