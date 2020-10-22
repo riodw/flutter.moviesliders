@@ -58,25 +58,28 @@ class _SlidersViewState extends State<SlidersView> {
       fill your elements list and call setState.
     */
 
-    widget.reviewNotDoneRef
-        .child('trends')
-        .once()
-        .then((final DataSnapshot snapshot) {
-      setState(() {
-        snapshot.value.forEach((key, value) {
-          _trends.add(Trend(
-              rawName: value['name'],
-              rawColor: value['color'],
-              order: value['order'],
-              trendKey: key.toString(),
-              ratingsRef: widget.reviewNotDoneRef
-                  .child('trends')
-                  .child(key.toString())
-                  .child('ratings')));
-        });
-        _trends.sort((a, b) => a.order.compareTo(b.order));
-      });
-    });
+    widget.reviewNotDoneRef.child('trends').once().then(
+      (final DataSnapshot snapshot) {
+        setState(
+          () {
+            snapshot.value.forEach(
+              (key, value) {
+                _trends.add(Trend(
+                    rawName: value['name'],
+                    rawColor: value['color'],
+                    order: value['order'],
+                    trendKey: key.toString(),
+                    ratingsRef: widget.reviewNotDoneRef
+                        .child('trends')
+                        .child(key.toString())
+                        .child('ratings')));
+              },
+            );
+            _trends.sort((a, b) => a.order.compareTo(b.order));
+          },
+        );
+      },
+    );
 
     // every 2 _seconds update
     _timer = Timer.periodic(Duration(seconds: 2), (Timer t) => _updateTrends());
@@ -94,10 +97,12 @@ class _SlidersViewState extends State<SlidersView> {
     if (save) {
       _timer?.cancel();
 
-      setState(() {
-        _reviewFinished = true;
-        _paused = true;
-      });
+      setState(
+        () {
+          _reviewFinished = true;
+          _paused = true;
+        },
+      );
 
       // Set average (avg)
       widget.reviewNotDoneRef.child('avg').set(_avg());
@@ -120,16 +125,17 @@ class _SlidersViewState extends State<SlidersView> {
         ),
         actions: <Widget>[
           FlatButton(
-              child: const Text('Show me!'),
+            child: const Text('Show me!'),
+            // GO TO SEE REVIEW RESULTS
+            onPressed: () async {
+              await testConnection();
+              if (!iNet) return;
               // GO TO SEE REVIEW RESULTS
-              onPressed: () async {
-                await testConnection();
-                if (!iNet) return;
-                // GO TO SEE REVIEW RESULTS
-                Navigator.pushNamedAndRemoveUntil(
-                    context, '/review_selected', ModalRoute.withName('/'),
-                    arguments: review);
-              }),
+              Navigator.pushNamedAndRemoveUntil(
+                  context, '/review_selected', ModalRoute.withName('/'),
+                  arguments: review);
+            },
+          ),
         ],
       ),
     );
@@ -180,12 +186,12 @@ class _SlidersViewState extends State<SlidersView> {
       _finishReview(true);
       return false;
     }
-    return (await showDialog(
+    return await showDialog(
           context: context,
           builder: (context) => CupertinoAlertDialog(
             title: const Text('Are you sure?'),
             content: Text(
-              'Your review will be deleted if you\ngo back before finishing.' +
+              'Your review will be deleted if you go back before finishing.' +
                   '\n\nYou have ' +
                   (widget.omdb.runtimeNum - _timeSpent).toString() +
                   ' minutes left.',
@@ -208,7 +214,7 @@ class _SlidersViewState extends State<SlidersView> {
               ),
             ],
           ),
-        )) ??
+        ) ??
         false;
   }
 
@@ -225,26 +231,26 @@ class _SlidersViewState extends State<SlidersView> {
     if (!iNet) _paused = true;
 
     return WillPopScope(
-        onWillPop: _onWillPop,
-        child: Scaffold(
-          key: _scaffoldKey,
-          appBar: AppBar(
-            title: Text(widget.title),
-            actions: <Widget>[
-              // action buttons
-              IconButton(
-                icon: themeProvider.isDarkModeOn
-                    ? Icon(Icons.brightness_low)
-                    : Icon(Icons.brightness_high),
-                onPressed: () {
-                  themeProvider.updateTheme(
-                      themeProvider.isDarkModeOn ? 'light' : 'dark');
-                },
-              ),
-            ],
-          ),
-          body: SafeArea(
-              child: Container(
+      onWillPop: _onWillPop,
+      child: Scaffold(
+        key: _scaffoldKey,
+        appBar: AppBar(
+          title: Text(widget.title),
+          actions: <Widget>[
+            // action buttons
+            IconButton(
+              icon: themeProvider.isDarkModeOn
+                  ? Icon(Icons.brightness_low)
+                  : Icon(Icons.brightness_high),
+              onPressed: () {
+                themeProvider
+                    .updateTheme(themeProvider.isDarkModeOn ? 'light' : 'dark');
+              },
+            ),
+          ],
+        ),
+        body: SafeArea(
+          child: Container(
             margin: const EdgeInsets.only(top: 10.0, bottom: 3.0),
             child: Column(
               children: <Widget>[
@@ -301,43 +307,49 @@ class _SlidersViewState extends State<SlidersView> {
                   ],
                 ),
                 Expanded(
-                    // SLIDERS
-                    child: _trends.length > 0
-                        ? Row(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                                for (Trend _trend in _trends)
-                                  Column(children: <Widget>[
-                                    Expanded(
-                                        child: RotatedBox(
-                                      quarterTurns: -1,
-                                      child: CupertinoSlider(
-                                          value: _trend.rating,
-                                          activeColor: _paused
-                                              ? Colors.grey
-                                              : _trend.color,
-                                          min: Trend.minRating,
-                                          max: Trend.maxRating,
-                                          onChanged: (newRating) {
-                                            setState(() {
-                                              _trend.rating = newRating;
-                                            });
-                                          }),
-                                    )),
-                                    _paused
-                                        ? _trend.name
-                                        : Text(
-                                            _trend.rating.round().toString(),
-                                          ),
-                                  ]),
-                              ])
-                        : const Center(
-                            child: const CircularProgressIndicator(),
-                          )),
+                  // SLIDERS
+                  child: _trends.length > 0
+                      ? Row(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            for (final Trend _trend in _trends)
+                              Column(
+                                children: <Widget>[
+                                  Expanded(
+                                      child: RotatedBox(
+                                    quarterTurns: -1,
+                                    child: CupertinoSlider(
+                                        value: _trend.rating,
+                                        activeColor: _paused
+                                            ? Colors.grey
+                                            : _trend.color,
+                                        min: Trend.minRating,
+                                        max: Trend.maxRating,
+                                        onChanged: (newRating) {
+                                          setState(() {
+                                            _trend.rating = newRating;
+                                          });
+                                        }),
+                                  )),
+                                  _paused
+                                      ? _trend.name
+                                      : Text(
+                                          _trend.rating.round().toString(),
+                                        ),
+                                ],
+                              ),
+                          ],
+                        )
+                      : const Center(
+                          child: const CircularProgressIndicator(),
+                        ),
+                ),
               ],
             ),
-          )),
-        ));
+          ),
+        ),
+      ),
+    );
   }
 }

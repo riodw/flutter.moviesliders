@@ -18,7 +18,7 @@ import 'package:flutter_moviesliders/widgets/chart_widget.dart';
 class ReviewsView extends StatefulWidget {
   ReviewsView({Key key, @required this.user}) : super(key: key);
 
-  final FirebaseUser user;
+  FirebaseUser user;
 
   @override
   _ReviewsView createState() => _ReviewsView();
@@ -145,70 +145,129 @@ class _ReviewsView extends State<ReviewsView> {
             onPressed: () {
               if (!iNet) return;
               final actionSheet = CupertinoActionSheet(
-                  // title: Text('Select Option'),
-                  // message: Text('Which option?'),
-                  actions: <Widget>[
-                    CupertinoActionSheetAction(
-                      child: myReviewsOnly
-                          ? const Text('Show All Reviews')
-                          : const Text('Show Only My Reviews'),
-                      onPressed: () async {
-                        await testConnection();
-                        if (!iNet) return;
+                // title: Text('Select Option'),
+                // message: Text('Which option?'),
+                actions: <Widget>[
+                  CupertinoActionSheetAction(
+                    child: myReviewsOnly
+                        ? const Text('Show All Reviews')
+                        : const Text('Show Only My Reviews'),
+                    onPressed: () async {
+                      await testConnection();
+                      if (!iNet) return;
 
-                        setState(() {
-                          myReviewsOnly = !myReviewsOnly;
-                          changeReviewFilter();
-                          Navigator.pop(context);
-                        });
-                      },
-                    ),
-                    CupertinoActionSheetAction(
-                      child: const Text('About MovieSliders'),
-                      onPressed: () {
+                      setState(() {
+                        myReviewsOnly = !myReviewsOnly;
+                        changeReviewFilter();
                         Navigator.pop(context);
-                        Navigator.pushNamed(context, '/about');
-                      },
-                    ),
-                    CupertinoActionSheetAction(
-                      child: const Text('Terms of Service'),
-                      onPressed: () {
-                        Navigator.pop(context);
-                        Navigator.pushNamed(context, '/tos');
-                      },
-                    ),
-                    CupertinoActionSheetAction(
-                      child: const Text('Privacy'),
-                      onPressed: () {
-                        Navigator.pop(context);
-                        Navigator.pushNamed(context, '/privacy');
-                      },
-                    ),
-                    widget.user.isAnonymous
-                        ? CupertinoActionSheetAction(
-                            child: const Text('Sign In'),
-                            onPressed: () async {
-                              await testConnection();
-                              if (!iNet) return;
-                            },
-                          )
-                        : CupertinoActionSheetAction(
-                            child: const Text('Log Out'),
-                            isDestructiveAction: true,
-                            onPressed: () {
-                              final AuthService _auth = AuthService();
-                              setState(() {
-                                _auth.signOut();
-                              });
-                            },
-                          ),
-                  ],
-                  cancelButton: CupertinoActionSheetAction(
-                    child: const Text('Cancel'),
+                      });
+                    },
+                  ),
+                  CupertinoActionSheetAction(
+                    child: const Text('About MovieSliders'),
                     onPressed: () {
                       Navigator.pop(context);
+                      Navigator.pushNamed(context, '/about');
                     },
-                  ));
+                  ),
+                  CupertinoActionSheetAction(
+                    child: const Text('Terms of Service'),
+                    onPressed: () {
+                      Navigator.pop(context);
+                      Navigator.pushNamed(context, '/tos');
+                    },
+                  ),
+                  CupertinoActionSheetAction(
+                    child: const Text('Privacy'),
+                    onPressed: () {
+                      Navigator.pop(context);
+                      Navigator.pushNamed(context, '/privacy');
+                    },
+                  ),
+                  widget.user.isAnonymous
+                      ? CupertinoActionSheetAction(
+                          child: const Text('Sign In'),
+                          onPressed: () async {
+                            Navigator.pop(context);
+
+                            await showDialog(
+                              context: context,
+                              builder: (context) => CupertinoAlertDialog(
+                                title: const Text('Sign In'),
+                                content: const Text(
+                                  'What account would you like to sign in with?',
+                                ),
+                                actions: <Widget>[
+                                  FlatButton(
+                                    child: const Text('Apple'),
+                                    onPressed: () async {
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                  FlatButton(
+                                    child: const Text('Google'),
+                                    onPressed: () async {
+                                      await testConnection();
+                                      if (!iNet) return;
+
+                                      Navigator.pop(context);
+
+                                      // Link Google Account
+                                      // final AuthService _auth = AuthService();
+                                      await AuthService()
+                                          .signInWithGoogle(true)
+                                          .then(
+                                        (status) {
+                                          // print(status);
+                                          setState(() {
+                                            if (status != null) {
+                                              widget.user = status;
+                                            } else {
+                                              _scaffoldKey.currentState
+                                                  ?.showSnackBar(
+                                                SnackBar(
+                                                  content: const Text(
+                                                      'Sorry, there was an error. Could not sign you in.'),
+                                                ),
+                                              );
+                                            }
+                                          });
+                                        },
+                                      );
+                                    },
+                                  ),
+                                  FlatButton(
+                                    child: const Text('cancel',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.normal,
+                                        )),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        )
+                      : CupertinoActionSheetAction(
+                          child: const Text('Log Out'),
+                          isDestructiveAction: true,
+                          onPressed: () {
+                            final AuthService _auth = AuthService();
+                            setState(() {
+                              _auth.signOut();
+                            });
+                          },
+                        ),
+                ],
+                cancelButton: CupertinoActionSheetAction(
+                  child: const Text('Cancel'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              );
               showCupertinoModalPopup(
                   context: context,
                   builder: (final BuildContext context) => actionSheet);
@@ -221,38 +280,43 @@ class _ReviewsView extends State<ReviewsView> {
           const SizedBox(
             height: 20,
           ),
-          Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-            Container(
-              padding: const EdgeInsets.all(2),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-                boxShadow: [
-                  const BoxShadow(
-                    color: Colors.black54,
-                    blurRadius: 16, // has the effect of softening the shadow
-                    spreadRadius: 0, // has the effect of extending the shadow
-                  )
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                padding: const EdgeInsets.all(2),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    const BoxShadow(
+                      color: Colors.black54,
+                      blurRadius: 16, // has the effect of softening the shadow
+                      spreadRadius: 0, // has the effect of extending the shadow
+                    )
+                  ],
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.asset('Logo/flutter.moviesliders.logo.png',
+                      width: 54),
+                ),
+              ),
+              const SizedBox(
+                width: 15,
+              ),
+              Column(
+                children: <Widget>[
+                  Text(
+                    'Movie Sliders',
+                    style: Theme.of(context).textTheme.headline1,
+                  ),
+                  Text('Data Driven Movie Reviews',
+                      style: Theme.of(context).textTheme.bodyText1)
                 ],
               ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Image.asset('Logo/flutter.moviesliders.logo.png',
-                    width: 54),
-              ),
-            ),
-            const SizedBox(
-              width: 15,
-            ),
-            Column(children: <Widget>[
-              Text(
-                'Movie Sliders',
-                style: Theme.of(context).textTheme.headline1,
-              ),
-              Text('Data Driven Movie Reviews',
-                  style: Theme.of(context).textTheme.bodyText1)
-            ]),
-          ]),
+            ],
+          ),
           const SizedBox(
             height: 20,
           ),
@@ -278,40 +342,41 @@ class _ReviewsView extends State<ReviewsView> {
             height: 22,
           ),
           _reviews.length > 0
-              ? Column(children: <Widget>[
-                  for (Review review in orderedReviews())
-                    GestureDetector(
-                      onTap: () async {
-                        await testConnection();
-                        if (!iNet) return;
-                        Navigator.pushNamed(context, '/review_selected',
-                            arguments: review);
-                      },
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Container(
-                            height: 170.0,
-                            decoration: const BoxDecoration(
-                              border: const Border(
-                                top: const BorderSide(
-                                    width: 1, color: Colors.grey),
-                                left: const BorderSide(
-                                    width: 1, color: Colors.grey),
-                                right: const BorderSide(
-                                    width: 1, color: Colors.grey),
-                                bottom: const BorderSide(
-                                    width: 1, color: Colors.grey),
+              ? Column(
+                  children: <Widget>[
+                    for (final Review review in orderedReviews())
+                      GestureDetector(
+                        onTap: () async {
+                          await testConnection();
+                          if (!iNet) return;
+                          Navigator.pushNamed(context, '/review_selected',
+                              arguments: review);
+                        },
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Container(
+                              height: 170.0,
+                              decoration: const BoxDecoration(
+                                border: const Border(
+                                  top: const BorderSide(
+                                      width: 1, color: Colors.grey),
+                                  left: const BorderSide(
+                                      width: 1, color: Colors.grey),
+                                  right: const BorderSide(
+                                      width: 1, color: Colors.grey),
+                                  bottom: const BorderSide(
+                                      width: 1, color: Colors.grey),
+                                ),
                               ),
+                              child: NumericComboLinePointChart.withRatings(
+                                  trendsList: review.trends, animate: false),
                             ),
-                            child: NumericComboLinePointChart.withRatings(
-                                trendsList: review.trends, animate: false),
-                          ),
-                          const SizedBox(height: 8.0),
-                          Container(
-                            margin:
-                                const EdgeInsets.symmetric(horizontal: 15.0),
-                            child: Column(
+                            const SizedBox(height: 8.0),
+                            Container(
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 15.0),
+                              child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   Text(
@@ -332,24 +397,29 @@ class _ReviewsView extends State<ReviewsView> {
                                         fontSize: 18.0, color: Colors.grey),
                                   ),
                                   const SizedBox(height: 8.0),
-                                  Row(children: <Widget>[
-                                    Container(
-                                      decoration: BoxDecoration(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .primary,
-                                          borderRadius: const BorderRadius.all(
-                                              Radius.circular(40.0))),
-                                      width: 34.0,
-                                      height: 34.0,
-                                      child: Center(
-                                          child: Text(review.userAbv,
-                                              style: const TextStyle(
-                                                color: Colors.white,
-                                              ))),
-                                    ),
-                                    const SizedBox(width: 10.0),
-                                    Column(
+                                  Row(
+                                    children: <Widget>[
+                                      Container(
+                                        decoration: BoxDecoration(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary,
+                                            borderRadius:
+                                                const BorderRadius.all(
+                                                    Radius.circular(40.0))),
+                                        width: 34.0,
+                                        height: 34.0,
+                                        child: Center(
+                                          child: Text(
+                                            review.userAbv,
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 10.0),
+                                      Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: <Widget>[
@@ -367,15 +437,19 @@ class _ReviewsView extends State<ReviewsView> {
                                                 fontSize: 12.0,
                                                 color: Colors.grey),
                                           )
-                                        ])
-                                  ]),
-                                ]),
-                          ),
-                          const SizedBox(height: 40.0),
-                        ],
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 40.0),
+                          ],
+                        ),
                       ),
-                    ),
-                ])
+                  ],
+                )
               : Container(
                   margin: const EdgeInsets.symmetric(horizontal: 15.0),
                   child: Center(
@@ -398,7 +472,9 @@ class _ReviewsView extends State<ReviewsView> {
                 ? const Text('Showing Only Your Reviews')
                 : const Text('Showing All Reviews'),
           ),
-          const Center(child: const Text('Limited to 10'))
+          const Center(
+            child: const Text('Limited to 10'),
+          )
         ],
       ),
     );
@@ -454,7 +530,7 @@ Future<List<ImdbModel>> _fetchImdb(final String query) async {
 
   imdbJson = imdbJson.substring(imdbJson.indexOf('(') + 1, imdbJson.length - 1);
 
-  for (dynamic word in json.decode(imdbJson)['d']) {
+  for (final dynamic word in json.decode(imdbJson)['d']) {
     if (word['q'] != null &&
         word['q'] == 'feature' &&
         word['i'] != null &&
@@ -560,50 +636,50 @@ class MovieSearch extends SearchDelegate {
     // https://stackoverflow.com/questions/57250986/the-argument-type-futurewidget-cant-be-assigned-to-the-parameter-type-widg
     // https://stackoverflow.com/questions/49781657/adjust-gridview-child-height-according-to-the-dynamic-content-in-flutter
     var suggestions = FutureBuilder<List<ImdbModel>>(
-        future: _fetchImdb(query),
-        builder: (final BuildContext context,
-            final AsyncSnapshot<List<ImdbModel>> snapshot) {
-          if (snapshot.hasError)
+      future: _fetchImdb(query),
+      builder: (final BuildContext context,
+          final AsyncSnapshot<List<ImdbModel>> snapshot) {
+        if (snapshot.hasError)
+          return Center(
+            child: const Text('Error'),
+          );
+        else if (snapshot.hasData) {
+          if (snapshot.data.length == 0)
             return Center(
-              child: const Text('Error'),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    'No Movies To Show',
+                    style: Theme.of(context).textTheme.headline1,
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  const Text('Try entering more search characters.'),
+                ],
+              ),
             );
-          else if (snapshot.hasData) {
-            if (snapshot.data.length == 0)
-              return Center(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      'No Movies To Show',
-                      style: Theme.of(context).textTheme.headline1,
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    const Text('Try entering more search characters.'),
-                  ],
-                ),
-              );
-            return GridView.count(
-              primary: true,
-              crossAxisSpacing: 4,
-              mainAxisSpacing: 4,
-              crossAxisCount: 3,
-              childAspectRatio: .48,
-              children: <Widget>[
-                for (final ImdbModel suggestion in snapshot.data)
-                  GestureDetector(
-                    onTap: () async {
-                      await testConnection();
-                      if (!iNet) return;
-                      Navigator.pop(context);
-                      Navigator.pushNamed(context, '/movie_info',
-                          arguments: suggestion);
-                    },
-                    child: Container(
-                        // color: Colors.red,
-                        child: Column(
+          return GridView.count(
+            primary: true,
+            crossAxisSpacing: 4,
+            mainAxisSpacing: 4,
+            crossAxisCount: 3,
+            childAspectRatio: .48,
+            children: <Widget>[
+              for (final ImdbModel suggestion in snapshot.data)
+                GestureDetector(
+                  onTap: () async {
+                    await testConnection();
+                    if (!iNet) return;
+                    Navigator.pop(context);
+                    Navigator.pushNamed(context, '/movie_info',
+                        arguments: suggestion);
+                  },
+                  child: Container(
+                    // color: Colors.red,
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Image.network(
@@ -635,25 +711,29 @@ class MovieSearch extends SearchDelegate {
                           style: Theme.of(context).textTheme.bodyText2,
                         ),
                       ],
-                    )),
+                    ),
                   ),
-              ],
-            );
-          } else
-            return const Center(
-              child: const CircularProgressIndicator(),
-            );
-        });
+                ),
+            ],
+          );
+        } else
+          return const Center(
+            child: const CircularProgressIndicator(),
+          );
+      },
+    );
 
     return SafeArea(
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
           Text(
             'Movies',
             style: Theme.of(context).textTheme.headline6,
           ),
           Flexible(child: suggestions),
-        ]));
+        ],
+      ),
+    );
   }
 }

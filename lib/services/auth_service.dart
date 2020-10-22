@@ -45,10 +45,11 @@ class AuthService extends ChangeNotifier {
       );
 
   /// Sign in with Google
-  Future<FirebaseUser> signInWithGoogle() async {
+  Future<FirebaseUser> signInWithGoogle(convert) async {
     try {
-      GoogleSignInAccount googleSignInAccount = await _googleSignIn.signIn();
-      GoogleSignInAuthentication googleAuth =
+      final GoogleSignInAccount googleSignInAccount =
+          await _googleSignIn.signIn();
+      final GoogleSignInAuthentication googleAuth =
           await googleSignInAccount.authentication;
 
       final AuthCredential credential = GoogleAuthProvider.getCredential(
@@ -56,10 +57,19 @@ class AuthService extends ChangeNotifier {
         idToken: googleAuth.idToken,
       );
 
-      AuthResult result = await _auth.signInWithCredential(credential);
-      FirebaseUser user = result.user;
+      AuthResult result;
 
-      return user;
+      if (convert) {
+        final currentUser = await _auth.currentUser();
+        // https://youtu.be/JLl5M4N7ftM?t=4028
+        result = await currentUser.linkWithCredential(credential);
+      } else {
+        result = await _auth.signInWithCredential(credential);
+      }
+
+      // final FirebaseUser user = result.user;
+
+      return result.user;
     } catch (error) {
       print(error);
       return null;
