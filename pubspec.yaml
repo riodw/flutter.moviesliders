@@ -27,23 +27,26 @@ dependencies:
   provider: ^4.1.3
   # network requests
   http:
-  # local storage
+  # local storage (used to store dark-mode)
   shared_preferences: ">=0.5.7+3 <2.0.0"
   # dependency for the Firebase Core Flutter SDK
   firebase_core: ^0.4.0+9
   # firebase auth
   firebase_auth: ^0.16.1
+  # (used in sign-in)
   google_sign_in: ^4.5.1
   # apple_sign_in: ^0.1.0
-  # firebase real-time database
+  # firebase (real-time database)
   firebase_database: ^3.1.6
-  # dependency for the FlutterFire plugin for Google Analytics
+  # Google Analytics (dependency for the FlutterFire plugin)
   firebase_analytics: ^5.0.2
   # Charts
   charts_flutter: ^0.9.0
-  # auto_size_text 2.1.0
-  # Connectivity
+  # Connectivity (used for testing internet connection)
   connectivity:
+  # Render HTML (used for privacy policy)
+  flutter_html: ^1.0.0
+  # auto_size_text 2.1.0
 
 dev_dependencies:
   flutter_test:
