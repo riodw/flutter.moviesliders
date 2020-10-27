@@ -124,7 +124,15 @@ PODS:
   - nanopb/encode (1.30905.0)
   - PromisesObjC (1.2.8)
   - Reachability (3.2)
+  - screen (0.0.1):
+    - Flutter
   - shared_preferences (0.0.1):
+    - Flutter
+  - video_player (0.0.1):
+    - Flutter
+  - wakelock (0.0.1):
+    - Flutter
+  - webview_flutter (0.0.1):
     - Flutter
 
 DEPENDENCIES:
@@ -135,7 +143,11 @@ DEPENDENCIES:
   - firebase_database (from `.symlinks/plugins/firebase_database/ios`)
   - Flutter (from `Flutter`)
   - google_sign_in (from `.symlinks/plugins/google_sign_in/ios`)
+  - screen (from `.symlinks/plugins/screen/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
+  - video_player (from `.symlinks/plugins/video_player/ios`)
+  - wakelock (from `.symlinks/plugins/wakelock/ios`)
+  - webview_flutter (from `.symlinks/plugins/webview_flutter/ios`)
 
 SPEC REPOS:
   trunk:
@@ -176,8 +188,16 @@ EXTERNAL SOURCES:
     :path: Flutter
   google_sign_in:
     :path: ".symlinks/plugins/google_sign_in/ios"
+  screen:
+    :path: ".symlinks/plugins/screen/ios"
   shared_preferences:
     :path: ".symlinks/plugins/shared_preferences/ios"
+  video_player:
+    :path: ".symlinks/plugins/video_player/ios"
+  wakelock:
+    :path: ".symlinks/plugins/wakelock/ios"
+  webview_flutter:
+    :path: ".symlinks/plugins/webview_flutter/ios"
 
 SPEC CHECKSUMS:
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
@@ -208,7 +228,11 @@ SPEC CHECKSUMS:
   nanopb: c43f40fadfe79e8b8db116583945847910cbabc9
   PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
+  screen: abd91ca7bf3426e1cc3646d27e9b2358d6bf07b0
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
+  video_player: 9cc823b1d9da7e8427ee591e8438bfbcde500e6e
+  wakelock: 0d4a70faf8950410735e3f61fb15d517c8a6efc4
+  webview_flutter: d2b4d6c66968ad042ad94cbb791f5b72b4678a96
 
 PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
 
