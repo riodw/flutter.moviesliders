@@ -34,7 +34,12 @@ class SignInView extends StatelessWidget {
                     flex: 1,
                     child: Center(
                       child: Container(
-                        padding: const EdgeInsets.all(4),
+                        constraints: const BoxConstraints(
+                          minHeight: 69,
+                          minWidth: 69,
+                          // maxHeight: 30.0,
+                          // maxWidth: 30.0,
+                        ),
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(14.0),
