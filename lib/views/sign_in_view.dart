@@ -1,5 +1,6 @@
 // Pub
 import 'package:flutter/material.dart';
+import 'package:apple_sign_in/apple_sign_in.dart';
 import 'package:provider/provider.dart';
 // Project
 import 'package:flutter_moviesliders/constants/globals.dart';
@@ -13,6 +14,9 @@ class SignInView extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
+    final appleSignInAvailable =
+        Provider.of<AppleSignInAvailable>(context, listen: false);
+
     return Material(
       child: Scaffold(
         key: _scaffoldKey,
@@ -87,36 +91,52 @@ class SignInView extends StatelessWidget {
                       const SizedBox(
                         height: 45,
                       ),
-                      MaterialButton(
-                        height: 50.0,
-                        minWidth: 320.0,
-                        textColor: Colors.blueAccent,
-                        color: Colors.white,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0)),
-                        child: const Text(
-                          'Continue with Apple',
-                          // style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        onPressed: () async {
-                          await testConnection();
-                          if (!iNet) return;
+                      appleSignInAvailable.isAvailable
+                          ? Container(
+                              width: 320,
+                              child: AppleSignInButton(
+                                // style: ButtonStyle.white,
+                                type: ButtonType.signIn,
+                                onPressed: () async {
+                                  await testConnection();
+                                  if (!iNet) return;
+                                },
+                              ),
+                            )
+                          : const SizedBox(
+                              height: 50,
+                            ),
 
-                          // final AuthService _auth = AuthService();
-                          // bool status =
-                          //     await _auth.signInWithGoogle().then((status) {
-                          //   // setState(() {
-                          //   //   _loading = false;
-                          //   // });
-                          //   return status != null;
-                          // });
-                          // if (!status) {
-                          //   // print('Could not log in');
-                          //   Scaffold.of(context).showSnackBar(
-                          //       SnackBar(content: const Text('Could not log in.')));
-                          // }
-                        },
-                      ),
+                      // MaterialButton(
+                      //   height: 50.0,
+                      //   minWidth: 320.0,
+                      //   textColor: Colors.blueAccent,
+                      //   color: Colors.white,
+                      //   shape: RoundedRectangleBorder(
+                      //       borderRadius: BorderRadius.circular(10.0)),
+                      //   child: const Text(
+                      //     'Continue with Apple',
+                      //     // style: TextStyle(fontWeight: FontWeight.bold),
+                      //   ),
+                      //   onPressed: () async {
+                      //     await testConnection();
+                      //     if (!iNet) return;
+
+                      //     // final AuthService _auth = AuthService();
+                      //     // bool status =
+                      //     //     await _auth.signInWithGoogle().then((status) {
+                      //     //   // setState(() {
+                      //     //   //   _loading = false;
+                      //     //   // });
+                      //     //   return status != null;
+                      //     // });
+                      //     // if (!status) {
+                      //     //   // print('Could not log in');
+                      //     //   Scaffold.of(context).showSnackBar(
+                      //     //       SnackBar(content: const Text('Could not log in.')));
+                      //     // }
+                      //   },
+                      // ),
                       const SizedBox(
                         height: 10,
                       ),
@@ -125,9 +145,9 @@ class SignInView extends StatelessWidget {
                         minWidth: 320.0,
                         color: Colors.blueAccent,
                         shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0)),
+                            borderRadius: BorderRadius.circular(6)),
                         child: const Text(
-                          'Continue with Google',
+                          'Sign in with Google',
                           // style: TextStyle(
                           //   fontWeight: FontWeight.bold,
                           // ),
