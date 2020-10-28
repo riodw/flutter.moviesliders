@@ -71,7 +71,7 @@ flutter:
   uses-material-design: true
   # To add assets to your application, add an assets section, like this:
   assets:
-    - Logo/flutter.moviesliders.logo.png
+    - Logo/Icon-App-40x40@3x.png
     # - assets/images/home-1.jpg
     # - assets/images/home-2.jpg
     - assets/images/flutter.moviesliders.launchimage.jpg
