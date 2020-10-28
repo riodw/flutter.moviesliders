@@ -284,22 +284,23 @@ class _ReviewsView extends State<ReviewsView> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Container(
-                padding: const EdgeInsets.all(2),
                 decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12),
+                  // color: Colors.white,
+                  // borderRadius: BorderRadius.circular(12),
                   boxShadow: [
                     const BoxShadow(
-                      color: Colors.black54,
+                      color: Colors.grey,
                       blurRadius: 16, // has the effect of softening the shadow
                       spreadRadius: 0, // has the effect of extending the shadow
                     )
                   ],
                 ),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Image.asset('Logo/flutter.moviesliders.logo.png',
-                      width: 54),
+                  borderRadius: BorderRadius.circular(12),
+                  child: Image.asset(
+                    'Logo/flutter.moviesliders.logo.png',
+                    width: 55,
+                  ),
                 ),
               ),
               const SizedBox(
@@ -474,7 +475,8 @@ class _ReviewsView extends State<ReviewsView> {
           ),
           const Center(
             child: const Text('Limited to 10'),
-          )
+          ),
+          const SizedBox(height: 15),
         ],
       ),
     );

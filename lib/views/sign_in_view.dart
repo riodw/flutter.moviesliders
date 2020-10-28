@@ -34,30 +34,31 @@ class SignInView extends StatelessWidget {
                     flex: 1,
                     child: Center(
                       child: Container(
-                        constraints: const BoxConstraints(
-                          minHeight: 69,
-                          minWidth: 69,
-                          // maxHeight: 30.0,
-                          // maxWidth: 30.0,
-                        ),
+                        // constraints: const BoxConstraints(
+                        //   minHeight: 69,
+                        //   minWidth: 69,
+                        //   // maxHeight: 30.0,
+                        //   // maxWidth: 30.0,
+                        // ),
                         decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(14.0),
+                          // color: Colors.white,
+                          // borderRadius: BorderRadius.circular(14.0),
                           boxShadow: [
                             const BoxShadow(
-                              color: Colors.grey,
+                              color: Colors.black54,
                               blurRadius:
-                                  22.0, // has the effect of softening the shadow
+                                  22, // has the effect of softening the shadow
                               spreadRadius:
                                   0, // has the effect of extending the shadow
                             )
                           ],
                         ),
                         child: ClipRRect(
-                          borderRadius: BorderRadius.circular(8.0),
+                          borderRadius: BorderRadius.circular(16),
                           child: Image.asset(
-                              'Logo/flutter.moviesliders.logo.png',
-                              width: 69),
+                            'Logo/flutter.moviesliders.logo.png',
+                            width: 69,
+                          ),
                         ),
                       ),
                     ),
