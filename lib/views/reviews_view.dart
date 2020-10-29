@@ -201,7 +201,32 @@ class _ReviewsView extends State<ReviewsView> {
                                   FlatButton(
                                     child: const Text('Apple'),
                                     onPressed: () async {
+                                      await testConnection();
+                                      if (!iNet) return;
+
                                       Navigator.pop(context);
+
+                                      // Link Apple Account
+                                      await AuthService()
+                                          .signInWithApple(true)
+                                          .then(
+                                        (status) {
+                                          // print(status);
+                                          setState(() {
+                                            if (status != null) {
+                                              widget.user = status;
+                                            } else {
+                                              _scaffoldKey.currentState
+                                                  ?.showSnackBar(
+                                                SnackBar(
+                                                  content: const Text(
+                                                      'Sorry, there was an error. Could not sign you in.'),
+                                                ),
+                                              );
+                                            }
+                                          });
+                                        },
+                                      );
                                     },
                                   ),
                                   FlatButton(
@@ -213,7 +238,6 @@ class _ReviewsView extends State<ReviewsView> {
                                       Navigator.pop(context);
 
                                       // Link Google Account
-                                      // final AuthService _auth = AuthService();
                                       await AuthService()
                                           .signInWithGoogle(true)
                                           .then(
