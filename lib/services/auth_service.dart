@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:apple_sign_in/apple_sign_in.dart';
 
 class AuthService extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -82,35 +83,40 @@ class AuthService extends ChangeNotifier {
 
   // Determine if Apple Signin is available on device
   // Future<bool> get appleSignInAvailable => AppleSignIn.isAvailable();
-  /// Sign in with Apple
-  // Future<FirebaseUser> appleSignIn() async {
-  //   try {
-  //     final AuthorizationResult appleResult =
-  //         await AppleSignIn.performRequests([
-  //       AppleIdRequest(requestedScopes: [Scope.email, Scope.fullName])
-  //     ]);
+  // Sign in with Apple
+  Future<FirebaseUser> signInWithApple(convert) async {
+    try {
+      final AuthorizationResult appleResult =
+          await AppleSignIn.performRequests([
+        AppleIdRequest(requestedScopes: [Scope.email, Scope.fullName])
+      ]);
 
-  //     if (appleResult.error != null) {
-  //       // handle errors from Apple
-  //     }
+      if (appleResult.error != null) {
+        print(appleResult.error);
+        return null;
+      }
 
-  //     final AuthCredential credential =
-  //         OAuthProvider(providerId: 'apple.com').getCredential(
-  //       accessToken:
-  //           String.fromCharCodes(appleResult.credential.authorizationCode),
-  //       idToken: String.fromCharCodes(appleResult.credential.identityToken),
-  //     );
+      final AuthCredential credential =
+          OAuthProvider(providerId: 'apple.com').getCredential(
+        accessToken:
+            String.fromCharCodes(appleResult.credential.authorizationCode),
+        idToken: String.fromCharCodes(appleResult.credential.identityToken),
+      );
 
-  //     AuthResult firebaseResult = await _auth.signInWithCredential(credential);
-  //     FirebaseUser user = firebaseResult.user;
+      AuthResult result;
 
-  //     // Update user data
-  //     updateUserData(user);
+      if (convert) {
+        final currentUser = await _auth.currentUser();
+        // https://youtu.be/JLl5M4N7ftM?t=4028
+        result = await currentUser.linkWithCredential(credential);
+      } else {
+        result = await _auth.signInWithCredential(credential);
+      }
 
-  //     return user;
-  //   } catch (error) {
-  //     print(error);
-  //     return null;
-  //   }
-  // }
+      return result.user;
+    } catch (error) {
+      print(error);
+      return null;
+    }
+  }
 }

@@ -100,43 +100,28 @@ class SignInView extends StatelessWidget {
                                 onPressed: () async {
                                   await testConnection();
                                   if (!iNet) return;
+
+                                  await AuthService()
+                                      .signInWithApple(false)
+                                      .then(
+                                    (status) {
+                                      // print(status);
+                                      if (status == null) {
+                                        _scaffoldKey.currentState.showSnackBar(
+                                          SnackBar(
+                                            content: const Text(
+                                                'Sorry, there was an error. Could not sign you in.'),
+                                          ),
+                                        );
+                                      }
+                                    },
+                                  );
                                 },
                               ),
                             )
                           : const SizedBox(
                               height: 50,
                             ),
-
-                      // MaterialButton(
-                      //   height: 50.0,
-                      //   minWidth: 320.0,
-                      //   textColor: Colors.blueAccent,
-                      //   color: Colors.white,
-                      //   shape: RoundedRectangleBorder(
-                      //       borderRadius: BorderRadius.circular(10.0)),
-                      //   child: const Text(
-                      //     'Continue with Apple',
-                      //     // style: TextStyle(fontWeight: FontWeight.bold),
-                      //   ),
-                      //   onPressed: () async {
-                      //     await testConnection();
-                      //     if (!iNet) return;
-
-                      //     // final AuthService _auth = AuthService();
-                      //     // bool status =
-                      //     //     await _auth.signInWithGoogle().then((status) {
-                      //     //   // setState(() {
-                      //     //   //   _loading = false;
-                      //     //   // });
-                      //     //   return status != null;
-                      //     // });
-                      //     // if (!status) {
-                      //     //   // print('Could not log in');
-                      //     //   Scaffold.of(context).showSnackBar(
-                      //     //       SnackBar(content: const Text('Could not log in.')));
-                      //     // }
-                      //   },
-                      // ),
                       const SizedBox(
                         height: 10,
                       ),
@@ -148,9 +133,10 @@ class SignInView extends StatelessWidget {
                             borderRadius: BorderRadius.circular(6)),
                         child: const Text(
                           'Sign in with Google',
-                          // style: TextStyle(
-                          //   fontWeight: FontWeight.bold,
-                          // ),
+                          style: TextStyle(
+                            // fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                          ),
                         ),
                         onPressed: () async {
                           await testConnection();
