@@ -23,8 +23,8 @@ class AboutView extends StatelessWidget {
                     child: Column(
                       children: <Widget>[
                         const SizedBox(
-                          height: 35,
-                        ),
+                            // height: 35,
+                            ),
                         Container(
                           padding: const EdgeInsets.all(2),
                           decoration: BoxDecoration(
@@ -42,8 +42,7 @@ class AboutView extends StatelessWidget {
                           ),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(10),
-                            child: Image.asset(
-                                'Logo/flutter.moviesliders.logo.png',
+                            child: Image.asset('Logo/Icon-App-40x40@3x.png',
                                 width: 54),
                           ),
                         ),
@@ -59,7 +58,7 @@ class AboutView extends StatelessWidget {
                         // ),
                         const Divider(
                           color: Colors.grey,
-                          height: 40,
+                          height: 50,
                           thickness: 0.5,
                           indent: 60,
                           endIndent: 60,

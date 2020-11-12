@@ -170,13 +170,13 @@ class _ReviewsView extends State<ReviewsView> {
                       Navigator.pushNamed(context, '/about');
                     },
                   ),
-                  CupertinoActionSheetAction(
-                    child: const Text('Terms of Service'),
-                    onPressed: () {
-                      Navigator.pop(context);
-                      Navigator.pushNamed(context, '/tos');
-                    },
-                  ),
+                  // CupertinoActionSheetAction(
+                  //   child: const Text('Terms of Service'),
+                  //   onPressed: () {
+                  //     Navigator.pop(context);
+                  //     Navigator.pushNamed(context, '/tos');
+                  //   },
+                  // ),
                   CupertinoActionSheetAction(
                     child: const Text('Privacy'),
                     onPressed: () {
