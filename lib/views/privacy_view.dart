@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:url_launcher/url_launcher.dart';
 // - html
 import 'package:flutter_html/flutter_html.dart';
 // import 'package:flutter_html/html_parser.dart';
@@ -814,8 +815,14 @@ class _PrivacyView extends State<PrivacyView> {
                           Html(
                             data: htmlData,
                             style: {},
-                            onLinkTap: (url) {
-                              print("Opening $url...");
+                            onLinkTap: (url) async {
+                              // print("Opening $url");
+
+                              if (await canLaunch(url))
+                                await launch(url);
+                              else
+                                // can't launch url, there is some error
+                                throw "Could not launch $url";
                             },
                           ),
                         ],

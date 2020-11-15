@@ -23,8 +23,8 @@ class AboutView extends StatelessWidget {
                     child: Column(
                       children: <Widget>[
                         const SizedBox(
-                            // height: 35,
-                            ),
+                          height: 35,
+                        ),
                         Container(
                           padding: const EdgeInsets.all(2),
                           decoration: BoxDecoration(

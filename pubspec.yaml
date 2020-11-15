@@ -47,6 +47,8 @@ dependencies:
   connectivity:
   # Render HTML (used for privacy policy)
   flutter_html: ^1.0.0
+  # Open links (used for privacy policy)
+  url_launcher: ^5.7.10
   # auto_size_text 2.1.0
 
 dev_dependencies:
