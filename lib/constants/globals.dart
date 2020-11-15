@@ -45,6 +45,8 @@ void displayInet(connectionStatus, final ScaffoldState scaffoldKeyState) {
         scaffoldKeyState.showSnackBar(snackBar);
       } else {
         for (; called > 0; called--) {
+          // print('here');
+          // print(called);
           scaffoldKeyState.removeCurrentSnackBar();
         }
       }

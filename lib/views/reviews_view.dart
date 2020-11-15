@@ -638,26 +638,30 @@ class MovieSearch extends SearchDelegate {
 
     if (!iNet)
       return const SafeArea(
-          child: const Center(child: const Text('No Connection.')));
+        child: const Center(
+          child: const Text('No Connection.'),
+        ),
+      );
 
     if (query.length < 4)
       return SafeArea(
-          child: Center(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'Search Movies',
-              style: Theme.of(context).textTheme.headline1,
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            const Text('Enter at least three letters'),
-          ],
+        child: Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                'Search Movies',
+                style: Theme.of(context).textTheme.headline1,
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              const Text('Enter at least three letters'),
+            ],
+          ),
         ),
-      ));
+      );
 
     // https://stackoverflow.com/questions/57250986/the-argument-type-futurewidget-cant-be-assigned-to-the-parameter-type-widg
     // https://stackoverflow.com/questions/49781657/adjust-gridview-child-height-according-to-the-dynamic-content-in-flutter

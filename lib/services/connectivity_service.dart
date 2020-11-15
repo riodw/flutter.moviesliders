@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:connectivity/connectivity.dart';
+import 'package:simple_connectivity/simple_connectivity.dart';
 import 'package:flutter/material.dart';
 
 enum ConnectivityStatus { WiFi, Cellular, Offline }

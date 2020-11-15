@@ -43,8 +43,8 @@ dependencies:
   firebase_analytics: ^5.0.2
   # Charts
   charts_flutter: ^0.9.0
-  # Connectivity (used for testing internet connection)
-  connectivity:
+  # Connectivity but with location services (used for testing internet connection)
+  simple_connectivity: ^0.1.1
   # Render HTML (used for privacy policy)
   flutter_html: ^1.0.0
   # Open links (used for privacy policy)
