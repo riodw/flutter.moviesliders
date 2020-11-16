@@ -556,14 +556,15 @@ Future<List<ImdbModel>> _fetchImdb(final String query) async {
 
   imdbJson = imdbJson.substring(imdbJson.indexOf('(') + 1, imdbJson.length - 1);
 
-  for (final dynamic word in json.decode(imdbJson)['d']) {
-    if (word['q'] != null &&
-        word['q'] == 'feature' &&
-        word['i'] != null &&
-        word['i'][0] != null) {
-      suggestions.add(ImdbModel.fromJson(word));
+  if (json.decode(imdbJson)['d'] != null)
+    for (final dynamic word in json.decode(imdbJson)['d']) {
+      if (word['q'] != null &&
+          word['q'] == 'feature' &&
+          word['i'] != null &&
+          word['i'][0] != null) {
+        suggestions.add(ImdbModel.fromJson(word));
+      }
     }
-  }
 
   return suggestions;
 }
@@ -618,14 +619,14 @@ class MovieSearch extends SearchDelegate {
 
   @override
   Widget buildResults(final BuildContext context) {
-    print('build Results');
+    // print('build Results');
     return null;
   }
 
   @override
   Widget buildSuggestions(final BuildContext context) {
-    final ConnectivityStatus connectionStatus =
-        Provider.of<ConnectivityStatus>(context, listen: true);
+    // final ConnectivityStatus connectionStatus =
+    //     Provider.of<ConnectivityStatus>(context, listen: true);
 
     // Check iNet
     // displayInet(connectionStatus).then((value) {
