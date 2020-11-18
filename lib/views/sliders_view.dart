@@ -97,23 +97,21 @@ class _SlidersViewState extends State<SlidersView> {
     if (save) {
       _timer?.cancel();
 
-      setState(
-        () {
-          _reviewFinished = true;
-          _paused = true;
-        },
-      );
+      setState(() {
+        _reviewFinished = true;
+        _paused = true;
+      });
 
       // Set average (avg)
-      widget.reviewNotDoneRef.child('avg').set(_avg());
+      await widget.reviewNotDoneRef.child('avg').set(_avg());
       // get all data once to pass to review_selected_view
       final DataSnapshot reviewSnapshot = await widget.reviewNotDoneRef.once();
       // get Review instance from JSON
       review = Review.fromJson(reviewSnapshot.value);
       // move review to 'done'
-      widget.reviewRef.child('done').push().set(reviewSnapshot);
+      await widget.reviewRef.child('done').push().set(reviewSnapshot.value);
       // remove original
-      widget.reviewNotDoneRef.remove();
+      await widget.reviewNotDoneRef.remove();
     }
 
     showDialog(
@@ -132,8 +130,11 @@ class _SlidersViewState extends State<SlidersView> {
               if (!iNet) return;
               // GO TO SEE REVIEW RESULTS
               Navigator.pushNamedAndRemoveUntil(
-                  context, '/review_selected', ModalRoute.withName('/'),
-                  arguments: review);
+                context,
+                '/review_selected',
+                ModalRoute.withName('/'),
+                arguments: review,
+              );
             },
           ),
         ],
@@ -151,19 +152,19 @@ class _SlidersViewState extends State<SlidersView> {
 
       // check if max time hit; and return out;
       if (_timeSpent >= widget.omdb.runtimeNum) {
-        // if (_seconds >= 12) {
+        // if (_timeSpent >= 1) {
         _finishReview(true);
         return;
       }
     });
 
     _trends.forEach((final Trend trend) {
-      // update average
       if (trend.rawName == 'Interest') {
+        // update average
         _total = _total + trend.rating.round();
+        // how many times has been called
+        _updates++;
       }
-      // how many times has been called
-      _updates++;
       // post updated
       trend.ratingsRef.push().set(
         {
