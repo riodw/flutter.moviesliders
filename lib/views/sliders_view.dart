@@ -92,8 +92,6 @@ class _SlidersViewState extends State<SlidersView> {
   }
 
   void _finishReview(bool save) async {
-    Review review;
-
     if (save) {
       _timer?.cancel();
 
@@ -176,17 +174,30 @@ class _SlidersViewState extends State<SlidersView> {
   }
 
   Future<bool> _onWillPop() async {
+    // Cancel
     if (_seconds == 0) {
       widget.reviewNotDoneRef.remove();
       Navigator.pop(context);
       return false;
     }
+
+    // click if the review is already finished
+    else if (_reviewFinished == true) {
+      // if (_seconds > 4) {
+      await testConnection();
+      if (!iNet) return false;
+      // show finished modal
+      _finishReview(false);
+      return false;
+    }
+
     // TEST IF REVIEW IS CLOSE ENOUGH TO DONE
-    if ((_timeSpent + 7) >= widget.omdb.runtimeNum) {
+    else if ((_timeSpent) >= widget.omdb.runtimeNum) {
       // if (_seconds > 4) {
       _finishReview(true);
       return false;
     }
+
     return await showDialog(
           context: context,
           builder: (context) => CupertinoAlertDialog(
